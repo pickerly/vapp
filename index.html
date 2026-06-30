@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAPP — Menu prototyp</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Exo 2',Helvetica,Arial,sans-serif;font-size:16px;background:#f0f2f4;min-height:100vh}
+
+/* HEADER */
+.hd{background:#fff;border-bottom:1px solid #dde0e3}
+.hd-inner{max-width:1400px;margin:0 auto;padding:16px 48px;display:flex;align-items:center;position:relative;min-height:68px}
+.logo{font-size:28px;font-weight:700;color:#e31e24;letter-spacing:-1px;line-height:1;white-space:nowrap;flex:0 0 auto;z-index:1}
+
+/* Search — absolutně vycentrovaný */
+.search{position:absolute;left:50%;transform:translateX(-50%);width:580px}
+.search input{width:100%;padding:11px 52px 11px 18px;border:1.5px solid #c8d0e0;border-radius:7px;font-family:'Exo 2',sans-serif;font-size:15px;color:#1e2428;background:#f4f6fa;outline:none;transition:border .15s,background .15s,box-shadow .15s}
+.search input:focus{border-color:#1652b4;background:#fff;box-shadow:0 0 0 3px rgba(22,82,180,.09)}
+.search input::placeholder{color:#9aa3ae}
+.sbtn{position:absolute;right:1px;top:1px;bottom:1px;width:46px;background:#1652b4;border:none;border-radius:0 6px 6px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.sbtn:hover{background:#124290}
+.sbtn svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
+
+/* Header right */
+.hd-r{margin-left:auto;display:flex;align-items:center;gap:20px;flex:0 0 auto;z-index:1}
+.contact-block{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.contact-row{display:flex;align-items:center;gap:7px;text-decoration:none;color:#2b3033;transition:color .12s}
+.contact-row:hover{color:#1652b4}
+.contact-icon{width:14px;height:14px;flex-shrink:0;opacity:.6}
+.contact-phone{font-size:15px;font-weight:700;color:#1e2428}
+.contact-email{font-size:13px;color:#1652b4;font-weight:600}
+
+/* Icon buttons */
+.hd-icons{display:flex;align-items:center;gap:8px}
+.ico{width:40px;height:40px;background:#f0f2f5;border:1px solid #dde0e3;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .1s,border-color .1s;position:relative;flex-shrink:0}
+.ico:hover{background:#e8eef8;border-color:#b8c8e8}
+.ico svg{width:20px;height:20px;fill:none;stroke:#3a4450;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* Login dropdown */
+.login-wrap{position:relative}
+.login-drop{display:none;position:absolute;top:calc(100% + 10px);right:0;background:#fff;border:1px solid #dde0e3;border-radius:9px;box-shadow:0 10px 28px rgba(0,0,0,.12);padding:8px;min-width:165px;z-index:300}
+.login-drop.open{display:block}
+.login-drop a{display:block;padding:10px 15px;font-size:14px;font-weight:600;color:#2b3033;text-decoration:none;border-radius:6px;transition:background .12s,color .12s}
+.login-drop a:hover{background:#f0f4fb;color:#1652b4}
+.login-drop .sep{height:1px;background:#eaecef;margin:4px 0}
+
+/* NAV */
+.nav{background:#fff;border-bottom:1px solid #dde0e3;position:relative}
+.navrow{display:flex;align-items:stretch;padding:0 48px;max-width:1400px;margin:0 auto}
+.nb{font-size:13.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:14px 22px;cursor:pointer;border-bottom:2.5px solid transparent;color:#5a6472;user-select:none;transition:color .15s,border-color .15s;display:flex;align-items:center;white-space:nowrap}
+.nb:hover{color:#1652b4}
+.nb.on{color:#1652b4;border-bottom-color:#1652b4}
+
+/* MEGA MENU */
+.mm{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid #dde0e3;box-shadow:0 14px 36px rgba(0,0,0,.09);z-index:100;padding:26px 0 30px}
+.mm.open{display:block}
+.mm-inner{max-width:1400px;margin:0 auto;padding:0 48px}
+.cols{display:flex;align-items:flex-start}
+.vd{width:1px;background:#e0e3e7;align-self:stretch;flex-shrink:0;margin:0 16px}
+.col{flex:1}
+.ct{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#8a9098;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #eceef0;margin-top:20px;white-space:nowrap}
+.ct:first-child{margin-top:0}
+.ct-sm{letter-spacing:1.3px}
+.cl{display:flex;align-items:center;font-size:15px;padding:6px 10px;color:#3a4450;cursor:pointer;border-radius:5px;line-height:1.4;transition:background .12s,color .12s;font-weight:400}
+.cl:hover{background:#f0f4fb;color:#1652b4}
+.fr-elektro{display:block;padding:9px 13px;background:#e4ecf8;border-radius:7px;font-size:15px;font-weight:600;color:#1652b4;cursor:pointer;transition:background .12s}
+.fr-elektro:hover{background:#d0def4}
+.brand-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chip{flex:0 0 calc(50% - 3px);font-size:14px;font-weight:600;color:#4a5260;cursor:pointer;padding:7px 0;border-radius:6px;text-align:center;transition:background .12s,color .12s}
+.chip:hover{background:#f0f4fb;color:#1652b4}
+.chip.red{color:#e31e24}
+.chip.red:hover{background:#fdf0f0;color:#c01820}
+.vyprodej-cta{display:block;margin-top:10px;width:100%;padding:9px 0;background:#e4ecf8;color:#1652b4;font-size:14px;font-weight:700;text-align:center;border-radius:6px;cursor:pointer;letter-spacing:.2px;transition:background .12s}
+.vyprodej-cta:hover{background:#d0def4}
+.mm-footer{margin-top:20px;padding-top:13px;border-top:1px solid #eceef0}
+.mm-all{font-size:13px;font-weight:600;color:#1652b4;cursor:pointer;opacity:.85;transition:opacity .12s}
+.mm-all:hover{opacity:1}
+
+/* MOBILE */
+@media(max-width:768px){
+  .desktop-only{display:none}
+  .mob-header{background:#fff;border-bottom:1px solid #dde0e3;display:flex;align-items:center;padding:12px 16px;gap:12px}
+  .mob-logo{font-size:22px;font-weight:700;color:#e31e24;letter-spacing:-1px;flex:1}
+  .mob-icons{display:flex;gap:8px;align-items:center}
+  .mob-icon{width:40px;height:40px;background:#f0f2f5;border:1px solid #dde0e3;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .mob-icon svg{width:20px;height:20px;fill:none;stroke:#3a4450;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .mob-search{background:#fff;padding:10px 16px 13px;border-bottom:1px solid #dde0e3}
+  .mob-search input{width:100%;padding:11px 16px;border:1.5px solid #c8d0e0;border-radius:7px;font-family:'Exo 2',sans-serif;font-size:15px;background:#f4f6fa;outline:none;color:#1e2428}
+  .drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:200}
+  .drawer-overlay.open{display:block}
+  .drawer{position:fixed;top:0;left:-100%;width:85%;max-width:320px;height:100%;background:#fff;z-index:201;transition:left .25s ease;overflow-y:auto}
+  .drawer.open{left:0}
+  .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid #dde0e3}
+  .drawer-logo{font-size:22px;font-weight:700;color:#e31e24;letter-spacing:-1px}
+  .drawer-close{width:32px;height:32px;background:#f0f2f5;border:none;border-radius:6px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#4a5260}
+  .acc-item{border-bottom:1px solid #dde0e3}
+  .acc-trigger{display:flex;align-items:center;justify-content:space-between;padding:16px 16px;font-size:14px;font-weight:700;color:#2b3033;cursor:pointer;text-transform:uppercase;letter-spacing:.4px}
+  .acc-trigger.open{color:#1652b4}
+  .acc-arrow{font-size:11px;transition:transform .2s;color:#8a9098}
+  .acc-trigger.open .acc-arrow{transform:rotate(180deg);color:#1652b4}
+  .acc-body{display:none;padding:0 16px 18px}
+  .acc-body.open{display:block}
+  .mob-ct{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:#5a6472;margin:18px 0 8px;padding-bottom:7px;border-bottom:1px solid #e4e7ea}
+  .mob-ct:first-child{margin-top:8px}
+  .mob-link{display:block;font-size:15px;padding:9px 6px;color:#2b3033;cursor:pointer;border-radius:5px;transition:background .12s,color .12s}
+  .mob-link:hover{background:#f0f4fb;color:#1652b4}
+  .mob-elektro{display:block;padding:9px 12px;background:#e4ecf8;border-radius:7px;font-size:15px;font-weight:600;color:#1652b4;margin-bottom:4px}
+  .mob-brands{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+  .mob-chip{flex:0 0 calc(50% - 3px);font-size:14px;font-weight:600;color:#4a5260;padding:7px 0;border-radius:6px;text-align:center;background:#f4f6fa;cursor:pointer}
+  .mob-chip.red{color:#e31e24}
+  .mob-vyprodej{display:block;width:100%;padding:9px;background:#e4ecf8;color:#1652b4;font-size:14px;font-weight:700;text-align:center;border-radius:6px;margin-top:8px}
+  .mob-simple{display:block;padding:16px 16px;font-size:15px;font-weight:600;color:#2b3033;border-bottom:1px solid #dde0e3;cursor:pointer}
+  .mob-simple:hover{color:#1652b4}
+  .mob-contact{padding:16px;border-top:1px solid #dde0e3;margin-top:8px;display:flex;flex-direction:column;gap:10px}
+  .mob-contact a{display:flex;align-items:center;gap:9px;font-size:14px;color:#2b3033;text-decoration:none;font-weight:600}
+  .mob-contact a svg{width:16px;height:16px;fill:none;stroke:#1652b4;stroke-width:1.8;stroke-linecap:round;flex-shrink:0}
+}
+@media(min-width:769px){
+  .mobile-only{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- DESKTOP -->
+<div class="desktop-only">
+  <div class="hd">
+    <div class="hd-inner">
+
+      <!-- Logo vlevo -->
+      <div class="logo">VAPP<sup style="font-size:11px;font-weight:400">&#174;</sup></div>
+
+      <!-- Search — absolutně vycentrovaný -->
+      <div class="search">
+        <input type="text" placeholder="Hledat produkt, d&#237;l nebo zna&#269;ku&#8230;" onfocus="closeAll()">
+        <button class="sbtn" aria-label="Hledat">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+        </button>
+      </div>
+
+      <!-- Pravá strana: kontakt + ikony -->
+      <div class="hd-r">
+        <div class="contact-block">
+          <a class="contact-row" href="tel:603924555">
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 2 .7 2.9a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.5c.9.3 1.9.6 2.9.7a2 2 0 011.7 2z"/></svg>
+            <span class="contact-phone">603 924 555</span>
+          </a>
+          <a class="contact-row contact-email" href="mailto:info@vapp.cz">
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="#1652b4" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+            <span>info@vapp.cz</span>
+          </a>
+        </div>
+
+        <div class="hd-icons">
+          <!-- Login / Registrace -->
+          <div class="login-wrap">
+            <div class="ico" onclick="toggleLogin(event)" title="P&#345;ihl&#225;&#353;en&#237; / Registrace">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            </div>
+            <div class="login-drop" id="login-drop">
+              <a href="https://www.vapp.cz/prihlaseni/">P&#345;ihl&#225;sit se</a>
+              <div class="sep"></div>
+              <a href="https://www.vapp.cz/registrace/nova-registrace/">Registrace</a>
+            </div>
+          </div>
+          <!-- Košík -->
+          <div class="ico" title="Kos&#237;k">
+            <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="navrow">
+      <div class="nb on" id="bp" onclick="tog('p')">P&#345;&#237;v&#283;sy</div>
+      <div class="nb" id="bn" onclick="tog('n')">N&#225;hradn&#237; d&#237;ly</div>
+      <div class="nb" onclick="closeAll()">P&#367;j&#269;ovna</div>
+      <div class="nb" onclick="closeAll()">Servis</div>
+      <div class="nb" onclick="closeAll()">Poradna</div>
+      <div class="nb" onclick="closeAll()">Kontakt</div>
+    </div>
+
+    <!-- PŘÍVĚSY -->
+    <div class="mm open" id="mm-p">
+      <div class="mm-inner">
+        <div class="cols">
+          <div class="col" style="flex:0 0 165px">
+            <div class="ct">Valn&#237;ky</div>
+            <div class="cl">Jednoos&#233; valn&#237;ky</div>
+            <div class="cl">Dvouos&#233; valn&#237;ky</div>
+            <div class="cl">T&#345;&#237;os&#233; valn&#237;ky</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col" style="flex:0 0 190px">
+            <div class="ct">P&#345;&#237;v&#283;sy</div>
+            <div class="cl">Sklopn&#233; p&#345;&#237;v&#283;sy</div>
+            <div class="cl">Sk&#345;&#237;&#328;ov&#233; p&#345;&#237;v&#283;sy</div>
+            <div class="cl">Chladirensk&#233; p&#345;&#237;v&#283;sy</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col" style="flex:0 0 235px">
+            <div class="ct">P&#345;epravn&#237;ky</div>
+            <div class="cl">P&#345;epravn&#237;ky automobil&#367;</div>
+            <div class="cl">P&#345;epravn&#237;ky motocykl&#367;</div>
+            <div class="cl">P&#345;epravn&#237;ky stroj&#367;</div>
+            <div class="cl">P&#345;epravn&#237;ky lod&#237; a sk&#250;tr&#367;</div>
+            <div class="cl">P&#345;epravn&#237;ky zv&#237;&#345;at</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col" style="flex:0 0 165px">
+            <div class="ct">Zna&#269;ky</div>
+            <div class="brand-chips">
+              <div class="chip">Agados</div>
+              <div class="chip">STEMA</div>
+              <div class="chip">UNSINN</div>
+              <div class="chip red">VAPP</div>
+            </div>
+            <div class="vyprodej-cta">V&#253;prodej</div>
+          </div>
+        </div>
+        <div class="mm-footer"><div class="mm-all">V&#353;echny p&#345;&#237;v&#283;sy &#8594;</div></div>
+      </div>
+    </div>
+
+    <!-- NÁHRADNÍ DÍLY -->
+    <div class="mm" id="mm-n">
+      <div class="mm-inner">
+        <div class="cols">
+          <div class="col">
+            <div class="ct">Elektro a osv&#283;tlen&#237;</div>
+            <div class="fr-elektro">Elektro, sv&#237;tilny, odrazky</div>
+            <div class="ct">Podvozek</div>
+            <div class="cl">D&#237;ly n&#225;prav</div>
+            <div class="cl">N&#225;jezdov&#233; brzdy a d&#237;ly</div>
+            <div class="cl">N&#225;pravy kompletn&#237;</div>
+            <div class="cl">Pneu, kola, disky</div>
+            <div class="cl">Spojovac&#237; za&#345;&#237;zen&#237; a z&#225;mky</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col">
+            <div class="ct">Karoserie</div>
+            <div class="cl">Blatn&#237;ky a z&#225;st&#283;rky</div>
+            <div class="cl">Bo&#269;nice, uz&#225;v&#283;ry, panty</div>
+            <div class="cl">Konstruk&#269;n&#237; d&#237;ly</div>
+            <div class="cl">Plachty a p&#345;&#237;slu&#353;enstv&#237;</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col">
+            <div class="ct ct-sm">Manipulace a nakl&#225;d&#225;n&#237;</div>
+            <div class="cl">N&#225;jezdy</div>
+            <div class="cl">Zabezpe&#269;en&#237; n&#225;kladu</div>
+            <div class="cl">Boxy na n&#225;&#345;ad&#237; a dr&#382;&#225;ky</div>
+            <div class="cl">Navij&#225;ky a p&#345;&#237;slu&#353;enstv&#237;</div>
+            <div class="cl">Kl&#237;ny a dr&#382;&#225;ky</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col">
+            <div class="ct">Ostatn&#237; p&#345;&#237;slu&#353;enstv&#237;</div>
+            <div class="cl">Op&#283;rn&#225; kole&#269;ka, nohy</div>
+            <div class="cl">Plynov&#233; vzp&#283;ry</div>
+            <div class="cl">Dopl&#328;ky k p&#345;&#237;v&#283;s&#367;m</div>
+            <div class="cl">Hydraulika p&#345;&#237;v&#283;s&#367;</div>
+            <div class="cl">Pom&#367;cky pro &#250;dr&#382;bu</div>
+          </div>
+        </div>
+        <div class="mm-footer"><div class="mm-all">V&#353;echny n&#225;hradn&#237; d&#237;ly &#8594;</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE -->
+<div class="mobile-only">
+  <div class="mob-header">
+    <div class="mob-logo">VAPP<sup style="font-size:10px;font-weight:400">&#174;</sup></div>
+    <div class="mob-icons">
+      <div class="mob-icon" title="P&#345;ihl&#225;&#353;en&#237;">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      </div>
+      <div class="mob-icon" title="Kos&#237;k">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </div>
+      <div class="mob-icon" onclick="openDrawer()">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </div>
+    </div>
+  </div>
+  <div class="mob-search">
+    <input type="text" placeholder="Hledat produkt, d&#237;l nebo zna&#269;ku&#8230;">
+  </div>
+
+  <div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
+  <div class="drawer" id="drawer">
+    <div class="drawer-head">
+      <div class="drawer-logo">VAPP<sup style="font-size:10px;font-weight:400">&#174;</sup></div>
+      <button class="drawer-close" onclick="closeDrawer()">&#10005;</button>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-trigger" onclick="toggleAcc('acc-p')">P&#345;&#237;v&#283;sy <span class="acc-arrow">&#9660;</span></div>
+      <div class="acc-body" id="acc-p">
+        <div class="mob-ct">Valn&#237;ky</div>
+        <div class="mob-link">Jednoos&#233; valn&#237;ky</div>
+        <div class="mob-link">Dvouos&#233; valn&#237;ky</div>
+        <div class="mob-link">T&#345;&#237;os&#233; valn&#237;ky</div>
+        <div class="mob-ct">P&#345;&#237;v&#283;sy</div>
+        <div class="mob-link">Sklopn&#233; p&#345;&#237;v&#283;sy</div>
+        <div class="mob-link">Sk&#345;&#237;&#328;ov&#233; p&#345;&#237;v&#283;sy</div>
+        <div class="mob-link">Chladirensk&#233; p&#345;&#237;v&#283;sy</div>
+        <div class="mob-ct">P&#345;epravn&#237;ky</div>
+        <div class="mob-link">P&#345;epravn&#237;ky automobil&#367;</div>
+        <div class="mob-link">P&#345;epravn&#237;ky motocykl&#367;</div>
+        <div class="mob-link">P&#345;epravn&#237;ky stroj&#367;</div>
+        <div class="mob-link">P&#345;epravn&#237;ky lod&#237; a sk&#250;tr&#367;</div>
+        <div class="mob-link">P&#345;epravn&#237;ky zv&#237;&#345;at</div>
+        <div class="mob-ct">Zna&#269;ky</div>
+        <div class="mob-brands">
+          <div class="mob-chip">Agados</div>
+          <div class="mob-chip">STEMA</div>
+          <div class="mob-chip">UNSINN</div>
+          <div class="mob-chip red">VAPP</div>
+        </div>
+        <div class="mob-vyprodej">V&#253;prodej</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-trigger" onclick="toggleAcc('acc-n')">N&#225;hradn&#237; d&#237;ly <span class="acc-arrow">&#9660;</span></div>
+      <div class="acc-body" id="acc-n">
+        <div class="mob-ct">Elektro a osv&#283;tlen&#237;</div>
+        <div class="mob-elektro">Elektro, sv&#237;tilny, odrazky</div>
+        <div class="mob-ct">Podvozek</div>
+        <div class="mob-link">D&#237;ly n&#225;prav</div>
+        <div class="mob-link">N&#225;jezdov&#233; brzdy a d&#237;ly</div>
+        <div class="mob-link">N&#225;pravy kompletn&#237;</div>
+        <div class="mob-link">Pneu, kola, disky</div>
+        <div class="mob-link">Spojovac&#237; za&#345;&#237;zen&#237; a z&#225;mky</div>
+        <div class="mob-ct">Karoserie</div>
+        <div class="mob-link">Blatn&#237;ky a z&#225;st&#283;rky</div>
+        <div class="mob-link">Bo&#269;nice, uz&#225;v&#283;ry, panty</div>
+        <div class="mob-link">Konstruk&#269;n&#237; d&#237;ly</div>
+        <div class="mob-link">Plachty a p&#345;&#237;slu&#353;enstv&#237;</div>
+        <div class="mob-ct">Manipulace a nakl&#225;d&#225;n&#237;</div>
+        <div class="mob-link">N&#225;jezdy</div>
+        <div class="mob-link">Zabezpe&#269;en&#237; n&#225;kladu</div>
+        <div class="mob-link">Boxy na n&#225;&#345;ad&#237; a dr&#382;&#225;ky</div>
+        <div class="mob-link">Navij&#225;ky a p&#345;&#237;slu&#353;enstv&#237;</div>
+        <div class="mob-link">Kl&#237;ny a dr&#382;&#225;ky</div>
+        <div class="mob-ct">Ostatn&#237; p&#345;&#237;slu&#353;enstv&#237;</div>
+        <div class="mob-link">Op&#283;rn&#225; kole&#269;ka, nohy</div>
+        <div class="mob-link">Plynov&#233; vzp&#283;ry</div>
+        <div class="mob-link">Dopl&#328;ky k p&#345;&#237;v&#283;s&#367;m</div>
+        <div class="mob-link">Hydraulika p&#345;&#237;v&#283;s&#367;</div>
+        <div class="mob-link">Pom&#367;cky pro &#250;dr&#382;bu</div>
+      </div>
+    </div>
+
+    <div class="mob-simple">P&#367;j&#269;ovna</div>
+    <div class="mob-simple">Servis</div>
+    <div class="mob-simple">Poradna</div>
+    <div class="mob-simple">Kontakt</div>
+
+    <div class="mob-contact">
+      <a href="tel:603924555">
+        <svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 2 .7 2.9a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.5c.9.3 1.9.6 2.9.7a2 2 0 011.7 2z"/></svg>
+        603 924 555
+      </a>
+      <a href="mailto:info@vapp.cz">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+        info@vapp.cz
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+function closeAll(){
+  ['p','n'].forEach(function(id){
+    var mm=document.getElementById('mm-'+id);
+    var nb=document.getElementById('b'+id);
+    if(mm) mm.classList.remove('open');
+    if(nb) nb.classList.remove('on');
+  });
+  var drop=document.getElementById('login-drop');
+  if(drop) drop.classList.remove('open');
+}
+function tog(id){
+  var other=id==='p'?'n':'p';
+  var isOpen=document.getElementById('mm-'+id).classList.contains('open');
+  document.getElementById('mm-'+other).classList.remove('open');
+  var nb2=document.getElementById('b'+other);
+  if(nb2) nb2.classList.remove('on');
+  document.getElementById('mm-'+id).classList.toggle('open',!isOpen);
+  document.getElementById('b'+id).classList.toggle('on',!isOpen);
+  var drop=document.getElementById('login-drop');
+  if(drop) drop.classList.remove('open');
+}
+function toggleLogin(e){
+  e.stopPropagation();
+  var drop=document.getElementById('login-drop');
+  var wasOpen=drop.classList.contains('open');
+  closeAll();
+  if(!wasOpen) drop.classList.add('open');
+}
+document.addEventListener('click',function(){
+  var drop=document.getElementById('login-drop');
+  if(drop) drop.classList.remove('open');
+});
+function openDrawer(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+function toggleAcc(id){
+  var body=document.getElementById(id);
+  var trigger=body.previousElementSibling;
+  var isOpen=body.classList.contains('open');
+  document.querySelectorAll('.acc-body').forEach(function(b){b.classList.remove('open');});
+  document.querySelectorAll('.acc-trigger').forEach(function(t){t.classList.remove('open');});
+  if(!isOpen){body.classList.add('open');trigger.classList.add('open');}
+}
+</script>
+</body>
+</html>
