@@ -3,648 +3,377 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VAPP UX Weekly Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<title>VAPP — Menu prototyp</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --red: #DA291C;
-  --black: #000000;
-  --dgray: #575757;
-  --mgray: #878787;
-  --lgray: #DADADA;
-  --bg: #F2F2F2;
-  --card: #ffffff;
-  --border: #E0E0E0;
-  --text: #000000;
-  --muted: #575757;
-  --good-bg:#f0faf0;--good-border:#b8e6b8;--good-text:#1a6b1a;
-  --warn-bg:#fff8f0;--warn-border:#f5c888;--warn-text:#8a4a00;
-  --bad-bg:#fff0f0;--bad-border:#f5b8b8;--bad-text:#8a0000;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Outfit',sans-serif;font-weight:300;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;}
-h1,h2,h3,.semi{font-weight:600;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Exo 2',Helvetica,Arial,sans-serif;font-size:16px;background:#f0f2f4;min-height:100vh}
+.wrap{max-width:1400px;margin:0 auto;padding:0 48px}
 
 /* HEADER */
-.header{background:#fff;border-bottom:3px solid var(--red);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;}
-.header-left{display:flex;align-items:center;gap:12px;}
-.dot{width:10px;height:10px;border-radius:50%;background:var(--red);}
-.header-title{font-size:18px;font-weight:600;letter-spacing:.3px;}
-.header-sub{font-size:12px;color:var(--muted);margin-top:2px;}
-.header-right{display:flex;align-items:center;gap:10px;}
-.badge{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-size:12px;color:var(--muted);}
-.refresh-btn{background:var(--red);color:#fff;border:none;border-radius:6px;padding:7px 16px;font-size:12px;font-family:'Outfit',sans-serif;font-weight:600;cursor:pointer;letter-spacing:.3px;}
-.refresh-btn:hover{background:#b81e12;}
+.hd{background:#fff;border-bottom:1px solid #eaebeb}
+.hd .wrap{display:flex;align-items:center;gap:24px;padding-top:14px;padding-bottom:14px}
+.logo{font-size:26px;font-weight:700;color:#e31e24;letter-spacing:-1px;flex-shrink:0;line-height:1}
+.search{flex:1;position:relative}
+.search input{width:100%;padding:10px 50px 10px 16px;border:1.5px solid #d0d8f0;border-radius:6px;font-family:'Exo 2',sans-serif;font-size:15px;color:#2b3033;background:#f8f9fc;outline:none;transition:border .15s,box-shadow .15s}
+.search input:focus{border-color:#1652b4;background:#fff;box-shadow:0 0 0 3px rgba(22,82,180,.08)}
+.search input::placeholder{color:rgba(43,48,51,.35)}
+.sbtn{position:absolute;right:1px;top:1px;bottom:1px;width:44px;background:#1652b4;border:none;border-radius:0 5px 5px 0;cursor:pointer;font-size:15px;transition:background .15s}
+.sbtn:hover{background:#124290}
+.hd-r{display:flex;align-items:center;gap:18px;margin-left:auto;flex-shrink:0}
+.phone{font-size:11px;color:rgba(43,48,51,.5);line-height:1.7;text-align:right}
+.phone strong{display:block;font-size:14px;font-weight:600;color:#2b3033}
+.ico{width:36px;height:36px;background:#f6f7f7;border:1px solid #eaebeb;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:background .1s}
+.ico:hover{background:#eaebeb}
 
-/* TABS */
-.tabs-bar{background:#fff;border-bottom:1px solid var(--border);padding:0 28px;display:flex;gap:4px;}
-.tab-btn{background:none;border:none;border-bottom:3px solid transparent;padding:14px 20px;font-family:'Outfit',sans-serif;font-weight:600;font-size:13px;cursor:pointer;color:var(--muted);letter-spacing:.3px;transition:color .15s;}
-.tab-btn:hover{color:var(--text);}
-.tab-btn.active{color:var(--red);border-bottom-color:var(--red);}
+/* NAV */
+.nav{background:#fff;border-bottom:1px solid #eaebeb;position:relative}
+.navrow{display:flex;align-items:stretch;padding:0 48px}
+.nb{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:12px 16px;cursor:pointer;border-bottom:2px solid transparent;color:rgba(43,48,51,.65);user-select:none;transition:color .15s,border-color .15s;display:flex;align-items:center}
+.nb:hover{color:#1652b4}
+.nb.on{color:#1652b4;border-bottom-color:#1652b4}
 
-/* CONTENT */
-.panel{display:none;padding:24px 28px;max-width:1200px;}
-.panel.active{display:block;}
+/* MEGA MENU */
+.mm{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid #eaebeb;box-shadow:0 12px 32px rgba(0,0,0,.08);z-index:100;padding:24px 0 28px}
+.mm.open{display:block}
+.mm-inner{max-width:1400px;margin:0 auto;padding:0 48px}
+.cols{display:flex;align-items:flex-start}
+.vd{width:1px;background:#eaebeb;align-self:stretch;flex-shrink:0;margin:0 14px}
+.col{flex:1}
 
-/* KPI GRID */
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
-@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
-.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
-.kpi-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;}
-.kpi-value{font-size:26px;font-weight:600;line-height:1.1;}
-.kpi-sub{font-size:11px;color:var(--muted);margin-top:4px;}
-.kpi.accent{border-top:3px solid var(--red);}
+/* Column headers */
+.ct{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(43,48,51,.38);margin-bottom:7px;padding-bottom:7px;border-bottom:1px solid #f0f0f0;margin-top:18px;white-space:nowrap}
+.ct:first-child{margin-top:0}
+.ct-sm{letter-spacing:1.3px}
 
-/* SECTION */
-.section-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:24px 0 12px;}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-@media(max-width:780px){.two-col{grid-template-columns:1fr;}}
+/* Menu links */
+.cl{display:flex;align-items:center;font-size:15px;padding:5px 9px;color:rgba(43,48,51,.85);cursor:pointer;border-radius:5px;line-height:1.4;transition:background .12s,color .12s;font-weight:400}
+.cl:hover{background:#f4f6fb;color:#1652b4}
 
-/* CARD */
-.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;}
-.card-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;}
+/* Elektro — light blue box, no border */
+.fr-elektro{display:block;padding:8px 12px;background:#e8eef8;border-radius:6px;font-size:15px;font-weight:600;color:#1652b4;cursor:pointer;transition:background .12s}
+.fr-elektro:hover{background:#d4dff4}
 
-/* CLARITY ROW */
-.clarity-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
-.cl-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:14px;}
-.cl-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.cl-icon.red{background:#fff0f0;}
-.cl-icon.orange{background:#fff8f0;}
-.cl-icon.blue{background:#f0f4ff;}
-.cl-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
-.cl-value{font-size:22px;font-weight:600;margin-top:2px;}
-.cl-note{font-size:11px;color:var(--muted);margin-top:1px;}
+/* Brand chips */
+.brand-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chip{flex:0 0 calc(50% - 3px);font-size:14px;font-weight:600;color:rgba(43,48,51,.75);cursor:pointer;padding:6px 0;border-radius:5px;text-align:center;transition:background .12s,color .12s}
+.chip:hover{background:#f4f6fb;color:#1652b4}
+.chip.red{color:#e31e24}
+.chip.red:hover{background:#fdf0f0;color:#c01820}
 
-/* CHART */
-.chart-wrap{height:220px;position:relative;}
+/* Vyprodej CTA */
+.vyprodej-cta{display:block;margin-top:10px;width:100%;padding:8px 0;background:#e8eef8;color:#1652b4;font-size:14px;font-weight:700;text-align:center;border-radius:5px;cursor:pointer;letter-spacing:.2px;transition:background .12s}
+.vyprodej-cta:hover{background:#d4dff4}
 
-/* CHANNEL TABLE */
-.ch-table{width:100%;border-collapse:collapse;}
-.ch-table th{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:6px 8px;text-align:left;border-bottom:1px solid var(--border);}
-.ch-table td{padding:8px 8px;font-size:13px;border-bottom:1px solid #f0f0f0;}
-.ch-table tr:last-child td{border-bottom:none;}
-.conv-bar-wrap{display:flex;align-items:center;gap:8px;}
-.conv-bar-bg{flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden;}
-.conv-bar-fill{height:100%;background:var(--red);border-radius:3px;}
+.mm-footer{margin-top:18px;padding-top:12px;border-top:1px solid #f0f0f0}
+.mm-all{font-size:13px;font-weight:600;color:#1652b4;cursor:pointer;opacity:.8;transition:opacity .12s}
+.mm-all:hover{opacity:1}
 
-/* RAGE PAGES */
-.rage-list{list-style:none;}
-.rage-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f0;gap:10px;}
-.rage-item:last-child{border-bottom:none;}
-.rage-url{font-size:12px;color:var(--dgray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;}
-.rage-pill{background:var(--bad-bg);color:var(--bad-text);border:1px solid var(--bad-border);border-radius:12px;padding:2px 10px;font-size:11px;font-weight:600;white-space:nowrap;}
+/* MOBILE */
+@media(max-width:768px){
+  .desktop-only{display:none}
 
-/* INSIGHTS */
-.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:0;}
-@media(max-width:780px){.insight-grid{grid-template-columns:1fr;}}
-.insight{border-radius:10px;padding:16px 18px;border:1px solid;}
-.insight.good{background:var(--good-bg);border-color:var(--good-border);}
-.insight.warn{background:var(--warn-bg);border-color:var(--warn-border);}
-.insight.bad{background:var(--bad-bg);border-color:var(--bad-border);}
-.insight-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.insight-icon{font-size:16px;}
-.insight-title{font-size:12px;font-weight:600;}
-.insight.good .insight-title{color:var(--good-text);}
-.insight.warn .insight-title{color:var(--warn-text);}
-.insight.bad .insight-title{color:var(--bad-text);}
-.insight-text{font-size:12px;line-height:1.5;color:var(--dgray);}
-.insight-action{margin-top:8px;font-size:11px;font-weight:600;color:var(--muted);background:rgba(0,0,0,.05);border-radius:5px;padding:5px 8px;}
+  .hd .wrap{padding:12px 16px;gap:12px}
+  .logo{font-size:22px}
+  .hd-r .phone{display:none}
 
-/* COMPARISON */
-.compare-table{width:100%;border-collapse:collapse;}
-.compare-table th{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:10px 14px;border-bottom:2px solid var(--border);}
-.compare-table th.red{color:var(--red);}
-.compare-table td{padding:11px 14px;font-size:13px;border-bottom:1px solid #f5f5f5;}
-.compare-table tr:last-child td{border-bottom:none;}
-.compare-table td:first-child{font-weight:600;font-size:11px;text-transform:uppercase;color:var(--muted);letter-spacing:.4px;}
-.winner{font-weight:700;color:var(--text);}
-.loser{color:var(--mgray);}
+  .mob-header{background:#fff;border-bottom:1px solid #eaebeb;display:flex;align-items:center;padding:12px 16px;gap:12px}
+  .mob-logo{font-size:22px;font-weight:700;color:#e31e24;letter-spacing:-1px;flex:1}
+  .mob-icons{display:flex;gap:10px;align-items:center}
+  .mob-icon{width:36px;height:36px;background:#f6f7f7;border:1px solid #eaebeb;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer}
+  .mob-search{background:#fff;padding:10px 16px 12px;border-bottom:1px solid #eaebeb}
+  .mob-search input{width:100%;padding:10px 16px;border:1.5px solid #d0d8f0;border-radius:6px;font-family:'Exo 2',sans-serif;font-size:15px;background:#f8f9fc;outline:none}
 
-/* STEPS */
-.steps{list-style:none;display:flex;flex-direction:column;gap:8px;}
-.step{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--bg);border-radius:8px;}
-.step-num{font-size:11px;font-weight:700;color:var(--red);background:#fff0f0;border-radius:5px;padding:2px 7px;white-space:nowrap;flex-shrink:0;margin-top:1px;}
-.step-text{font-size:12px;line-height:1.5;}
+  /* Drawer */
+  .drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:200}
+  .drawer-overlay.open{display:block}
+  .drawer{position:fixed;top:0;left:-100%;width:85%;max-width:320px;height:100%;background:#fff;z-index:201;transition:left .25s ease;overflow-y:auto}
+  .drawer.open{left:0}
+  .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid #eaebeb}
+  .drawer-logo{font-size:22px;font-weight:700;color:#e31e24;letter-spacing:-1px}
+  .drawer-close{width:32px;height:32px;background:#f6f7f7;border:none;border-radius:6px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+  /* Accordion */
+  .acc-item{border-bottom:1px solid #eaebeb}
+  .acc-trigger{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;font-size:13px;font-weight:700;color:rgba(43,48,51,.85);cursor:pointer;text-transform:uppercase;letter-spacing:.3px}
+  .acc-trigger.open{color:#1652b4}
+  .acc-arrow{font-size:11px;transition:transform .2s;color:rgba(43,48,51,.4)}
+  .acc-trigger.open .acc-arrow{transform:rotate(180deg);color:#1652b4}
+  .acc-body{display:none;padding:0 16px 12px}
+  .acc-body.open{display:block}
+  .mob-ct{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(43,48,51,.38);margin:12px 0 6px;padding-bottom:5px;border-bottom:1px solid #f0f0f0}
+  .mob-ct:first-child{margin-top:4px}
+  .mob-link{display:block;font-size:15px;padding:7px 4px;color:rgba(43,48,51,.85);cursor:pointer;border-radius:5px;transition:background .12s,color .12s}
+  .mob-link:hover{background:#f4f6fb;color:#1652b4}
+  .mob-elektro{display:block;padding:8px 12px;background:#e8eef8;border-radius:6px;font-size:15px;font-weight:600;color:#1652b4;margin-bottom:4px}
+  .mob-brands{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+  .mob-chip{flex:0 0 calc(50% - 3px);font-size:14px;font-weight:600;color:rgba(43,48,51,.75);padding:6px 0;border-radius:5px;text-align:center;background:#f6f7f7;cursor:pointer}
+  .mob-chip.red{color:#e31e24}
+  .mob-vyprodej{display:block;width:100%;padding:8px;background:#e8eef8;color:#1652b4;font-size:14px;font-weight:700;text-align:center;border-radius:5px;margin-top:8px}
+  .mob-simple{display:block;padding:14px 16px;font-size:15px;font-weight:600;color:rgba(43,48,51,.75);border-bottom:1px solid #eaebeb;cursor:pointer}
+  .mob-simple:hover{color:#1652b4}
+  .mob-phone{padding:16px;font-size:13px;color:rgba(43,48,51,.5);border-top:1px solid #eaebeb;margin-top:8px}
+  .mob-phone strong{display:block;font-size:16px;font-weight:600;color:#2b3033;margin-bottom:2px}
+}
+
+@media(min-width:769px){
+  .mobile-only{display:none}
+}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-left">
-    <div class="dot"></div>
-    <div>
-      <div class="header-title">VAPP UX Weekly Dashboard</div>
-      <div class="header-sub">GA4 + Microsoft Clarity · Data: 16. 6. – 22. 6. 2026</div>
+<!-- DESKTOP -->
+<div class="desktop-only">
+  <div class="hd">
+    <div class="wrap">
+      <div class="logo">VAPP<sup style="font-size:11px;font-weight:400">&#174;</sup></div>
+      <div class="search">
+        <input type="text" placeholder="Hledat produkt, d&#237;l, zna&#269;ku nebo &#269;&#237;slo d&#237;lu&#8230;" onfocus="closeAll()">
+        <button class="sbtn">&#128269;</button>
+      </div>
+      <div class="hd-r">
+        <div class="phone"><strong>603 924 555</strong>Po&#8211;P&#225; 8&#8211;17</div>
+        <div class="ico">&#128722;</div>
+      </div>
     </div>
   </div>
-  <div class="header-right">
-    <div class="badge">Aktualizováno 23. 6. 2026</div>
-    <button class="refresh-btn" onclick="copyRefreshPrompt()">↻ Refreshovat data</button>
+
+  <div class="nav">
+    <div class="navrow">
+      <div class="nb on" id="bp" onclick="tog('p')">P&#345;&#237;v&#283;sy</div>
+      <div class="nb" id="bn" onclick="tog('n')">N&#225;hradn&#237; d&#237;ly</div>
+      <div class="nb" onclick="closeAll()">P&#367;j&#269;ovna</div>
+      <div class="nb" onclick="closeAll()">Servis</div>
+      <div class="nb" onclick="closeAll()">Poradna</div>
+      <div class="nb" onclick="closeAll()">Kontakt</div>
+    </div>
+
+    <!-- PRIVESY -->
+    <div class="mm open" id="mm-p">
+      <div class="mm-inner">
+        <div class="cols">
+          <div class="col" style="flex:0 0 160px">
+            <div class="ct">Voln&#237;ky</div>
+            <div class="ct">Valn&#237;ky</div>
+            <div class="cl">Jednoos&#233; valn&#237;ky</div>
+            <div class="cl">Dvouos&#233; valn&#237;ky</div>
+            <div class="cl">T&#345;&#237;os&#233; valn&#237;ky</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col" style="flex:0 0 185px">
+            <div class="ct">P&#345;&#237;v&#283;sy</div>
+            <div class="cl">Sklopn&#233; p&#345;&#237;v&#283;sy</div>
+            <div class="cl">Sk&#345;&#237;&#328;ov&#233; p&#345;&#237;v&#283;sy</div>
+            <div class="cl">Chladirensk&#233; p&#345;&#237;v&#283;sy</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col" style="flex:0 0 230px">
+            <div class="ct">P&#345;epravn&#237;ky</div>
+            <div class="cl">P&#345;epravn&#237;ky automobil&#367;</div>
+            <div class="cl">P&#345;epravn&#237;ky motocykl&#367;</div>
+            <div class="cl">P&#345;epravn&#237;ky stroj&#367;</div>
+            <div class="cl">P&#345;epravn&#237;ky lod&#237; a sk&#250;tr&#367;</div>
+            <div class="cl">P&#345;epravn&#237;ky zv&#237;&#345;at</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col" style="flex:0 0 160px">
+            <div class="ct">Zna&#269;ky</div>
+            <div class="brand-chips">
+              <div class="chip">Agados</div>
+              <div class="chip">STEMA</div>
+              <div class="chip">UNSINN</div>
+              <div class="chip red">VAPP</div>
+            </div>
+            <div class="vyprodej-cta">V&#253;prodej</div>
+          </div>
+        </div>
+        <div class="mm-footer">
+          <div class="mm-all">V&#353;echny p&#345;&#237;v&#283;sy &#8594;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAHRADNI DILY -->
+    <div class="mm" id="mm-n">
+      <div class="mm-inner">
+        <div class="cols">
+          <div class="col">
+            <div class="ct">Elektro a osv&#283;tlen&#237;</div>
+            <div class="fr-elektro">Elektro, sv&#237;tilny, odrazky</div>
+            <div class="ct">Podvozek</div>
+            <div class="cl">D&#237;ly n&#225;prav</div>
+            <div class="cl">N&#225;jezdov&#233; brzdy a d&#237;ly</div>
+            <div class="cl">N&#225;pravy kompletn&#237;</div>
+            <div class="cl">Pneu, kola, disky</div>
+            <div class="cl">Spojovac&#237; za&#345;&#237;zen&#237; a z&#225;mky</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col">
+            <div class="ct">Karoserie</div>
+            <div class="cl">Blatn&#237;ky a z&#225;st&#283;rky</div>
+            <div class="cl">Bo&#269;nice, uz&#225;v&#283;ry, panty</div>
+            <div class="cl">Konstruk&#269;n&#237; d&#237;ly</div>
+            <div class="cl">Plachty a p&#345;&#237;slu&#353;enstv&#237;</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col">
+            <div class="ct ct-sm">Manipulace a nakl&#225;d&#225;n&#237;</div>
+            <div class="cl">N&#225;jezdy</div>
+            <div class="cl">Zabezpe&#269;en&#237; n&#225;kladu</div>
+            <div class="cl">Boxy na n&#225;&#345;ad&#237; a dr&#382;&#225;ky</div>
+            <div class="cl">Navij&#225;ky a p&#345;&#237;slu&#353;enstv&#237;</div>
+            <div class="cl">Kl&#237;ny a dr&#382;&#225;ky</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col">
+            <div class="ct">Ostatn&#237; p&#345;&#237;slu&#353;enstv&#237;</div>
+            <div class="cl">Op&#283;rn&#225; kole&#269;ka, nohy</div>
+            <div class="cl">Plynov&#233; vzp&#283;ry</div>
+            <div class="cl">Dopl&#328;ky k p&#345;&#237;v&#283;s&#367;m</div>
+            <div class="cl">Hydraulika p&#345;&#237;v&#283;s&#367;</div>
+            <div class="cl">Pom&#367;cky pro &#250;dr&#382;bu</div>
+          </div>
+        </div>
+        <div class="mm-footer">
+          <div class="mm-all">V&#353;echny n&#225;hradn&#237; d&#237;ly &#8594;</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="tabs-bar">
-  <button class="tab-btn active" onclick="switchTab('cz',this)">🇨🇿 vapp.cz</button>
-  <button class="tab-btn" onclick="switchTab('sk',this)">🇸🇰 vapp.sk</button>
-  <button class="tab-btn" onclick="switchTab('compare',this)">⇄ Srovnání</button>
-</div>
-
-<!-- ══════════════ CZ PANEL ══════════════ -->
-<div class="panel active" id="panel-cz">
-
-  <div class="kpi-grid">
-    <div class="kpi accent">
-      <div class="kpi-label">Sessiony</div>
-      <div class="kpi-value">8 804</div>
-      <div class="kpi-sub">Ø 1 258 / den</div>
-    </div>
-    <div class="kpi accent">
-      <div class="kpi-label">Uživatelé</div>
-      <div class="kpi-value">8 440</div>
-      <div class="kpi-sub">GA4 totalUsers</div>
-    </div>
-    <div class="kpi accent">
-      <div class="kpi-label">Konverze</div>
-      <div class="kpi-value">407</div>
-      <div class="kpi-sub">Konv. míra 4,62 %</div>
-    </div>
-    <div class="kpi accent">
-      <div class="kpi-label">Tržby</div>
-      <div class="kpi-value">2 244 574 Kč</div>
-      <div class="kpi-sub">Ø 5 514 Kč / konverze</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Průměrná délka sezení</div>
-      <div class="kpi-value">39:14</div>
-      <div class="kpi-sub">mm:ss · velmi vysoké</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Bounce Rate</div>
-      <div class="kpi-value">31,8 %</div>
-      <div class="kpi-sub">pod 40 % ✓ dobrý výsledek</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Rage clicks (Clarity)</div>
-      <div class="kpi-value">590</div>
-      <div class="kpi-sub">z 44 231 Clarity sessíí</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Dead clicks (Clarity)</div>
-      <div class="kpi-value">5 854</div>
-      <div class="kpi-sub">13,2 % Clarity sessíí ⚠</div>
+<!-- MOBILE -->
+<div class="mobile-only">
+  <div class="mob-header">
+    <div class="mob-logo">VAPP<sup style="font-size:10px;font-weight:400">&#174;</sup></div>
+    <div class="mob-icons">
+      <div class="mob-icon">&#128722;</div>
+      <div class="mob-icon" onclick="openDrawer()">&#9776;</div>
     </div>
   </div>
+  <div class="mob-search">
+    <input type="text" placeholder="Hledat produkt, d&#237;l nebo &#269;&#237;slo d&#237;lu&#8230;">
+  </div>
 
-  <div class="section-title">Clarity — klíčové metriky chování</div>
-  <div class="clarity-row">
-    <div class="cl-card">
-      <div class="cl-icon red">😤</div>
-      <div>
-        <div class="cl-label">Rage clicks</div>
-        <div class="cl-value">590</div>
-        <div class="cl-note">1,33 % sessionů</div>
+  <div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
+
+  <div class="drawer" id="drawer">
+    <div class="drawer-head">
+      <div class="drawer-logo">VAPP<sup style="font-size:10px;font-weight:400">&#174;</sup></div>
+      <button class="drawer-close" onclick="closeDrawer()">&#10005;</button>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-trigger" onclick="toggleAcc('acc-p')">
+        P&#345;&#237;v&#283;sy <span class="acc-arrow">&#9660;</span>
+      </div>
+      <div class="acc-body" id="acc-p">
+        <div class="mob-ct">Valn&#237;ky</div>
+        <div class="mob-link">Jednoos&#233; valn&#237;ky</div>
+        <div class="mob-link">Dvouos&#233; valn&#237;ky</div>
+        <div class="mob-link">T&#345;&#237;os&#233; valn&#237;ky</div>
+        <div class="mob-ct">P&#345;&#237;v&#283;sy</div>
+        <div class="mob-link">Sklopn&#233; p&#345;&#237;v&#283;sy</div>
+        <div class="mob-link">Sk&#345;&#237;&#328;ov&#233; p&#345;&#237;v&#283;sy</div>
+        <div class="mob-link">Chladirensk&#233; p&#345;&#237;v&#283;sy</div>
+        <div class="mob-ct">P&#345;epravn&#237;ky</div>
+        <div class="mob-link">P&#345;epravn&#237;ky automobil&#367;</div>
+        <div class="mob-link">P&#345;epravn&#237;ky motocykl&#367;</div>
+        <div class="mob-link">P&#345;epravn&#237;ky stroj&#367;</div>
+        <div class="mob-link">P&#345;epravn&#237;ky lod&#237; a sk&#250;tr&#367;</div>
+        <div class="mob-link">P&#345;epravn&#237;ky zv&#237;&#345;at</div>
+        <div class="mob-ct">Zna&#269;ky</div>
+        <div class="mob-brands">
+          <div class="mob-chip">Agados</div>
+          <div class="mob-chip">STEMA</div>
+          <div class="mob-chip">UNSINN</div>
+          <div class="mob-chip red">VAPP</div>
+        </div>
+        <div class="mob-vyprodej">V&#253;prodej</div>
       </div>
     </div>
-    <div class="cl-card">
-      <div class="cl-icon orange">👆</div>
-      <div>
-        <div class="cl-label">Dead clicks</div>
-        <div class="cl-value">5 854</div>
-        <div class="cl-note">13,2 % sessionů ⚠</div>
+
+    <div class="acc-item">
+      <div class="acc-trigger" onclick="toggleAcc('acc-n')">
+        N&#225;hradn&#237; d&#237;ly <span class="acc-arrow">&#9660;</span>
+      </div>
+      <div class="acc-body" id="acc-n">
+        <div class="mob-ct">Elektro a osv&#283;tlen&#237;</div>
+        <div class="mob-elektro">Elektro, sv&#237;tilny, odrazky</div>
+        <div class="mob-ct">Podvozek</div>
+        <div class="mob-link">D&#237;ly n&#225;prav</div>
+        <div class="mob-link">N&#225;jezdov&#233; brzdy a d&#237;ly</div>
+        <div class="mob-link">N&#225;pravy kompletn&#237;</div>
+        <div class="mob-link">Pneu, kola, disky</div>
+        <div class="mob-link">Spojovac&#237; za&#345;&#237;zen&#237; a z&#225;mky</div>
+        <div class="mob-ct">Karoserie</div>
+        <div class="mob-link">Blatn&#237;ky a z&#225;st&#283;rky</div>
+        <div class="mob-link">Bo&#269;nice, uz&#225;v&#283;ry, panty</div>
+        <div class="mob-link">Konstruk&#269;n&#237; d&#237;ly</div>
+        <div class="mob-link">Plachty a p&#345;&#237;slu&#353;enstv&#237;</div>
+        <div class="mob-ct">Manipulace a nakl&#225;d&#225;n&#237;</div>
+        <div class="mob-link">N&#225;jezdy</div>
+        <div class="mob-link">Zabezpe&#269;en&#237; n&#225;kladu</div>
+        <div class="mob-link">Boxy na n&#225;&#345;ad&#237; a dr&#382;&#225;ky</div>
+        <div class="mob-link">Navij&#225;ky a p&#345;&#237;slu&#353;enstv&#237;</div>
+        <div class="mob-link">Kl&#237;ny a dr&#382;&#225;ky</div>
+        <div class="mob-ct">Ostatn&#237; p&#345;&#237;slu&#353;enstv&#237;</div>
+        <div class="mob-link">Op&#283;rn&#225; kole&#269;ka, nohy</div>
+        <div class="mob-link">Plynov&#233; vzp&#283;ry</div>
+        <div class="mob-link">Dopl&#328;ky k p&#345;&#237;v&#283;s&#367;m</div>
+        <div class="mob-link">Hydraulika p&#345;&#237;v&#283;s&#367;</div>
+        <div class="mob-link">Pom&#367;cky pro &#250;dr&#382;bu</div>
       </div>
     </div>
-    <div class="cl-card">
-      <div class="cl-icon blue">👥</div>
-      <div>
-        <div class="cl-label">Clarity sessiony</div>
-        <div class="cl-value">44 231</div>
-        <div class="cl-note">44 152 unikátních už.</div>
-      </div>
+
+    <div class="mob-simple">P&#367;j&#269;ovna</div>
+    <div class="mob-simple">Servis</div>
+    <div class="mob-simple">Poradna</div>
+    <div class="mob-simple">Kontakt</div>
+
+    <div class="mob-phone">
+      <strong>603 924 555</strong>Po&#8211;P&#225; 8&#8211;17
     </div>
   </div>
-
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title">Zařízení — sessiony & konverze</div>
-      <div class="chart-wrap">
-        <canvas id="chart-cz-device"></canvas>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">Kanály — sessiony a konverze</div>
-      <table class="ch-table">
-        <thead><tr><th>Kanál</th><th>Sessiony</th><th>Konverze</th><th>Konv. míra</th></tr></thead>
-        <tbody>
-          <tr><td>Organic Search</td><td>3 481</td><td>133</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:54%"></div></div>3,82 %</div></td></tr>
-          <tr><td>Cross-network</td><td>2 215</td><td>99</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:66%"></div></div>4,47 %</div></td></tr>
-          <tr><td>Direct</td><td>1 143</td><td>80</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:100%"></div></div>7,00 %</div></td></tr>
-          <tr><td>Paid Search</td><td>1 027</td><td>44</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:61%"></div></div>4,29 %</div></td></tr>
-          <tr><td>Referral</td><td>571</td><td>29</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:72%"></div></div>5,08 %</div></td></tr>
-          <tr><td>Paid Shopping</td><td>157</td><td>8</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:72%"></div></div>5,10 %</div></td></tr>
-          <tr><td>Organic Social</td><td>81</td><td>0</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:0%"></div></div><span style="color:#d00">0 %</span></div></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="section-title">Top stránky s rage clicks (Clarity)</div>
-  <div class="card" style="margin-bottom:0">
-    <ul class="rage-list">
-      <li class="rage-item"><span class="rage-url" title="konektor-dutinka-di-1-5-8-s-plastovym-limcem-cervena-p5808">/konektor-dutinka-di-1-5-8-s-plastovym-limcem-cervena-p5808/</span><span class="rage-pill">69 rage clicks</span></li>
-      <li class="rage-item"><span class="rage-url" title="hledat">/hledat/</span><span class="rage-pill">47 rage clicks</span></li>
-      <li class="rage-item"><span class="rage-url" title="trmen-obly-sklopny">/trmen-obly-sklopny-pro-upnuti-plachty-pozink-p6573/</span><span class="rage-pill">22 rage clicks</span></li>
-      <li class="rage-item"><span class="rage-url" title="oranzove-odrazky">/oranzove-odrazky-c758/</span><span class="rage-pill">21 rage clicks</span></li>
-      <li class="rage-item"><span class="rage-url" title="kylove-rolny">/kylove-rolny-c627/stoltz/</span><span class="rage-pill">21 rage clicks</span></li>
-      <li class="rage-item"><span class="rage-url" title="kabel-8x">/kabel-8x-7x1-1x1-5-osmibarevny-p30117/</span><span class="rage-pill">20 rage clicks</span></li>
-    </ul>
-  </div>
-
-  <div class="section-title">UX Insights — vapp.cz</div>
-  <div class="insight-grid">
-    <div class="insight good">
-      <div class="insight-header"><span class="insight-icon">✅</span><span class="insight-title">Nízký bounce rate (31,8 %)</span></div>
-      <div class="insight-text">Uživatelé stránku neopouštějí po prvním pohledu — obsah a landing pages jsou relevantní.</div>
-      <div class="insight-action">Udržovat kvalitu content marketingu a SEO</div>
-    </div>
-    <div class="insight good">
-      <div class="insight-header"><span class="insight-icon">✅</span><span class="insight-title">Vysoká délka sessiony (39 min)</span></div>
-      <div class="insight-text">Uživatelé jsou vysoce engagovaní a procházejí katalog. Organic Search přivádí nejkvalitnější návštěvníky.</div>
-      <div class="insight-action">Optimalizovat SEO dál pro long-tail klíčová slova</div>
-    </div>
-    <div class="insight warn">
-      <div class="insight-header"><span class="insight-icon">⚠️</span><span class="insight-title">Vyhledávání frustruje uživatele</span></div>
-      <div class="insight-text">/hledat/ má 47 rage clicks — druhá nejvyšší stránka. Výsledky vyhledávání zřejmě nesedí nebo se špatně zobrazují.</div>
-      <div class="insight-action">Otevři Clarity záznamy na /hledat/ a podívej se na UX flow</div>
-    </div>
-    <div class="insight warn">
-      <div class="insight-header"><span class="insight-icon">⚠️</span><span class="insight-title">Dead clicks na 13,2 % sessíí</span></div>
-      <div class="insight-text">Každý 8. uživatel kliká na něco, co nereaguje. Může jít o obrázky, texty nebo neaktivní prvky UI.</div>
-      <div class="insight-action">V Clarity použij filtr Dead Clicks → identifikuj nejčastější elementy</div>
-    </div>
-    <div class="insight bad">
-      <div class="insight-header"><span class="insight-icon">🔴</span><span class="insight-title">Mobile konvertuje jen na 2,75 %</span></div>
-      <div class="insight-text">Mobile je 52 % sessíí ale jen 31 % konverzí. Desktop konvertuje na 6,81 %. Mobilní checkout má zjevný UX problém.</div>
-      <div class="insight-action">Spusť Clarity nahrávky mobilního checkoutu — hledej drop-off</div>
-    </div>
-    <div class="insight bad">
-      <div class="insight-header"><span class="insight-icon">🔴</span><span class="insight-title">Organic Social: 81 sessíí, 0 konverzí</span></div>
-      <div class="insight-text">Sociální sítě přivádějí provoz, ale nikdo nenakoupí. Špatné cílení nebo neoptimalizovaná landing page pro sociální traffic.</div>
-      <div class="insight-action">Zkontroluj, kam odkazují social příspěvky — přidej jasné CTA</div>
-    </div>
-  </div>
-
-  <div class="section-title">Doporučené kroky tento týden</div>
-  <ul class="steps">
-    <li class="step"><span class="step-num">#1</span><span class="step-text"><strong>Mobile checkout audit</strong> — otevři Clarity, filtruj na Mobile + sessiony s konverzním eventem = 0, sleduj nahrávky. Priorita: formulář objednávky.</span></li>
-    <li class="step"><span class="step-num">#2</span><span class="step-text"><strong>Konektor-dutinka /p5808/</strong> — 69 rage clicks na produktové stránce. Možná chybí tlačítko „Do košíku" nebo je nefunkční na mobilu.</span></li>
-    <li class="step"><span class="step-num">#3</span><span class="step-text"><strong>Vyhledávání</strong> — podívej se do Clarity na /hledat/, sleduj co uživatelé hledají a co dostávají. Pokud je výsledků málo, zkontroluj indexaci produktů.</span></li>
-    <li class="step"><span class="step-num">#4</span><span class="step-text"><strong>Dead clicks mapping</strong> — exportuj z Clarity heatmapu dead clicks a identifikuj konkrétní elementy (nejčastěji jsou to product images bez odkazu nebo bannery).</span></li>
-  </ul>
-
-</div>
-
-<!-- ══════════════ SK PANEL ══════════════ -->
-<div class="panel" id="panel-sk">
-
-  <div class="kpi-grid">
-    <div class="kpi accent">
-      <div class="kpi-label">Sessiony</div>
-      <div class="kpi-value">2 115</div>
-      <div class="kpi-sub">Ø 302 / den</div>
-    </div>
-    <div class="kpi accent">
-      <div class="kpi-label">Uživatelé</div>
-      <div class="kpi-value">2 070</div>
-      <div class="kpi-sub">GA4 totalUsers</div>
-    </div>
-    <div class="kpi accent">
-      <div class="kpi-label">Konverze</div>
-      <div class="kpi-value">70</div>
-      <div class="kpi-sub">Konv. míra 3,31 %</div>
-    </div>
-    <div class="kpi accent">
-      <div class="kpi-label">Tržby</div>
-      <div class="kpi-value">4 731 €</div>
-      <div class="kpi-sub">Ø 67,58 € / konverze</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Průměrná délka sezení</div>
-      <div class="kpi-value">27:54</div>
-      <div class="kpi-sub">mm:ss · nižší než CZ</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Bounce Rate</div>
-      <div class="kpi-value">35,8 %</div>
-      <div class="kpi-sub">mírně vyšší než CZ</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Rage clicks (Clarity)</div>
-      <div class="kpi-value">228</div>
-      <div class="kpi-sub">z 6 026 Clarity sessíí</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Scroll depth (Clarity)</div>
-      <div class="kpi-value">33,6 %</div>
-      <div class="kpi-sub">Uživatelé nerolují dolů ⚠</div>
-    </div>
-  </div>
-
-  <div class="section-title">Clarity — klíčové metriky chování</div>
-  <div class="clarity-row">
-    <div class="cl-card">
-      <div class="cl-icon red">😤</div>
-      <div>
-        <div class="cl-label">Rage clicks</div>
-        <div class="cl-value">228</div>
-        <div class="cl-note">3,78 % sessionů</div>
-      </div>
-    </div>
-    <div class="cl-card">
-      <div class="cl-icon orange">👆</div>
-      <div>
-        <div class="cl-label">Dead clicks</div>
-        <div class="cl-value">655</div>
-        <div class="cl-note">10,9 % sessionů</div>
-      </div>
-    </div>
-    <div class="cl-card">
-      <div class="cl-icon blue">📜</div>
-      <div>
-        <div class="cl-label">Scroll depth</div>
-        <div class="cl-value">33,6 %</div>
-        <div class="cl-note">Průměr přes všechny stránky</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title">Zařízení — sessiony & konverze</div>
-      <div class="chart-wrap">
-        <canvas id="chart-sk-device"></canvas>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">Kanály — sessiony a konverze</div>
-      <table class="ch-table">
-        <thead><tr><th>Kanál</th><th>Sessiony</th><th>Konverze</th><th>Konv. míra</th></tr></thead>
-        <tbody>
-          <tr><td>Cross-network</td><td>1 290</td><td>45</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:52%"></div></div>3,49 %</div></td></tr>
-          <tr><td>Paid Search</td><td>369</td><td>13</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:53%"></div></div>3,52 %</div></td></tr>
-          <tr><td>Paid Shopping</td><td>230</td><td>2</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:13%"></div></div><span style="color:#d00">0,87 %</span></div></td></tr>
-          <tr><td>Organic Search</td><td>93</td><td>3</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:49%"></div></div>3,23 %</div></td></tr>
-          <tr><td>Direct</td><td>66</td><td>6</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:100%"></div></div>9,09 %</div></td></tr>
-          <tr><td>Display</td><td>23</td><td>0</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:0%"></div></div><span style="color:#d00">0 %</span></div></td></tr>
-          <tr><td>Referral</td><td>12</td><td>0</td><td><div class="conv-bar-wrap"><div class="conv-bar-bg"><div class="conv-bar-fill" style="width:0%"></div></div>0 %</div></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="section-title">Top stránky s rage clicks (Clarity)</div>
-  <div class="card" style="margin-bottom:0">
-    <ul class="rage-list">
-      <li class="rage-item"><span class="rage-url" title="hlinikove-bocnice-c788">/hlinikove-bocnice-c788/</span><span class="rage-pill">107 rage clicks ‼</span></li>
-      <li class="rage-item"><span class="rage-url" title="kabel-8x">/kabel-8x-7x1-1x1-5-osemfarebny-p30117/</span><span class="rage-pill">54 rage clicks</span></li>
-      <li class="rage-item"><span class="rage-url" title="kable-metraz">/kable-metraz-c678/</span><span class="rage-pill">16 rage clicks</span></li>
-      <li class="rage-item"><span class="rage-url" title="prichytka-kablov">/prichytka-kablov-snap-clip-na-priem-kablov-6-7-mm-pozink-p3333/</span><span class="rage-pill">14 rage clicks</span></li>
-      <li class="rage-item"><span class="rage-url" title="napinaci-kolik">/napinaci-kolik-cap-k-plachte-plastovy-31x12-mm-nizky-siroky-p4068/</span><span class="rage-pill">11 rage clicks</span></li>
-      <li class="rage-item"><span class="rage-url" title="napinacie-lano">/napinacie-lano-gumove-pr-8-mm-metraz-p1405/</span><span class="rage-pill">7 rage clicks</span></li>
-    </ul>
-  </div>
-
-  <div class="section-title">UX Insights — vapp.sk</div>
-  <div class="insight-grid">
-    <div class="insight good">
-      <div class="insight-header"><span class="insight-icon">✅</span><span class="insight-title">Direct má nejvyšší konv. míru (9,1 %)</span></div>
-      <div class="insight-text">Přímí návštěvníci konvertují nejlépe — znají značku a přicházejí s záměrem nakoupit.</div>
-      <div class="insight-action">Budovat brand awareness na SK trhu</div>
-    </div>
-    <div class="insight warn">
-      <div class="insight-header"><span class="insight-icon">⚠️</span><span class="insight-title">Scroll depth jen 33,6 %</span></div>
-      <div class="insight-text">Uživatelé vidí jen horní třetinu stránek. Klíčové CTA tlačítka, filtry a produkty jsou pravděpodobně pod foldem.</div>
-      <div class="insight-action">Přesuň „Přidat do košíku" a filtry výš na stránce</div>
-    </div>
-    <div class="insight warn">
-      <div class="insight-header"><span class="insight-icon">⚠️</span><span class="insight-title">Paid Shopping: 230 sessíí, jen 2 konverze</span></div>
-      <div class="insight-text">0,87 % konverze z placeného shoppingu je velmi nízké. Produktový feed nebo landing pages nejsou relevantní.</div>
-      <div class="insight-action">Zkontroluj Google Shopping feed — ceny, dostupnost, popis</div>
-    </div>
-    <div class="insight bad">
-      <div class="insight-header"><span class="insight-icon">🔴</span><span class="insight-title">/hlinikove-bocnice/ — 107 rage clicks</span></div>
-      <div class="insight-text">Nejvíce rage clicks v obou trzích. Kategoriová stránka zřejmě nefunguje správně — broken filtr nebo nefunkční CTA.</div>
-      <div class="insight-action">PRIORITA: Otevři v Clarity a pusť nahrávku této stránky</div>
-    </div>
-    <div class="insight bad">
-      <div class="insight-header"><span class="insight-icon">🔴</span><span class="insight-title">SEO téměř neexistuje (93 sessíí)</span></div>
-      <div class="insight-text">CZ má 3 481 organic sessíí, SK jen 93. SK stránky nejsou optimalizované pro slovenský trh nebo chybí zpětné odkazy.</div>
-      <div class="insight-action">SK SEO audit — meta tagy, slovenský obsah, backlinks</div>
-    </div>
-    <div class="insight warn">
-      <div class="insight-header"><span class="insight-icon">⚠️</span><span class="insight-title">Mobile dominuje (73 %), ale méně konvertuje</span></div>
-      <div class="insight-text">3,04 % mobilní konv. míra vs 4,18 % desktop. Menší gap než CZ, ale stále prostor ke zlepšení mobilního UX.</div>
-      <div class="insight-action">Zkontroluj mobilní zobrazení produktových stránek v Clarity</div>
-    </div>
-  </div>
-
-  <div class="section-title">Doporučené kroky tento týden</div>
-  <ul class="steps">
-    <li class="step"><span class="step-num">#1</span><span class="step-text"><strong>/hlinikove-bocnice/ okamžitá oprava</strong> — 107 rage clicks. Otevři Clarity nahrávky, zjisti zda filtr produktů, řazení nebo tlačítko „Do košíku" je rozbité.</span></li>
-    <li class="step"><span class="step-num">#2</span><span class="step-text"><strong>Scroll depth — přesun CTA</strong> — Pokud průměrný uživatel roluje jen na 33 %, klíčové prvky musí být v horních 33 % stránky. Udělej audit layoutu kategorií.</span></li>
-    <li class="step"><span class="step-num">#3</span><span class="step-text"><strong>Paid Shopping optimalizace</strong> — 0,87 % konverze je pod benchmarkem (2-4 %). Zkontroluj produktový feed, přidej recenze, oprav ceny.</span></li>
-    <li class="step"><span class="step-num">#4</span><span class="step-text"><strong>SK SEO základ</strong> — přelož a lokalizuj meta title/description do slovenštiny pro top 20 kategorií. To samo o sobě může zdvojnásobit organic traffic.</span></li>
-  </ul>
-
-</div>
-
-<!-- ══════════════ COMPARE PANEL ══════════════ -->
-<div class="panel" id="panel-compare">
-
-  <div class="section-title">Přehled KPI — CZ vs SK (16. 6. – 22. 6. 2026)</div>
-  <div class="card" style="margin-bottom:20px">
-    <table class="compare-table">
-      <thead><tr><th>Metrika</th><th class="red">🇨🇿 vapp.cz</th><th class="red">🇸🇰 vapp.sk</th><th>Vítěz</th></tr></thead>
-      <tbody>
-        <tr><td>Sessiony</td><td class="winner">8 804</td><td class="loser">2 115</td><td>CZ +316 %</td></tr>
-        <tr><td>Unikátní uživatelé</td><td class="winner">8 440</td><td class="loser">2 070</td><td>CZ +308 %</td></tr>
-        <tr><td>Konverze</td><td class="winner">407</td><td class="loser">70</td><td>CZ +481 %</td></tr>
-        <tr><td>Konverzní míra</td><td class="winner">4,62 %</td><td class="loser">3,31 %</td><td>CZ +40 %</td></tr>
-        <tr><td>Tržby</td><td>2 244 574 Kč</td><td>4 731 €</td><td>—</td></tr>
-        <tr><td>Ø délka sessiony</td><td class="winner">39:14</td><td class="loser">27:54</td><td>CZ +41 %</td></tr>
-        <tr><td>Bounce Rate</td><td class="winner">31,8 %</td><td class="loser">35,8 %</td><td>CZ (nižší = lepší)</td></tr>
-        <tr><td>Rage clicks</td><td>590</td><td>228</td><td>—</td></tr>
-        <tr><td>Dead clicks</td><td>5 854</td><td>655</td><td>—</td></tr>
-        <tr><td>Rage click rate</td><td class="winner">1,33 %</td><td class="loser">3,78 %</td><td>CZ (nižší = lepší)</td></tr>
-        <tr><td>Scroll depth (Clarity)</td><td>—</td><td>33,6 %</td><td>—</td></tr>
-        <tr><td>Organic Search sessiony</td><td class="winner">3 481</td><td class="loser">93</td><td>CZ SEO výrazně silnější</td></tr>
-        <tr><td>Mobile konv. míra</td><td class="loser">2,75 %</td><td>3,04 %</td><td>SK (výjimka)</td></tr>
-        <tr><td>Desktop konv. míra</td><td class="winner">6,81 %</td><td class="loser">4,18 %</td><td>CZ</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title">Zdroje provozu — CZ</div>
-      <div class="chart-wrap"><canvas id="chart-compare-cz"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Zdroje provozu — SK</div>
-      <div class="chart-wrap"><canvas id="chart-compare-sk"></canvas></div>
-    </div>
-  </div>
-
-  <div class="section-title">Klíčové závěry srovnání</div>
-  <div class="insight-grid">
-    <div class="insight bad">
-      <div class="insight-header"><span class="insight-icon">🔴</span><span class="insight-title">SK SEO: 37× méně organic traffic</span></div>
-      <div class="insight-text">CZ má 3 481 organic sessíí, SK pouze 93. SK se spoléhá téměř výhradně na placenou reklamu (Cross-network + Paid).</div>
-      <div class="insight-action">Priorita #1 pro SK: SEO strategie a lokalizace obsahu</div>
-    </div>
-    <div class="insight warn">
-      <div class="insight-header"><span class="insight-icon">⚠️</span><span class="insight-title">Mobilní UX problém v obou trzích</span></div>
-      <div class="insight-text">CZ mobile konv. 2,75 %, SK mobile konv. 3,04 %. Desktop konvertuje lépe v obou případech. Mobilní checkout potřebuje audit.</div>
-      <div class="insight-action">Spusť mobilní Clarity nahrávky obou webů — hledej drop-off v checkoutu</div>
-    </div>
-    <div class="insight good">
-      <div class="insight-header"><span class="insight-icon">✅</span><span class="insight-title">CZ výrazně silnější ve všech metrikách</span></div>
-      <div class="insight-text">CZ má 4,62 % konverzní míru a nižší bounce rate. Direct traffic konvertuje nejlépe v obou trzích (7 % CZ, 9,1 % SK).</div>
-      <div class="insight-action">SK může kopírovat CZ strategii Organic Search a brand budování</div>
-    </div>
-  </div>
-
 </div>
 
 <script>
-function switchTab(id, el) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-' + id).classList.add('active');
-  el.classList.add('active');
-  // Re-render charts when tab becomes visible
-  if (id === 'cz') renderCZCharts();
-  if (id === 'sk') renderSKCharts();
-  if (id === 'compare') renderCompareCharts();
+function closeAll(){
+  ['p','n'].forEach(function(id){
+    var mm=document.getElementById('mm-'+id);
+    var nb=document.getElementById('b'+id);
+    if(mm) mm.classList.remove('open');
+    if(nb) nb.classList.remove('on');
+  });
 }
-
-function copyRefreshPrompt() {
-  const prompt = 'Aktualizuj UX weekly dashboard pro VAPP — načti nová data z GA4 a Clarity za posledních 7 dní a vygeneruj nový dashboard.';
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(prompt).then(() => {
-      const btn = document.querySelector('.refresh-btn');
-      btn.textContent = '✓ Zkopírováno!';
-      setTimeout(() => { btn.textContent = '↻ Refreshovat data'; }, 2000);
-    });
+function tog(id){
+  var other=id==='p'?'n':'p';
+  var isOpen=document.getElementById('mm-'+id).classList.contains('open');
+  document.getElementById('mm-'+other).classList.remove('open');
+  document.getElementById('b'+other).classList.remove('on');
+  document.getElementById('mm-'+id).classList.toggle('open',!isOpen);
+  document.getElementById('b'+id).classList.toggle('on',!isOpen);
+}
+function openDrawer(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+function toggleAcc(id){
+  var body=document.getElementById(id);
+  var trigger=body.previousElementSibling;
+  var isOpen=body.classList.contains('open');
+  document.querySelectorAll('.acc-body').forEach(function(b){ b.classList.remove('open'); });
+  document.querySelectorAll('.acc-trigger').forEach(function(t){ t.classList.remove('open'); });
+  if(!isOpen){
+    body.classList.add('open');
+    trigger.classList.add('open');
   }
 }
-
-const COLORS = {
-  red: '#DA291C',
-  mobile: '#DA291C',
-  desktop: '#575757',
-  tablet: '#DADADA',
-  channels_cz: ['#DA291C','#575757','#878787','#c0392b','#e67e22','#27ae60','#3498db'],
-  channels_sk: ['#DA291C','#575757','#c0392b','#878787','#27ae60','#e67e22','#DADADA'],
-};
-
-let czChartsRendered = false, skChartsRendered = false, compareChartsRendered = false;
-
-function renderCZCharts() {
-  if (czChartsRendered) return;
-  czChartsRendered = true;
-
-  new Chart(document.getElementById('chart-cz-device'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Mobile (52,0 %)', 'Desktop (46,4 %)', 'Tablet (1,1 %)'],
-      datasets: [{
-        data: [4576, 4080, 101],
-        backgroundColor: [COLORS.mobile, COLORS.desktop, COLORS.tablet],
-        borderWidth: 0,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'bottom', labels: { font: { family: 'Outfit', size: 12 }, padding: 14 } },
-        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw.toLocaleString('cs')} sessíí` } }
-      },
-      cutout: '65%',
-    }
-  });
-}
-
-function renderSKCharts() {
-  if (skChartsRendered) return;
-  skChartsRendered = true;
-
-  new Chart(document.getElementById('chart-sk-device'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Mobile (73,2 %)', 'Desktop (24,9 %)', 'Tablet (1,6 %)'],
-      datasets: [{
-        data: [1547, 527, 33],
-        backgroundColor: [COLORS.mobile, COLORS.desktop, COLORS.tablet],
-        borderWidth: 0,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'bottom', labels: { font: { family: 'Outfit', size: 12 }, padding: 14 } },
-        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw.toLocaleString('cs')} sessíí` } }
-      },
-      cutout: '65%',
-    }
-  });
-}
-
-function renderCompareCharts() {
-  if (compareChartsRendered) return;
-  compareChartsRendered = true;
-
-  new Chart(document.getElementById('chart-compare-cz'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Organic Search', 'Cross-network', 'Direct', 'Paid Search', 'Referral', 'Ostatní'],
-      datasets: [{
-        data: [3481, 2215, 1143, 1027, 571, 267],
-        backgroundColor: ['#DA291C','#575757','#878787','#e74c3c','#e67e22','#bdc3c7'],
-        borderWidth: 0,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'bottom', labels: { font: { family: 'Outfit', size: 11 }, padding: 10, boxWidth: 12 } },
-      },
-      cutout: '60%',
-    }
-  });
-
-  new Chart(document.getElementById('chart-compare-sk'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Cross-network', 'Paid Search', 'Paid Shopping', 'Organic Search', 'Direct', 'Ostatní'],
-      datasets: [{
-        data: [1290, 369, 230, 93, 66, 67],
-        backgroundColor: ['#DA291C','#575757','#c0392b','#878787','#27ae60','#bdc3c7'],
-        borderWidth: 0,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'bottom', labels: { font: { family: 'Outfit', size: 11 }, padding: 10, boxWidth: 12 } },
-      },
-      cutout: '60%',
-    }
-  });
-}
-
-// Init first tab
-renderCZCharts();
 </script>
 </body>
 </html>
