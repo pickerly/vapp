@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAPP — Náhradní díly: varianty mega menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Exo 2',Helvetica,Arial,sans-serif;font-size:16px;background:#f0f2f4;min-height:100vh}
+
+/* ===== PŘEPÍNAČ VARIANT (jen pro prototyp) ===== */
+.proto-bar{background:#1e2428;color:#fff;padding:10px 48px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.proto-bar span{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;opacity:.6}
+.pv{padding:7px 16px;border-radius:6px;background:#3a4450;font-size:13px;font-weight:600;cursor:pointer;transition:background .12s}
+.pv:hover{background:#4a5666}
+.pv.on{background:#1652b4}
+.proto-note{font-size:12px;opacity:.5;margin-left:auto}
+
+/* HEADER */
+.hd{background:#fff;border-bottom:1px solid #dde0e3}
+.hd-inner{max-width:1400px;margin:0 auto;padding:16px 48px;display:flex;align-items:center;position:relative;min-height:68px}
+.logo{font-size:28px;font-weight:700;color:#e31e24;letter-spacing:-1px;line-height:1;white-space:nowrap;flex:0 0 auto;z-index:1}
+.search{position:absolute;left:50%;transform:translateX(-50%);width:580px}
+.search input{width:100%;padding:11px 52px 11px 18px;border:1.5px solid #c8d0e0;border-radius:7px;font-family:'Exo 2',sans-serif;font-size:15px;color:#1e2428;background:#f4f6fa;outline:none;transition:border .15s,background .15s,box-shadow .15s}
+.search input:focus{border-color:#1652b4;background:#fff;box-shadow:0 0 0 3px rgba(22,82,180,.09)}
+.search input::placeholder{color:#9aa3ae}
+.sbtn{position:absolute;right:1px;top:1px;bottom:1px;width:46px;background:#1652b4;border:none;border-radius:0 6px 6px 0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sbtn svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
+.hd-r{margin-left:auto;display:flex;align-items:center;gap:20px;flex:0 0 auto;z-index:1}
+.contact-block{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.contact-row{display:flex;align-items:center;gap:7px;text-decoration:none;color:#2b3033}
+.contact-icon{width:14px;height:14px;flex-shrink:0;opacity:.6}
+.contact-phone{font-size:15px;font-weight:700;color:#1e2428}
+.contact-email{font-size:13px;color:#1652b4;font-weight:600}
+.hd-icons{display:flex;align-items:center;gap:8px}
+.ico{width:40px;height:40px;background:#f0f2f5;border:1px solid #dde0e3;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.ico svg{width:20px;height:20px;fill:none;stroke:#3a4450;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* NAV */
+.nav{background:#fff;border-bottom:1px solid #dde0e3;position:relative}
+.navrow{display:flex;align-items:stretch;padding:0 48px;max-width:1400px;margin:0 auto}
+.nb{font-size:13.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:14px 22px;cursor:pointer;border-bottom:2.5px solid transparent;color:#5a6472;user-select:none;display:flex;align-items:center;white-space:nowrap;transition:color .15s,border-color .15s}
+.nb:hover{color:#1652b4}
+.nb.on{color:#1652b4;border-bottom-color:#1652b4}
+
+/* MEGA MENU společné */
+.mm{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid #dde0e3;box-shadow:0 14px 36px rgba(0,0,0,.09);z-index:100;padding:24px 0 26px}
+.mm.open{display:block}
+.mm-inner{max-width:1400px;margin:0 auto;padding:0 48px}
+.ct{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#8a9098;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #eceef0;white-space:nowrap}
+.cl{display:flex;align-items:center;font-size:15px;padding:6px 10px;color:#3a4450;cursor:pointer;border-radius:5px;line-height:1.4;transition:background .12s,color .12s}
+.cl:hover{background:#f0f4fb;color:#1652b4}
+.mm-footer{margin-top:18px;padding-top:12px;border-top:1px solid #eceef0;display:flex;justify-content:space-between;align-items:center}
+.mm-all{font-size:13px;font-weight:600;color:#1652b4;cursor:pointer;opacity:.85}
+.mm-all:hover{opacity:1}
+
+/* Miniatura kategorie — obrázek z webu, nebo placeholder */
+.thumb{background:#fff;border:1px solid #e6eaef;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:contain;padding:3px}
+.thumb .ph{width:55%;height:55%;fill:none;stroke:#c2c9d2;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== V1: sloupce ===== */
+.hot{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #eceef0}
+.hot-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#8a9098;margin-right:4px}
+.hot-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:#f0f4fb;border:1px solid #d6e0f2;border-radius:20px;font-size:13.5px;font-weight:600;color:#1652b4;cursor:pointer;transition:background .12s}
+.hot-chip:hover{background:#d0def4}
+.hot-chip.guide{background:#fdf4e4;border-color:#f0dcae;color:#9a6b00}
+.hot-chip.guide:hover{background:#f8e8c4}
+.hot-chip svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.cols{display:flex;align-items:flex-start}
+.vd{width:1px;background:#e0e3e7;align-self:stretch;flex-shrink:0;margin:0 16px}
+.col{flex:1}
+.col .ct{margin-top:20px}
+.col .ct:first-child{margin-top:0}
+.cl.feat{background:#e4ecf8;font-weight:600;color:#1652b4}
+.cl.feat:hover{background:#d0def4}
+
+/* ===== V4: DATART BLOKY — všech 21 kategorií ===== */
+.v4-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:30px 28px}
+.blk{display:flex;gap:13px;align-items:flex-start;cursor:pointer;min-width:0}
+.blk .thumb{width:56px;height:56px}
+.blk-body{min-width:0}
+.blk h4{font-size:14px;font-weight:700;color:#1e2428;line-height:1.3;margin-bottom:6px}
+.blk:hover h4{color:#1652b4;text-decoration:underline}
+.blk .sub{display:block;font-size:12.5px;color:#3a4450;line-height:1.35;padding:1.5px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blk .sub:hover{color:#1652b4;text-decoration:underline}
+.blk .sub.more{color:#7a828c}
+.blk.feat .thumb{background:#e4ecf8;border-color:#b8c8e8}
+.blk.feat h4{color:#1652b4}
+.blk.sale h4{color:#e31e24}
+.blk.sale .thumb{background:#fdf0f0;border-color:#f0c8c8}
+.blk.sale .thumb .ph{stroke:#e31e24}
+
+/* ===== V3 + V5: DLAŽDICE (jako na webu) ===== */
+.tile-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.tile{display:flex;align-items:center;gap:11px;padding:9px 12px;border:1px solid #dde0e3;border-radius:9px;cursor:pointer;background:#fff;transition:border-color .12s,box-shadow .12s;min-width:0}
+.tile:hover{border-color:#1652b4;box-shadow:0 3px 10px rgba(22,82,180,.1)}
+.tile .thumb{width:44px;height:44px;border:none;background:transparent}
+.tile span{font-size:13.5px;font-weight:600;color:#1652b4;line-height:1.25}
+.tile:hover span{text-decoration:underline}
+.tile.feat{background:#e4ecf8;border-color:#b8c8e8}
+.tile.sale span{color:#e31e24}
+
+/* MOBILE */
+@media(max-width:768px){
+  .desktop-only{display:none}
+  .proto-bar{padding:10px 16px}
+  .proto-note{display:none}
+  .mob-header{background:#fff;border-bottom:1px solid #dde0e3;display:flex;align-items:center;padding:12px 16px;gap:12px}
+  .mob-logo{font-size:22px;font-weight:700;color:#e31e24;letter-spacing:-1px;flex:1}
+  .mob-icons{display:flex;gap:8px;align-items:center}
+  .mob-icon{width:40px;height:40px;background:#f0f2f5;border:1px solid #dde0e3;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .mob-icon svg{width:20px;height:20px;fill:none;stroke:#3a4450;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .mob-search{background:#fff;padding:10px 16px 13px;border-bottom:1px solid #dde0e3}
+  .mob-search input{width:100%;padding:11px 16px;border:1.5px solid #c8d0e0;border-radius:7px;font-family:'Exo 2',sans-serif;font-size:15px;background:#f4f6fa;outline:none;color:#1e2428}
+  .drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:200}
+  .drawer-overlay.open{display:block}
+  .drawer{position:fixed;top:0;left:-100%;width:85%;max-width:320px;height:100%;background:#fff;z-index:201;transition:left .25s ease;overflow-y:auto}
+  .drawer.open{left:0}
+  .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid #dde0e3}
+  .drawer-logo{font-size:22px;font-weight:700;color:#e31e24;letter-spacing:-1px}
+  .drawer-close{width:32px;height:32px;background:#f0f2f5;border:none;border-radius:6px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#4a5260}
+  .acc-item{border-bottom:1px solid #dde0e3}
+  .acc-trigger{display:flex;align-items:center;justify-content:space-between;padding:16px;font-size:14px;font-weight:700;color:#2b3033;cursor:pointer;text-transform:uppercase;letter-spacing:.4px}
+  .acc-trigger.open{color:#1652b4}
+  .acc-arrow{font-size:11px;transition:transform .2s;color:#8a9098}
+  .acc-trigger.open .acc-arrow{transform:rotate(180deg);color:#1652b4}
+  .acc-body{display:none;padding:0 16px 18px}
+  .acc-body.open{display:block}
+  .mob-hot{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+  .mob-hot .hot-chip{font-size:12.5px;padding:6px 12px}
+  .mob-ct{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:#5a6472;margin:18px 0 8px;padding-bottom:7px;border-bottom:1px solid #e4e7ea}
+  .mob-link{display:block;font-size:15px;padding:9px 6px;color:#2b3033;cursor:pointer;border-radius:5px}
+  .mob-elektro{display:block;padding:9px 12px;background:#e4ecf8;border-radius:7px;font-size:15px;font-weight:600;color:#1652b4;margin-bottom:4px}
+  .mob-simple{display:block;padding:16px;font-size:15px;font-weight:600;color:#2b3033;border-bottom:1px solid #dde0e3;cursor:pointer}
+  .mob-contact{padding:16px;border-top:1px solid #dde0e3;margin-top:8px;display:flex;flex-direction:column;gap:10px}
+  .mob-contact a{display:flex;align-items:center;gap:9px;font-size:14px;color:#2b3033;text-decoration:none;font-weight:600}
+  .mob-contact a svg{width:16px;height:16px;fill:none;stroke:#1652b4;stroke-width:1.8;stroke-linecap:round;flex-shrink:0}
+}
+@media(min-width:769px){.mobile-only{display:none}}
+</style>
+</head>
+<body>
+
+<!-- PŘEPÍNAČ VARIANT -->
+<div class="proto-bar">
+  <span>Varianta menu (platí pro Přívěsy i Náhradní díly):</span>
+  <div class="pv on" id="pv4" onclick="setVar(4)">V4 · Bloky s podkategoriemi</div>
+  <div class="pv" id="pv3" onclick="setVar(3)">V3 · Dlaždice — prioritní</div>
+  <div class="pv" id="pv5" onclick="setVar(5)">V5 · Dlaždice — abecedně (jako web)</div>
+  <div class="pv" id="pv1" onclick="setVar(1)">V1 · Sloupce</div>
+  <div class="proto-note">Prototyp — lišta nebude v ostré verzi</div>
+</div>
+
+<!-- DESKTOP -->
+<div class="desktop-only">
+  <div class="hd">
+    <div class="hd-inner">
+      <div class="logo">VAPP<sup style="font-size:11px;font-weight:400">&#174;</sup></div>
+      <div class="search">
+        <input type="text" placeholder="Hledat produkt, díl nebo značku…">
+        <button class="sbtn" aria-label="Hledat"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg></button>
+      </div>
+      <div class="hd-r">
+        <div class="contact-block">
+          <a class="contact-row" href="tel:603924555">
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 2 .7 2.9a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.5c.9.3 1.9.6 2.9.7a2 2 0 011.7 2z"/></svg>
+            <span class="contact-phone">603 924 555</span>
+          </a>
+          <a class="contact-row contact-email" href="mailto:info@vapp.cz">
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="#1652b4" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+            <span>info@vapp.cz</span>
+          </a>
+        </div>
+        <div class="hd-icons">
+          <div class="ico" title="Přihlášení"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+          <div class="ico" title="Košík"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="navrow">
+      <div class="nb" id="bp" onclick="togMenu('p')">Přívěsy</div>
+      <div class="nb on" id="bn" onclick="togMenu('n')">Náhradní díly</div>
+      <div class="nb" onclick="closeAll()">Půjčovna</div>
+      <div class="nb" onclick="closeAll()">Servis</div>
+      <div class="nb" onclick="closeAll()">Poradna</div>
+      <div class="nb" onclick="closeAll()">Kontakt</div>
+    </div>
+
+    <!-- ============ PŘÍVĚSY (stejné varianty) ============ -->
+    <div class="mm mm-var" id="mm-p-v4"><div class="mm-inner">
+      <div class="v4-grid" id="p-v4-grid"></div>
+      <div class="mm-footer"><div class="mm-all">Všechny přívěsy →</div></div>
+    </div></div>
+    <div class="mm mm-var" id="mm-p-v3"><div class="mm-inner">
+      <div class="tile-grid" id="p-v3-grid"></div>
+      <div class="mm-footer"><div class="mm-all">Všechny přívěsy →</div></div>
+    </div></div>
+    <div class="mm mm-var" id="mm-p-v5"><div class="mm-inner">
+      <div class="tile-grid" id="p-v5-grid"></div>
+      <div class="mm-footer"><div class="mm-all">Všechny přívěsy →</div></div>
+    </div></div>
+    <div class="mm mm-var" id="mm-p-v1"><div class="mm-inner">
+      <div class="cols">
+        <div class="col">
+          <div class="ct">Valníky</div>
+          <div class="cl">Jednoosé valníky</div>
+          <div class="cl">Dvouosé valníky</div>
+          <div class="cl">Tříosé valníky</div>
+        </div>
+        <div class="vd"></div>
+        <div class="col">
+          <div class="ct">Přívěsy</div>
+          <div class="cl">Sklopné přívěsy</div>
+          <div class="cl">Skříňové přívěsy</div>
+          <div class="cl">Chladírenské přívěsy</div>
+        </div>
+        <div class="vd"></div>
+        <div class="col">
+          <div class="ct">Přepravníky</div>
+          <div class="cl">Přepravníky automobilů</div>
+          <div class="cl">Přepravníky motocyklů</div>
+          <div class="cl">Přepravníky strojů</div>
+          <div class="cl">Přepravníky lodí a skútrů</div>
+          <div class="cl">Přepravníky zvířat</div>
+        </div>
+        <div class="vd"></div>
+        <div class="col">
+          <div class="ct">Značky</div>
+          <div class="cl">Agados</div>
+          <div class="cl">STEMA</div>
+          <div class="cl">UNSINN</div>
+          <div class="cl" style="color:#e31e24;font-weight:600">VAPP</div>
+          <div class="ct" style="margin-top:20px">Akce</div>
+          <div class="cl" style="color:#e31e24;font-weight:600">Výprodej %</div>
+        </div>
+      </div>
+      <div class="mm-footer"><div class="mm-all">Všechny přívěsy →</div></div>
+    </div></div>
+
+    <!-- V4: DATART BLOKY — generováno z dat -->
+    <div class="mm open mm-var" id="mm-n-v4">
+      <div class="mm-inner">
+        <div class="v4-grid" id="v4-grid"></div>
+        <div class="mm-footer">
+          <div class="mm-all">Všechny náhradní díly →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- V3: DLAŽDICE prioritně — generováno z dat -->
+    <div class="mm mm-var" id="mm-n-v3">
+      <div class="mm-inner">
+        <div class="hot">
+          <span class="hot-label">Nejhledanější</span>
+          <span class="hot-chip guide"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V4H6.5A2.5 2.5 0 004 6.5v13z"/></svg>Schéma zapojení zásuvky 7 / 13 pin</span>
+          <span class="hot-chip">Plynové vzpěry</span>
+          <span class="hot-chip">Sport Jacht díly</span>
+          <span class="hot-chip">Pneu 4.00-8</span>
+        </div>
+        <div class="tile-grid" id="v3-grid"></div>
+        <div class="mm-footer"><div class="mm-all">Všechny náhradní díly →</div></div>
+      </div>
+    </div>
+
+    <!-- V5: DLAŽDICE abecedně (jako web) — generováno z dat -->
+    <div class="mm mm-var" id="mm-n-v5">
+      <div class="mm-inner">
+        <div class="tile-grid" id="v5-grid"></div>
+        <div class="mm-footer"><div class="mm-all">Všechny náhradní díly →</div></div>
+      </div>
+    </div>
+
+    <!-- V1: SLOUPCE -->
+    <div class="mm mm-var" id="mm-n-v1">
+      <div class="mm-inner">
+        <div class="hot">
+          <span class="hot-label">Nejhledanější</span>
+          <span class="hot-chip guide"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V4H6.5A2.5 2.5 0 004 6.5v13z"/></svg>Schéma zapojení zásuvky 7 / 13 pin</span>
+          <span class="hot-chip">Plynové vzpěry</span>
+          <span class="hot-chip">Sport Jacht díly</span>
+          <span class="hot-chip">Pneu a kola</span>
+        </div>
+        <div class="cols">
+          <div class="col">
+            <div class="ct">Elektro a osvětlení</div>
+            <div class="cl feat">Elektro, svítilny, odrazky</div>
+            <div class="ct" style="margin-top:20px">Podvozek</div>
+            <div class="cl">Nápravy kompletní</div>
+            <div class="cl">Díly náprav</div>
+            <div class="cl">Nájezdové brzdy a díly</div>
+            <div class="cl">Pneu, kola, disky</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col">
+            <div class="ct">Spojení s vozidlem</div>
+            <div class="cl">Spojovací zařízení a zámky</div>
+            <div class="cl">Opěrná kolečka, nohy, držáky</div>
+            <div class="cl">Hydraulika přívěsů</div>
+            <div class="ct" style="margin-top:20px">Karoserie</div>
+            <div class="cl">Blatníky a zástěrky</div>
+            <div class="cl">Bočnice, uzávěry, panty</div>
+            <div class="cl">Konstrukční díly</div>
+            <div class="cl">Plachty a příslušenství</div>
+            <div class="cl">Plynové vzpěry</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col">
+            <div class="ct">Manipulace a nakládání</div>
+            <div class="cl">Nájezdy</div>
+            <div class="cl">Zabezpečení nákladu</div>
+            <div class="cl">Navijáky a příslušenství</div>
+            <div class="cl">Boxy na nářadí a držáky</div>
+            <div class="cl">Klíny a držáky</div>
+            <div class="ct" style="margin-top:20px">Ostatní</div>
+            <div class="cl">Doplňky k přívěsům</div>
+            <div class="cl">Pomůcky pro údržbu</div>
+          </div>
+          <div class="vd"></div>
+          <div class="col">
+            <div class="ct">Díly podle výrobce</div>
+            <div class="cl feat">Sport Jacht</div>
+            <div class="cl">Agados</div>
+            <div class="cl">Knott</div>
+            <div class="cl">AL-KO</div>
+            <div class="ct" style="margin-top:20px">Akce</div>
+            <div class="cl" style="color:#e31e24;font-weight:600">Akce a slevy %</div>
+          </div>
+        </div>
+        <div class="mm-footer">
+          <div class="mm-all">Všechny náhradní díly →</div>
+          <div class="mm-all" style="color:#9a6b00">Poradna: jak vybrat správný díl →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE -->
+<div class="mobile-only">
+  <div class="mob-header">
+    <div class="mob-logo">VAPP<sup style="font-size:10px;font-weight:400">&#174;</sup></div>
+    <div class="mob-icons">
+      <div class="mob-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+      <div class="mob-icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+      <div class="mob-icon" onclick="openDrawer()"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div>
+    </div>
+  </div>
+  <div class="mob-search"><input type="text" placeholder="Hledat produkt, díl nebo značku…"></div>
+
+  <div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
+  <div class="drawer" id="drawer">
+    <div class="drawer-head">
+      <div class="drawer-logo">VAPP<sup style="font-size:10px;font-weight:400">&#174;</sup></div>
+      <button class="drawer-close" onclick="closeDrawer()">&#10005;</button>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-trigger" onclick="toggleAcc('acc-n')">Náhradní díly <span class="acc-arrow">&#9660;</span></div>
+      <div class="acc-body open" id="acc-n">
+        <div class="mob-hot">
+          <span class="hot-chip guide">Zapojení zásuvky</span>
+          <span class="hot-chip">Plynové vzpěry</span>
+          <span class="hot-chip">Sport Jacht</span>
+          <span class="hot-chip">Pneu a kola</span>
+        </div>
+        <div class="mob-ct">Elektro a osvětlení</div>
+        <div class="mob-elektro">Elektro, svítilny, odrazky</div>
+        <div class="mob-ct">Podvozek a brzdy</div>
+        <div class="mob-link">Nápravy kompletní</div>
+        <div class="mob-link">Díly náprav</div>
+        <div class="mob-link">Nájezdové brzdy a díly</div>
+        <div class="mob-link">Pneu, kola, disky</div>
+        <div class="mob-ct">Spojení s vozidlem</div>
+        <div class="mob-link">Spojovací zařízení a zámky</div>
+        <div class="mob-link">Opěrná kolečka, nohy, držáky</div>
+        <div class="mob-link">Hydraulika přívěsů</div>
+        <div class="mob-ct">Karoserie</div>
+        <div class="mob-link">Blatníky a zástěrky</div>
+        <div class="mob-link">Bočnice, uzávěry, panty</div>
+        <div class="mob-link">Konstrukční díly</div>
+        <div class="mob-link">Plachty a příslušenství</div>
+        <div class="mob-link">Plynové vzpěry</div>
+        <div class="mob-ct">Manipulace a nakládání</div>
+        <div class="mob-link">Nájezdy</div>
+        <div class="mob-link">Zabezpečení nákladu</div>
+        <div class="mob-link">Navijáky a příslušenství</div>
+        <div class="mob-link">Boxy na nářadí a držáky</div>
+        <div class="mob-link">Klíny a držáky</div>
+        <div class="mob-ct">Ostatní</div>
+        <div class="mob-link">Doplňky k přívěsům</div>
+        <div class="mob-link">Pomůcky pro údržbu</div>
+        <div class="mob-link" style="color:#e31e24;font-weight:600">Akce a slevy %</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-trigger" onclick="toggleAcc('acc-p')">Přívěsy <span class="acc-arrow">&#9660;</span></div>
+      <div class="acc-body" id="acc-p">
+        <div class="mob-ct">Valníky</div>
+        <div class="mob-link">Jednoosé valníky</div>
+        <div class="mob-link">Dvouosé valníky</div>
+        <div class="mob-link">Tříosé valníky</div>
+        <div class="mob-ct">Přívěsy</div>
+        <div class="mob-link">Sklopné přívěsy</div>
+        <div class="mob-link">Skříňové přívěsy</div>
+        <div class="mob-link">Chladírenské přívěsy</div>
+        <div class="mob-ct">Přepravníky</div>
+        <div class="mob-link">Přepravníky automobilů</div>
+        <div class="mob-link">Přepravníky motocyklů</div>
+        <div class="mob-link">Přepravníky strojů</div>
+        <div class="mob-link">Přepravníky lodí a skútrů</div>
+        <div class="mob-link">Přepravníky zvířat</div>
+      </div>
+    </div>
+
+    <div class="mob-simple">Půjčovna</div>
+    <div class="mob-simple">Servis</div>
+    <div class="mob-simple">Poradna</div>
+    <div class="mob-simple">Kontakt</div>
+
+    <div class="mob-contact">
+      <a href="tel:603924555"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 2 .7 2.9a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.5c.9.3 1.9.6 2.9.7a2 2 0 011.7 2z"/></svg>603 924 555</a>
+      <a href="mailto:info@vapp.cz"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>info@vapp.cz</a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   DATA — všech 21 kategorií Náhradních dílů (reálné názvy z vapp.cz).
+   img: sem vložit URL obrázku kategorie z webu (stejné jako na
+   /nahradni-dily-c583/). Prázdné = zobrazí se placeholder.
+   ===================================================================== */
+/* imgs: kandidáti názvů souborů na https://cdn.vapp.cz/data/user-content/<název>.jpg
+   Prohlížeč zkouší postupně; když žádný neexistuje, ukáže placeholder. */
+var CATS=[
+ {n:"Akce a slevy",           url:"akce-a-slevy-c862",                imgs:["akce-a-slevy","akce","kategorie_ikony/akce.jpg","vyprodej","sleva"], sale:true, sub:[]},
+ {n:"Blatníky a zástěrky",    url:"blatniky-a-zasterky-c596",         imgs:["blatniky","blatniky-a-zasterky"], sub:["Blatníky","Držáky blatníků","Zástěrky a příslušenství"]},
+ {n:"Bočnice, uzávěry, panty",url:"bocnice-uzavery-panty-c578",       imgs:["bocnice"], more:true, sub:["Bočnice","Přezky a uzávěry","Panty bočnic"]},
+ {n:"Boxy na nářadí a držáky",url:"boxy-na-naradi-a-drzaky-boxu-c691",imgs:["kategorie_ikony/box-naradi.jpg"], sub:["Boxy na nářadí","Držáky boxů","Náhradní díly boxů"]},
+ {n:"Doplňky k přívěsům",     url:"doplnky-k-privesum-c690",          imgs:["doplnky","doplnky-k-privesum"], sub:["Označení přívěsu","Příslušenství k přívěsu","Ostatní doplňky"]},
+ {n:"Elektro, svítilny, odrazky",url:"elektro-svitilny-odrazky-c568", imgs:["sdruzene_svitilny.jpg"], feat:true, more:true, sub:["Sdružené zadní svítilny","Zásuvky, zástrčky","Kabely a kabeláže"]},
+ {n:"Hydraulika přívěsů",     url:"hydraulika-privesu-c863",          imgs:["hydraulika","hydraulika-privesu"], sub:[]},
+ {n:"Klíny a držáky",         url:"kliny-a-drzaky-c605",              imgs:["kliny","kliny-a-drzaky"], sub:["Zakládací klíny","Klíny na ložnou plochu"]},
+ {n:"Konstrukční díly",       url:"konstrukcni-dily-c574",            imgs:["konstrukcni_dily.jpg"], more:true, sub:["Oje a příslušenství","Překližky","Spojovací materiál"]},
+ {n:"Nájezdy",                url:"najezdy-c584",                     imgs:["najezdy"], sub:["Hliníkové nájezdy","Ocelové nájezdy","Příslušenství nájezdů"]},
+ {n:"Nájezdové brzdy a díly", url:"najezdove-brzdy-a-dily-c565",      imgs:["najezdove_brzdy.jpg"], more:true, sub:["Brzdy na „V“ oje","Brzdy na jeklové oje","Tlumiče a příslušenství"]},
+ {n:"Nápravy kompletní",      url:"napravy-a-dily-naprav-c562",       imgs:["napravy","napravy-kompletni"], sub:["Brzděné nápravy","Nebrzděné nápravy","Ramena polonáprav"]},
+ {n:"Díly náprav",            url:"dily-naprav-c2371",                imgs:["kategorie_ikony/celisti.jpg"], more:true, sub:["Brzdové čelisti","Brzdové bubny","Ložiska"]},
+ {n:"Navijáky a příslušenství",url:"navijaky-a-prislusenstvi-c622",   imgs:["navijaky","navijaky-a-prislusenstvi"], more:true, sub:["Ruční navijáky","Elektrické navijáky","Lana a popruhy"]},
+ {n:"Opěrná kolečka, nohy, držáky",url:"operna-kolecka-nohy-drzaky-c610",imgs:["kolecka-1.jpg"], more:true, sub:["Opěrná kolečka","Opěrné nohy","Držáky a klemy"]},
+ {n:"Plachty a příslušenství",url:"plachty-a-prislusenstvi-c721",     imgs:["plachty","plachty-a-prislusenstvi"], sub:["Plachty s příslušenstvím","Příslušenství k plachtám"]},
+ {n:"Plynové vzpěry",         url:"plynove-vzpery-a-prislusenstvi-c823",imgs:["plynova-vzpera-mala-o.jpg"], sub:["Plynové vzpěry","Koncovky a konzoly vzpěr"]},
+ {n:"Pneu, kola, disky",      url:"pneu-kola-disky-c695",             imgs:["pneu_kola.jpg"], more:true, sub:["Kompletní kola","Pneu","Disky kol"]},
+ {n:"Pomůcky pro údržbu",     url:"pomucky-pro-udrzbu-c723",          imgs:["pomucky","pomucky-pro-udrzbu","udrzba"], more:true, sub:["Maziva a technické spreje","Brusné a řezné kotouče","Ochranné pomůcky"]},
+ {n:"Spojovací zařízení a zámky",url:"spojovaci-zarizeni-a-zamky-c594",imgs:["kulove-tazne-spojky.JPG"], more:true, sub:["Tažné kulové spojky","Tažná oka","Zámky a zabezpečení"]},
+ {n:"Zabezpečení nákladu",    url:"zabezpeceni-nakladu-c603",         imgs:["zabezpeceni_nakladu.jpg"], more:true, sub:["Upínací soupravy a popruhy","Zakrývací sítě","Upínací oka a misky"]}
+];
+
+/* Prioritní pořadí (V3 + V4) — podle GSC/Clarity dat; Akce a slevy poslední jako akcent */
+var PRIORITY=[5,17,19,16,10,11,12,9,14,1,2,20,13,8,15,3,7,6,4,18,0];
+/* Abecední pořadí (V5) — jako na současném webu */
+var ALPHA=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+
+var CDN='https://cdn.vapp.cz/data/user-content/';
+function cdnUrl(name){return CDN+(name.indexOf('.')>-1?name:name+'.jpg');}
+var PH='<svg class="ph" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="M21 15l-5-5-6 6-2-2-5 5"/></svg>';
+function thumbHtml(c,size){
+  var inner=(c.imgs&&c.imgs.length)
+    ? '<img src="'+cdnUrl(c.imgs[0])+'" data-next="'+c.imgs.slice(1).join(',')+'" alt="" loading="lazy" onerror="imgFallback(this)">'
+    : PH;
+  return '<div class="thumb" style="width:'+size+'px;height:'+size+'px">'+inner+'</div>';
+}
+function imgFallback(img){
+  var next=img.getAttribute('data-next');
+  if(next){
+    var a=next.split(',');
+    img.setAttribute('data-next',a.slice(1).join(','));
+    img.src=cdnUrl(a[0]);
+  }else{
+    img.parentNode.innerHTML=PH;
+  }
+}
+function renderBlocks(cats,order,elId){
+  var h='';
+  order.forEach(function(i){
+    var c=cats[i];
+    h+='<div class="blk'+(c.feat?' feat':'')+(c.sale?' sale':'')+'">'+thumbHtml(c,54)
+      +'<div class="blk-body"><h4>'+c.n+(c.sale?' %':'')+'</h4>'
+      +c.sub.map(function(s){return '<span class="sub">'+s+'</span>';}).join('')
+      +(c.more?'<span class="sub more">… další kategorie</span>':'')
+      +'</div></div>';
+  });
+  document.getElementById(elId).innerHTML=h;
+}
+function renderTiles(cats,order,elId){
+  var h='';
+  order.forEach(function(i){
+    var c=cats[i];
+    h+='<div class="tile'+(c.feat?' feat':'')+(c.sale?' sale':'')+'">'+thumbHtml(c,44)
+      +'<span>'+c.n+(c.sale?' %':'')+'</span></div>';
+  });
+  document.getElementById(elId).innerHTML=h;
+}
+/* Přívěsy — 16 kategorií jako na webu; imgs = kandidáti na CDN */
+var TRAILERS=[
+ {n:"Jednoosé valníky",imgs:["jednoose_valniky","jednoose-valniky"],feat:true,sub:[]},
+ {n:"Dvouosé valníky",imgs:["dvouose_valniky","dvouose-valniky"],sub:[]},
+ {n:"Tříosé valníky",imgs:["triose_valniky","triose-valniky"],sub:[]},
+ {n:"Přepravníky motocyklů",imgs:["prepravniky_motocyklu","prepravniky-motocyklu"],sub:[]},
+ {n:"Přepravníky strojů",imgs:["prepravniky_stroju","prepravniky-stroju"],sub:[]},
+ {n:"Přepravníky automobilů",imgs:["prepravniky_automobilu","prepravniky-automobilu"],sub:[]},
+ {n:"Sklopné přívěsy",imgs:["sklopne_privesy","sklopne-privesy"],sub:[]},
+ {n:"Přepravníky lodí a vodních skútrů",imgs:["prepravniky_lodi","prepravniky-lodi-a-vodnich-skutru"],sub:[]},
+ {n:"Přepravníky zvířat",imgs:["prepravniky_zvirat","prepravniky-zvirat"],sub:[]},
+ {n:"Skříňové přívěsy",imgs:["skrinove_privesy","skrinove-privesy"],sub:[]},
+ {n:"Chladírenské přívěsy",imgs:["chladirenske_privesy","chladirenske-privesy"],sub:[]},
+ {n:"Agados",imgs:["agados","kategorie_ikony/agados.jpg"],sub:[]},
+ {n:"STEMA",imgs:["stema","kategorie_ikony/stema.jpg"],sub:[]},
+ {n:"UNSINN",imgs:["unsinn","kategorie_ikony/unsinn.jpg"],sub:[]},
+ {n:"VAPP",imgs:["vapp","kategorie_ikony/vapp.jpg"],sub:[]},
+ {n:"Výprodej",imgs:["vyprodej","vyprodej_privesy"],sale:true,sub:[]}
+];
+var T_WEB=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];          /* pořadí jako na webu */
+var T_PRIORITY=[0,1,2,6,5,3,4,7,8,9,10,11,12,13,14,15];      /* valníky+sklopné napřed */
+
+renderBlocks(CATS,PRIORITY,'v4-grid');
+renderTiles(CATS,PRIORITY,'v3-grid');
+renderTiles(CATS,ALPHA,'v5-grid');
+renderBlocks(TRAILERS,T_PRIORITY,'p-v4-grid');
+renderTiles(TRAILERS,T_PRIORITY,'p-v3-grid');
+renderTiles(TRAILERS,T_WEB,'p-v5-grid');
+
+/* ===== přepínání ===== */
+var curVar=4, curMenu='n';
+var VARS=[1,3,4,5];
+function setVar(n){
+  curVar=n;
+  VARS.forEach(function(i){document.getElementById('pv'+i).classList.toggle('on',i===n);});
+  if(curMenu) openMenu(curMenu);
+}
+function openMenu(which){
+  document.querySelectorAll('.mm-var').forEach(function(m){m.classList.remove('open');});
+  document.getElementById('mm-'+which+'-v'+curVar).classList.add('open');
+  document.getElementById('bn').classList.toggle('on',which==='n');
+  document.getElementById('bp').classList.toggle('on',which==='p');
+  curMenu=which;
+}
+function togMenu(which){
+  if(curMenu===which){closeAll();}else{openMenu(which);}
+}
+function closeAll(){
+  document.querySelectorAll('.mm-var').forEach(function(m){m.classList.remove('open');});
+  document.getElementById('bn').classList.remove('on');
+  document.getElementById('bp').classList.remove('on');
+  curMenu=null;
+}
+function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('open');}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
+function toggleAcc(id){
+  var body=document.getElementById(id);var trigger=body.previousElementSibling;
+  var isOpen=body.classList.contains('open');
+  document.querySelectorAll('.acc-body').forEach(function(b){b.classList.remove('open');});
+  document.querySelectorAll('.acc-trigger').forEach(function(t){t.classList.remove('open');});
+  if(!isOpen){body.classList.add('open');trigger.classList.add('open');}
+}
+</script>
+</body>
+</html>
