@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAPP Brand Book</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* === VAPP CSS VARIABLES (z DevTools vapp.cz) === */
+:root {
+  --red:         #e31e24;   /* Logo, brand mark — primární identita */
+  --blue:        #1652b4;   /* --main-color: CTA, aktivní prvky, tagline */
+  --blue-dark:   #124290;   /* hover stav */
+  --yellow:      #ffe710;   /* existuje v CSS, ale NEPOUŽÍVÁ SE pro košík */
+  --yellow-dark: #ccb90d;
+  --gray:        #616161;   /* --primary-color: ikony, sekundární tlačítka */
+  --gray-light:  #d4d4d4;   /* --secondary-color */
+  --bg:          #f6f7f7;   /* --neutral-color: pozadí stránky */
+  --separator:   #eaebeb;
+  --white:       #ffffff;
+  --text:        rgba(43,48,51,0.9);
+  --text-muted:  rgba(43,48,51,0.55);
+  --text-solid:  #2b3033;
+  --green:       #00a523;
+  --orange:      #ffa500;
+  --alert-red:   #eb3b5a;
+  --font: 'Exo 2', Helvetica, Arial, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--text-solid); font-size: 15px; line-height: 1.65; }
+
+.page { max-width: 920px; margin: 0 auto; }
+section { background: var(--white); margin-bottom: 2px; padding: 48px 56px; }
+
+/* COVER */
+.cover { background: var(--white); padding: 64px 56px 56px; border-top: 4px solid var(--red); position: relative; overflow: hidden; }
+.cover::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 320px; background: linear-gradient(135deg, var(--bg) 0%, #eaebeb 100%); clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%); }
+.cover-content { position: relative; z-index: 1; max-width: 520px; }
+.cover-tag { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-bottom: 20px; }
+.cover-logo { display: flex; align-items: baseline; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+.cover-logo-text { font-size: 56px; font-weight: 700; color: var(--red); letter-spacing: -2px; line-height: 1; }
+.cover-logo-tagline { font-size: 16px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; }
+.cover-desc { font-size: 15px; color: var(--text-muted); margin-top: 12px; line-height: 1.6; }
+.cover-meta { margin-top: 36px; display: flex; gap: 28px; flex-wrap: wrap; }
+.cm-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gray-light); margin-bottom: 3px; }
+.cm-value { font-size: 13px; color: var(--text-muted); }
+
+/* SECTION HEADER */
+.sec-label { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+.sec-title { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+.sec-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; }
+hr.div { border: none; border-top: 1px solid var(--separator); margin: 28px 0; }
+
+/* IDENTITY */
+.id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.id-card { background: var(--bg); border-radius: 6px; padding: 14px 18px; }
+.id-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 4px; }
+.id-value { font-size: 14px; }
+
+/* LOGO */
+.logo-demo-wrap { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.logo-demo { border-radius: 8px; padding: 32px 24px; display: flex; flex-direction: column; gap: 6px; }
+.logo-demo.white { background: var(--white); border: 1px solid var(--separator); }
+.logo-demo.light { background: var(--bg); border: 1px solid var(--separator); }
+.logo-demo.dark { background: #1a1a1a; }
+.ld-wordmark { font-size: 40px; font-weight: 700; letter-spacing: -1.5px; line-height: 1; }
+.logo-demo.white .ld-wordmark,
+.logo-demo.light .ld-wordmark { color: var(--red); }
+.logo-demo.dark .ld-wordmark { color: var(--white); }
+.ld-tagline { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.logo-demo.white .ld-tagline,
+.logo-demo.light .ld-tagline { color: var(--blue); }
+.logo-demo.dark .ld-tagline { color: #aaa; }
+.ld-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.logo-demo.dark .ld-label { color: #666; }
+.logo-note { background: #fffbe6; border: 1px solid #f0d070; border-radius: 6px; padding: 11px 16px; font-size: 12px; color: #7a5a00; margin-top: 10px; }
+
+/* BARVY */
+.palette-primary { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.palette-accent { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 8px; }
+.swatch { border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.sw-fill { height: 80px; display: flex; align-items: flex-end; padding: 10px; }
+.sw-fill.tall { height: 100px; }
+.sw-token { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; }
+.sw-info { padding: 10px 12px; background: var(--white); border-top: 1px solid var(--separator); }
+.sw-name { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+.sw-hex { font-size: 11px; color: var(--text-muted); font-family: 'Courier New', monospace; margin-bottom: 3px; }
+.sw-role { font-size: 10px; color: var(--text-muted); line-height: 1.35; }
+.palette-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 12px; }
+
+/* FONT */
+.font-spec { background: var(--bg); border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.fs-stack { font-size: 12px; font-family: monospace; color: var(--text-muted); flex: 1; }
+.fs-weights { display: flex; gap: 10px; flex-wrap: wrap; }
+.fs-w { background: var(--white); border: 1px solid var(--separator); border-radius: 4px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--blue); }
+.type-row { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--separator); }
+.type-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.type-meta { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 6px; }
+.ts-h1 { font-size: 34px; font-weight: 700; line-height: 1.1; }
+.ts-h2 { font-size: 20px; font-weight: 700; line-height: 1.2; text-transform: uppercase; }
+.ts-nav { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
+.ts-body { font-size: 15px; font-weight: 400; line-height: 1.65; }
+.ts-small { font-size: 12px; color: var(--text-muted); }
+.ts-price { font-size: 22px; font-weight: 700; }
+
+/* NAV DEMO */
+.nav-demo-wrap { border: 1px solid var(--separator); border-radius: 8px; overflow: hidden; }
+.nav-demo-top { background: var(--white); padding: 12px 24px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--separator); flex-wrap: wrap; }
+.nd-logo { font-size: 28px; font-weight: 700; color: var(--red); letter-spacing: -1px; line-height: 1; }
+.nd-tagline { font-size: 12px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 0.3px; }
+.nd-search { flex: 1; max-width: 380px; margin: 0 16px; }
+.nd-search input { width: 100%; padding: 7px 14px; border: 1px solid var(--separator); border-radius: 3px; font-family: var(--font); font-size: 13px; color: var(--text-muted); background: var(--white); }
+.nd-contact { font-size: 11px; color: var(--text-muted); line-height: 1.6; margin-left: auto; }
+.nav-demo-bottom { background: var(--white); padding: 0 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+.nd-primary { display: flex; }
+.nd-item { font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 12px 16px; color: var(--text-solid); border-bottom: 2px solid transparent; letter-spacing: 0.2px; }
+.nd-item.active { color: var(--red); border-bottom-color: var(--red); }
+.nd-secondary { display: flex; }
+.nd-sec { font-size: 13px; font-weight: 400; padding: 12px 12px; color: var(--text-muted); }
+
+/* BUTTONS */
+.btn-grid { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start; margin-top: 14px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 20px; border-radius: 3px; font-family: var(--font); font-size: 14px; font-weight: 600; border: 1px solid transparent; cursor: default; line-height: 1; }
+.btn-blue { background: var(--blue); color: var(--white); border-color: var(--blue-dark); }
+.btn-yellow { background: var(--yellow); color: #000; border-color: var(--yellow-dark); font-weight: 700; }
+.btn-gray { background: var(--gray); color: var(--white); border-color: #4e4e4e; }
+.btn-outline { background: var(--white); color: var(--blue); border-color: var(--blue); }
+.btn-light { background: var(--bg); color: var(--text-solid); border-color: var(--gray-light); }
+.btn-label { font-size: 10px; color: var(--text-muted); display: block; margin-top: 4px; text-align: center; }
+
+/* STATUS BADGES */
+.badge-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 3px; font-size: 11px; font-weight: 600; }
+.badge::before { content: '●'; font-size: 8px; }
+.badge.green { background: #e8f7ec; color: var(--green); border: 1px solid #b8ddb8; }
+.badge.red { background: #fde8ec; color: var(--alert-red); border: 1px solid #f5b8c0; }
+.badge.orange { background: #fff3e0; color: var(--orange); border: 1px solid #ffcc80; }
+.badge.blue { background: #e8effe; color: var(--blue); border: 1px solid #b3c6ef; }
+.badge.yellow { background: #fffde6; color: #7a6000; border: 1px solid #f5d88a; }
+.badge.gray { background: var(--bg); color: var(--gray); border: 1px solid var(--gray-light); }
+
+/* FOOTER DEMO */
+.footer-demo { background: var(--bg); border-radius: 8px; padding: 36px 32px; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 24px; border: 1px solid var(--separator); }
+.fd-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; color: var(--text-solid); }
+.fd-col ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.fd-col li { font-size: 12px; color: var(--text-solid); text-transform: uppercase; letter-spacing: 0.3px; }
+
+/* USP */
+.usp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.usp-card { background: var(--bg); border-radius: 8px; padding: 22px 24px; border-top: 3px solid var(--red); }
+.usp-num { font-size: 24px; font-weight: 700; color: var(--red); opacity: 0.3; line-height: 1; margin-bottom: 10px; }
+.usp-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.usp-body { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
+
+/* TOV */
+.tov-item { display: flex; gap: 14px; padding: 14px 18px; background: var(--bg); border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--blue); }
+.tov-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.tov-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.tov-body { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.tov-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+.tov-col { border-radius: 8px; padding: 18px 20px; }
+.tov-col.do { background: #f0faf0; border: 1px solid #b8ddb8; }
+.tov-col.dont { background: #fff0f3; border: 1px solid #f5b8c0; }
+.tov-col-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
+.tov-col.do .tov-col-title { color: #2a6b2a; }
+.tov-col.dont .tov-col-title { color: #8a0000; }
+.tov-col ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.tov-col li { font-size: 13px; padding-left: 18px; position: relative; line-height: 1.4; }
+.tov-col li::before { position: absolute; left: 0; }
+.tov-col.do li::before { content: '✓'; color: #2a6b2a; }
+.tov-col.dont li::before { content: '✗'; color: #8a0000; }
+
+/* COPY */
+.copy-block { background: var(--bg); border-radius: 6px; padding: 14px 18px; margin-bottom: 10px; border-left: 3px solid var(--separator); }
+.copy-block.key { border-left-color: var(--blue); }
+.copy-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 5px; }
+.copy-text { font-size: 14px; line-height: 1.6; }
+.copy-tip { background: #fffbf0; border: 1px solid #f0d88a; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #7a5a00; margin-top: 10px; }
+
+/* SEO TABLE */
+.seo-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.seo-table th { text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); padding: 8px 12px; background: var(--bg); }
+.seo-table td { padding: 10px 12px; border-bottom: 1px solid var(--separator); vertical-align: top; }
+.seo-table tr:last-child td { border-bottom: none; }
+
+/* CSS TOKENS TABLE */
+.tokens-table { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:8px; }
+.tokens-table th { text-align:left; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-muted); padding:8px 10px; background:var(--bg); }
+.tokens-table td { padding:8px 10px; border-bottom:1px solid var(--separator); vertical-align:middle; }
+.tokens-table tr:last-child td { border-bottom:none; }
+.tok-name { font-family:'Courier New',monospace; font-size:11px; color:var(--blue); }
+.tok-val { font-family:'Courier New',monospace; font-size:11px; color:var(--text-solid); }
+.tok-desc { font-size:11px; color:var(--text-muted); }
+.tok-swatch { display:inline-block; width:13px; height:13px; border-radius:2px; vertical-align:middle; margin-right:6px; border:1px solid rgba(0,0,0,0.12); }
+.tok-group td { background:var(--bg); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--text-muted); padding:7px 10px; border-bottom:1px solid var(--separator); }
+.radius-demo { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+.radius-box { display:flex; flex-direction:column; align-items:center; gap:8px; }
+.radius-shape { width:56px; height:36px; background:var(--blue); }
+.radius-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); text-align:center; }
+
+/* PRODUCT CARD */
+.product-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.product-card { background:var(--white); border:1px solid var(--separator); border-radius:3px; overflow:hidden; position:relative; }
+.pc-img { background:var(--bg); height:165px; display:flex; align-items:center; justify-content:center; color:var(--gray-light); font-size:11px; text-transform:uppercase; letter-spacing:1px; position:relative; }
+.pc-img svg { opacity:0.25; }
+.pc-badge-wrap { position:absolute; top:8px; left:8px; display:flex; gap:4px; flex-wrap:wrap; }
+.pc-body { padding:13px 14px; }
+.pc-brand { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:3px; }
+.pc-name { font-size:13px; font-weight:600; line-height:1.35; margin-bottom:8px; color:var(--text-solid); min-height:36px; }
+.pc-price { font-size:20px; font-weight:700; color:var(--text-solid); line-height:1; }
+.pc-price-sale { font-size:14px; font-weight:700; color:var(--alert-red); }
+.pc-price-orig { font-size:12px; color:var(--text-muted); text-decoration:line-through; margin-left:4px; }
+.pc-price-vat { font-size:10px; color:var(--text-muted); margin-top:2px; margin-bottom:10px; }
+.pc-avail { display:flex; align-items:center; gap:4px; font-size:11px; font-weight:600; margin-bottom:10px; }
+.avail-green { color:var(--green); }
+.avail-orange { color:var(--orange); }
+.avail-green::before, .avail-orange::before { content:'●'; font-size:8px; }
+.pc-btn { display:block; text-align:center; background:var(--blue); color:var(--white); padding:9px 14px; border-radius:3px; font-family:var(--font); font-size:13px; font-weight:700; cursor:default; letter-spacing:0.2px; }
+.pc-btn-disabled { background:var(--gray-light); color:var(--gray); cursor:default; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-content">
+    <div class="cover-tag">Brand Book · Interní dokument · Pickerly · Červen 2026</div>
+    <div class="cover-logo">
+      <img src="../Brand/VAPP_logo.png" alt="VAPP logo" style="height:56px;display:block;margin-bottom:8px;">
+      <div class="cover-logo-tagline">Přívěsy a příslušenství</div>
+    </div>
+    <div class="cover-desc">Vizuální identita, barevná paleta, typografie a tone of voice. Sestaveno ze screenshotů živého webu a CSS custom properties (DevTools vapp.cz).</div>
+    <div class="cover-meta">
+      <div><div class="cm-label">Web</div><div class="cm-value">vapp.cz / vapp.sk</div></div>
+      <div><div class="cm-label">Platform</div><div class="cm-value">BSSHOP</div></div>
+      <div><div class="cm-label">Font</div><div class="cm-value">Exo 2</div></div>
+      <div><div class="cm-label">Zdroj</div><div class="cm-value">DevTools + screenshot</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO & IDENTITA -->
+<section>
+  <div class="sec-label">01 — Logo &amp; Identita</div>
+  <div class="sec-title">Logotyp VAPP</div>
+  <div class="sec-sub">Wordmark s registrovanou ochrannou známkou. Červené logo na bílém pozadí = primární varianta.</div>
+
+  <div class="logo-demo-wrap">
+    <div class="logo-demo white">
+      <img src="../Brand/VAPP_logo.png" alt="VAPP logo" style="max-width:200px;height:auto;display:block;margin-bottom:8px;">
+      <div class="ld-tagline">Přívěsy a příslušenství</div>
+      <div class="ld-label">Primární — bílé pozadí ✓</div>
+    </div>
+    <div class="logo-demo light">
+      <img src="../Brand/VAPP_logo.png" alt="VAPP logo" style="max-width:130px;height:auto;display:block;margin-bottom:8px;">
+      <div class="ld-tagline">Přívěsy</div>
+      <div class="ld-label">Na #f6f7f7 ✓</div>
+    </div>
+    <div class="logo-demo dark">
+      <img src="../Brand/VAPP_logo.png" alt="VAPP logo" style="max-width:130px;height:auto;display:block;filter:brightness(0) invert(1);margin-bottom:8px;">
+      <div class="ld-tagline" style="color:#888">Bílá verze</div>
+      <div class="ld-label">Výjimečně (tmavé bannery)</div>
+    </div>
+  </div>
+
+  <div class="logo-note">Logo VAPP: geometrický boldový wordmark, <strong>červená #e31e24</strong> na bílém pozadí = primární varianta. Soubor: VAPP_logo.png / SVG. Nikdy: přebarvování, deformace, použití červené pro jiné UI prvky na stejné ploše.</div>
+
+  <hr class="div">
+  <div class="id-grid">
+    <div class="id-card"><div class="id-label">Plný název</div><div class="id-value"><strong>VAPP s.r.o.</strong></div></div>
+    <div class="id-card"><div class="id-label">Tagline (vždy v modré)</div><div class="id-value" style="color:var(--blue);font-weight:600;">Přívěsy a příslušenství</div></div>
+    <div class="id-card"><div class="id-label">Adresa</div><div class="id-value">Popovičky 38, 251 01 Praha-východ</div></div>
+    <div class="id-card"><div class="id-label">Kontakt</div><div class="id-value">603 924 555 · info@vapp.cz</div></div>
+    <div class="id-card"><div class="id-label">Historické kotvení</div><div class="id-value">Výroba od 1991, tradice od 1898</div></div>
+    <div class="id-card"><div class="id-label">IČ / DIČ</div><div class="id-value">24140309 / CZ24140309</div></div>
+    <div class="id-card" style="grid-column:1/-1"><div class="id-label">Portfolio</div><div class="id-value">Náhradní díly · Přívěsy (VAPP, Agados, Unsinn, STEMA, Debon) · Servis (AL-KO, BPW, KNOTT) · Půjčovna · Poradna</div></div>
+  </div>
+</section>
+
+<!-- BARVY -->
+<section>
+  <div class="sec-label">02 — Barevná paleta</div>
+  <div class="sec-title">Barvy VAPP</div>
+  <div class="sec-sub">CSS custom properties (DevTools) + vizuální verifikace screenshotů. Zjednodušená provozní paleta.</div>
+
+  <div class="palette-section-label">Primární paleta</div>
+  <div class="palette-primary">
+    <div class="swatch">
+      <div class="sw-fill tall" style="background:linear-gradient(160deg,#f03030 0%,#e31e24 60%,#b01818 100%)">
+        <span class="sw-token" style="color:#fff">Logo</span>
+      </div>
+      <div class="sw-info">
+        <div class="sw-name">VAPP Red</div>
+        <div class="sw-hex">#e31e24</div>
+        <div class="sw-role">Wordmark, logo. Výhradně pro brand mark. Nelze kombinovat s alert-red na stejné ploše.</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="sw-fill tall" style="background:linear-gradient(160deg,#1a6ef5 0%,#1652b4 60%,#124290 100%)">
+        <span class="sw-token" style="color:#fff">--main-color</span>
+      </div>
+      <div class="sw-info">
+        <div class="sw-name">VAPP Blue</div>
+        <div class="sw-hex">#1652b4</div>
+        <div class="sw-role">CTA tlačítka, aktivní nav, tagline, checkboxy, odkazy.</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="sw-fill tall" style="background:#ffffff;border:1px solid var(--separator)">
+        <span class="sw-token" style="color:#aaa">header</span>
+      </div>
+      <div class="sw-info">
+        <div class="sw-name">Bílá</div>
+        <div class="sw-hex">#ffffff</div>
+        <div class="sw-role">Header, karty, produkty. Primární povrch celého webu.</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="sw-fill tall" style="background:linear-gradient(160deg,#fff 0%,#f6f7f7 60%,#eaebeb 100%)">
+        <span class="sw-token" style="color:#aaa">--neutral</span>
+      </div>
+      <div class="sw-info">
+        <div class="sw-name">Pozadí</div>
+        <div class="sw-hex">#f6f7f7</div>
+        <div class="sw-role">Pozadí stránky, footer, panely.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="palette-section-label" style="margin-top:8px;">Funkční barvy</div>
+  <div class="palette-accent">
+    <div class="swatch">
+      <div class="sw-fill" style="background:#ffe710"></div>
+      <div class="sw-info"><div class="sw-name">Žlutá</div><div class="sw-hex">#ffe710</div><div class="sw-role">V CSS existuje, ale pro košík se nepoužívá — košík je modrý</div></div>
+    </div>
+    <div class="swatch">
+      <div class="sw-fill" style="background:#eb3b5a"></div>
+      <div class="sw-info"><div class="sw-name">Alert</div><div class="sw-hex">#eb3b5a</div><div class="sw-role">Výprodej, chyby</div></div>
+    </div>
+    <div class="swatch">
+      <div class="sw-fill" style="background:#00a523"></div>
+      <div class="sw-info"><div class="sw-name">Skladem</div><div class="sw-hex">#00a523</div><div class="sw-role">Dostupnost, OK</div></div>
+    </div>
+    <div class="swatch">
+      <div class="sw-fill" style="background:#ffa500"></div>
+      <div class="sw-info"><div class="sw-name">Upozornění</div><div class="sw-hex">#ffa500</div><div class="sw-role">Na objednávku</div></div>
+    </div>
+    <div class="swatch">
+      <div class="sw-fill" style="background:#616161"></div>
+      <div class="sw-info"><div class="sw-name">Šedá</div><div class="sw-hex">#616161</div><div class="sw-role">Ikony, sekundární</div></div>
+    </div>
+  </div>
+
+  <hr class="div">
+  <div style="font-size:13px;color:var(--text-muted);line-height:1.7;">
+    <strong style="color:var(--text-solid)">Klíčové pravidlo:</strong> Červená je výhradně pro logo. Akcentní/CTA role patří <strong style="color:var(--blue)">modré #1652b4</strong>. <strong style="color:var(--blue)">Tlačítko "Do košíku" = modrá #1652b4</strong> (<code>--inbasket-button-color: #1652b4; --inbasket-button-gradient: none</code>). Žlutá #ffe710 v CSS existuje, ale pro košík se nepoužívá. Web má <strong>světlé pozadí</strong> — žádné tmavé plochy v hlavních sekcích. Header je bílý.
+  </div>
+</section>
+
+<!-- TYPOGRAFIE -->
+<section>
+  <div class="sec-label">03 — Typografie</div>
+  <div class="sec-title">Font systém</div>
+  <div class="sec-sub">Exo 2 — moderní geometrický sans-serif s technickým charakterem.</div>
+
+  <div class="font-spec">
+    <div style="font-size:24px;font-weight:700;letter-spacing:-0.5px;">Exo 2</div>
+    <div class="fs-stack">'Exo 2', Helvetica, Arial, sans-serif</div>
+    <div class="fs-weights">
+      <div class="fs-w">300 Light</div>
+      <div class="fs-w">400 Regular</div>
+      <div class="fs-w">600 SemiBold</div>
+      <div class="fs-w">700 Bold</div>
+    </div>
+  </div>
+
+  <div class="type-row">
+    <div class="type-meta">H1 · 34px · Bold (700)</div>
+    <div class="ts-h1">Blatníky a zástěrky na přívěsy</div>
+  </div>
+  <div class="type-row">
+    <div class="type-meta">H2 / Footer nadpis · 20px · Bold (700) · UPPERCASE</div>
+    <div class="ts-h2">Sortiment a služby</div>
+  </div>
+  <div class="type-row">
+    <div class="type-meta">Navigace · 13px · Bold (700) · UPPERCASE</div>
+    <div class="ts-nav">Přívěsy &nbsp;·&nbsp; Náhradní díly &nbsp;·&nbsp; Servis &nbsp;·&nbsp; Půjčovna</div>
+  </div>
+  <div class="type-row">
+    <div class="type-meta">Body · 15px · Regular (400) · line-height 1.65</div>
+    <div class="ts-body">Blatníky chrání karoserii tažného vozidla i okolí přívěsu před rozstřikovaným blátem, kamínky a vodou. Nabízíme plastové i plechové varianty pro kola od 8" do 14" a více, tandemové blatníky pro dvounápravové přívěsy.</div>
+  </div>
+  <div class="type-row">
+    <div class="type-meta">Cena · 22px · Bold (700)</div>
+    <div class="ts-price">1 249 Kč <span style="font-size:14px;font-weight:400;color:var(--text-muted)">bez DPH 1 032 Kč</span></div>
+  </div>
+  <div class="type-row">
+    <div class="type-meta">Metadata / popisky · 12px · Regular (400) · color: muted</div>
+    <div class="ts-small">Rychlá expedice · Skladem · Odborné poradenství · Český výrobce od 1991</div>
+  </div>
+</section>
+
+<!-- UI KOMPONENTY -->
+<section>
+  <div class="sec-label">04 — UI Komponenty</div>
+  <div class="sec-title">Navigace (dle screenshotu)</div>
+  <div class="sec-sub">Bílý header · červené logo · modrý tagline · tučný uppercase text pro primární nav · světlý bod-bod pro sekundární nav</div>
+
+  <div class="nav-demo-wrap">
+    <div class="nav-demo-top">
+      <div>
+        <div class="nd-logo">VAPP<sup style="font-size:10px">®</sup></div>
+        <div class="nd-tagline">Přívěsy a příslušenství</div>
+      </div>
+      <div class="nd-search"><input type="text" placeholder="Zadejte hledaný výraz..." disabled></div>
+      <div class="nd-contact">603 924 555<br>info@vapp.cz</div>
+      <div style="font-size:11px;color:var(--text-muted);text-align:right;">Přihlášení<br>Registrace</div>
+    </div>
+    <div class="nav-demo-bottom">
+      <div class="nd-primary">
+        <div class="nd-item">Přívěsy</div>
+        <div class="nd-item active">Náhradní díly</div>
+        <div class="nd-item">Servis</div>
+        <div class="nd-item">Půjčovna</div>
+      </div>
+      <div class="nd-secondary">
+        <div class="nd-sec">Obchodní podmínky e-shopu</div>
+        <div class="nd-sec">O nás</div>
+        <div class="nd-sec">Poradna</div>
+        <div class="nd-sec">Kontakt</div>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:12px;color:var(--text-muted);margin-top:8px;">Aktivní položka = červený border-bottom (barva loga). Header: bílé pozadí #ffffff.</div>
+
+  <hr class="div">
+  <div style="font-size:15px;font-weight:700;margin-bottom:14px;">Tlačítka</div>
+  <div class="btn-grid">
+    <div><a class="btn btn-blue">Přejít do E-shopu</a><div class="btn-label">Primární CTA · #1652b4</div></div>
+    <div><a class="btn btn-blue">🛒 Do košíku</a><div class="btn-label">--inbasket-button-color · #1652b4<br><span style="color:#eb3b5a;font-weight:700">⚠ NE žlutá — košík je modrý</span></div></div>
+    <div><a class="btn btn-gray">Servis</a><div class="btn-label">Sekundární · #616161</div></div>
+    <div><a class="btn btn-outline">Technický rádce</a><div class="btn-label">Outline · border #1652b4</div></div>
+    <div><a class="btn btn-light">Zobrazit více</a><div class="btn-label">Neutrální · #f6f7f7</div></div>
+  </div>
+
+  <hr class="div">
+  <div style="font-size:15px;font-weight:700;margin-bottom:12px;">Stavové štítky</div>
+  <div class="badge-row">
+    <span class="badge green">Skladem</span>
+    <span class="badge orange">Na objednávku</span>
+    <span class="badge red">Výprodej</span>
+    <span class="badge blue">Novinka</span>
+    <span class="badge yellow">Akce</span>
+    <span class="badge gray">Nedostupné</span>
+  </div>
+</section>
+
+<!-- FOOTER DEMO -->
+<section>
+  <div class="sec-label">05 — Patička</div>
+  <div class="sec-title">Footer (dle screenshotu)</div>
+  <div class="sec-sub">Světlé pozadí #f6f7f7 · tučné uppercase nadpisy · plain uppercase links · loga partnerů</div>
+
+  <div class="footer-demo">
+    <div class="fd-col">
+      <div class="fd-col-title">Společnost VAPP</div>
+      <ul><li>O nás</li><li>Poloha v mapě</li><li>Kontakty</li></ul>
+      <div class="fd-col-title" style="margin-top:16px;">Sociální sítě</div>
+      <div style="font-size:12px;color:var(--text-muted);">Facebook · Instagram · YouTube</div>
+    </div>
+    <div class="fd-col">
+      <div class="fd-col-title">Sortiment a služby</div>
+      <ul><li>Náhradní díly</li><li>Přívěsy</li><li>Servis</li><li>Půjčovna</li><li>Poradna</li></ul>
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:16px;font-weight:700;color:var(--red);">VAPP<sup>®</sup></div>
+        <div style="font-size:13px;font-weight:700;color:#f07000;">agados</div>
+        <div style="font-size:13px;font-weight:700;color:#006600;">UNSINN</div>
+        <div style="font-size:13px;font-weight:700;">STEMA</div>
+      </div>
+    </div>
+    <div class="fd-col">
+      <div class="fd-col-title">Důležité informace</div>
+      <ul><li>Obchodní podmínky</li><li>Podmínky půjčovny</li><li>Ochrana os. údajů</li><li>Splátky ESSOX</li><li>Reklamace a vrácení</li></ul>
+    </div>
+    <div class="fd-col">
+      <div class="fd-col-title">Čím u nás zaplatíte</div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.8;">Apple Pay · Google Pay · QR platba · VISA · Mastercard · Maestro · Verified by VISA · Mastercard SecureCode</div>
+    </div>
+  </div>
+</section>
+
+<!-- USP -->
+<section>
+  <div class="sec-label">06 — Klíčová sdělení</div>
+  <div class="sec-title">USP — 4 pilíře komunikace</div>
+  <div class="sec-sub">Konzistentně opakovat napříč všemi kanály v tomto pořadí.</div>
+  <div class="usp-grid">
+    <div class="usp-card"><div class="usp-num">01</div><div class="usp-title">Český výrobce od 1991</div><div class="usp-body">Vlastní výroba přívěsů od roku 1991. Strojírenská tradice od 1898. Česká firma, česká výroba.</div></div>
+    <div class="usp-card"><div class="usp-num">02</div><div class="usp-title">Velké skladové zásoby</div><div class="usp-body">Tisíce dílů skladem — rychlá expedice bez čekání na dovoz ze zahraničí.</div></div>
+    <div class="usp-card"><div class="usp-num">03</div><div class="usp-title">Široký výběr náhradních dílů</div><div class="usp-body">AL-KO, KNOTT, BPW, Winterhoff, Jokon, Lucidity, Fristom a mnoho dalších na jednom místě.</div></div>
+    <div class="usp-card"><div class="usp-num">04</div><div class="usp-title">Odborná zákaznická podpora</div><div class="usp-body">Live chat, telefon, e-mail + Technická poradna. Po–Pá 8:30–16:30. Poradí s výběrem.</div></div>
+  </div>
+</section>
+
+<!-- TOV -->
+<section>
+  <div class="sec-label">07 — Tone of Voice</div>
+  <div class="sec-title">Jak VAPP komunikuje</div>
+  <div class="sec-sub">Z analýzy kategorijních textů a kopírovacích dokumentů (Textace).</div>
+
+  <div class="tov-item"><div class="tov-icon">⚙️</div><div><div class="tov-title">Odborné a věcné — bez prázdných frází</div><div class="tov-body">Text popisuje funkci, parametry, způsob výběru. Žádné superlativy. Zákazník = odborník nebo zanícený uživatel.</div></div></div>
+  <div class="tov-item"><div class="tov-icon">🔧</div><div><div class="tov-title">Praktická pomoc přímo v textu — Tip: boxy</div><div class="tov-body">"Pokud si nejste jisti, podívejte se na boční stěnu pneumatiky..." Zákazník dostane odpověď přímo v textu, ne až po telefonátu.</div></div></div>
+  <div class="tov-item"><div class="tov-icon">🇨🇿</div><div><div class="tov-title">Čistá čeština, bez anglicismů</div><div class="tov-body">Žádné "features", "boost", "easy to use". Sebe označuje "Náš sortiment" nebo "Ve VAPP". Značky: AL-KO, KNOTT.</div></div></div>
+  <div class="tov-item"><div class="tov-icon">🔒</div><div><div class="tov-title">Bezpečnost a zákonné požadavky jako kontext</div><div class="tov-body">"Správně fungující osvětlení je ze zákona povinné." Odlišuje VAPP od levných e-shopů.</div></div></div>
+
+  <div class="tov-cols">
+    <div class="tov-col do"><div class="tov-col-title">✓ VAPP píše</div><ul>
+      <li>Náprava přenáší veškerou hmotnost přívěsu na vozovku</li>
+      <li>Tip: Podívejte se na boční stěnu pneumatiky</li>
+      <li>Správně fungující osvětlení je ze zákona povinné</li>
+      <li>AL-KO, KNOTT — s uvedením výrobce dílu</li>
+      <li>Rychlé dodání, odborné poradenství</li>
+    </ul></div>
+    <div class="tov-col dont"><div class="tov-col-title">✗ VAPP nepíše</div><ul>
+      <li>Nejlepší blatníky na trhu za super cenu!</li>
+      <li>Nakupte hned a ušetřete!!!</li>
+      <li>Our amazing selection of trailer parts</li>
+      <li>Revoluční řešení pro váš trailer</li>
+      <li>Zákazník je pro nás na prvním místě</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- COPY -->
+<section>
+  <div class="sec-label">08 — Copywriting</div>
+  <div class="sec-title">SEO struktura a vzorové texty</div>
+  <div class="sec-sub">Standard pro nový web. Odvozeno z reálných textů vapp.cz.</div>
+
+  <table class="seo-table">
+    <thead><tr><th>Element</th><th>Délka</th><th>Pravidla</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Meta title</strong></td><td>50–60 zn.</td><td>[Produkt] – [typ/varianta] | VAPP</td></tr>
+      <tr><td><strong>Meta description</strong></td><td>140–160 zn.</td><td>Výčet podkategorií nebo benefitů.</td></tr>
+      <tr><td><strong>H1</strong></td><td>4–8 slov</td><td>Shodné nebo blízké meta title. KW na začátku.</td></tr>
+      <tr><td><strong>Perex</strong></td><td>2–4 věty</td><td>Shrnutí sortimentu + klíčové varianty. Viditelný vždy.</td></tr>
+      <tr><td><strong>Rozvinutý text</strong></td><td>400–800 slov</td><td>Tech. výklad + Tip: boxy + podkategorie. Pod "Zobrazit více".</td></tr>
+    </tbody>
+  </table>
+
+  <hr class="div">
+  <div class="copy-block key"><div class="copy-label">Meta Title — Blatníky</div><div class="copy-text">Blatníky a zástěrky na přívěsy – plastové, plechové | VAPP</div></div>
+  <div class="copy-block key"><div class="copy-label">Perex — Blatníky</div><div class="copy-text">Blatníky chrání karoserii tažného vozidla i okolí přívěsu před rozstřikovaným blátem, kamínky a vodou. Nabízíme plastové i plechové varianty pro kola od 8" do 14" a více, tandemové blatníky pro dvounápravové přívěsy a kompletní sortiment držáků a zástěrek.</div></div>
+  <div class="copy-block key"><div class="copy-label">Perex — Elektro</div><div class="copy-text">V kategorii najdete vše, co potřebujete k elektroinstalaci a osvětlení přívěsu – od sdružených zadních svítilen a obrysových světel přes kabely, konektory a zásuvky až po odrazky, žárovky a LED moduly.</div></div>
+  <div class="copy-tip"><strong>Tip vzor:</strong> "Pokud si nejste jisti správnou velikostí, podívejte se na boční stěnu pneumatiky – naleznete tam rozměr ve formátu šířka/profil/průměr, např. 195/50 R13. Číslo za R je průměr ráfku v palcích."</div>
+</section>
+
+
+<!-- OBCHODNÍ KONTEXT -->
+<section>
+  <div class="sec-label">09 — Obchodní kontext</div>
+  <div class="sec-title">Client info — klíčové poznatky</div>
+  <div class="sec-sub">Z kick-off dotazníku VAPP. Zdroj: /Brand/client info.txt</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+    <div class="id-card" style="border-left:3px solid var(--red);">
+      <div class="id-label">Cíle na 12 měsíců</div>
+      <div class="id-value" style="font-size:13px;line-height:1.6;">+10–20% objednávek i obratu YoY · Zlepšení UX přehlednosti · Snížení podporové zátěže (technické dotazy)</div>
+    </div>
+    <div class="id-card" style="border-left:3px solid var(--blue);">
+      <div class="id-label">Mix zákazníků</div>
+      <div class="id-value" style="font-size:13px;line-height:1.6;">B2B : B2C = 2 : 1 (objem), ale <strong>B2C = nejvyšší ziskovost</strong>. Komunikace na B2B v podstatě neexistuje.</div>
+    </div>
+    <div class="id-card" style="border-left:3px solid var(--yellow-dark);">
+      <div class="id-label">Hlavní problémy zákazníků</div>
+      <div class="id-value" style="font-size:13px;line-height:1.6;">Orientace v sortimentu · Výběr správného dílu · Technické parametry · Ceny konkurence</div>
+    </div>
+    <div class="id-card" style="border-left:3px solid var(--green);">
+      <div class="id-label">Nejčastější dotazy na podporu</div>
+      <div class="id-value" style="font-size:13px;line-height:1.6;">Technické dotazy · Poradenství s výběrem dílů · Legislativa (osvětlení, brzdy) · Kompatibilita</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px;">
+    <div class="id-card">
+      <div class="id-label">Nejvyšší marže</div>
+      <div class="id-value" style="font-size:13px;">Hliníkové nájezdy · Čínský import · Vlastní VAPP brand produkty</div>
+    </div>
+    <div class="id-card">
+      <div class="id-label">Sezónnost</div>
+      <div class="id-value" style="font-size:13px;">Slabý: leden–únor, nov–prosinec · Silný: jaro, léto (prázdniny)</div>
+    </div>
+    <div class="id-card">
+      <div class="id-label">Platforma</div>
+      <div class="id-value" style="font-size:13px;">BSSHOP — krabicové řešení + drobné moduly. Změny: dny–týdny, složitější měsíce.</div>
+    </div>
+    <div class="id-card">
+      <div class="id-label">Konkurenti (online)</div>
+      <div class="id-value" style="font-size:13px;">unitrailer · tanatech · Agados (B2B) · Pk technik · Autovia</div>
+    </div>
+    <div class="id-card">
+      <div class="id-label">Inspirace / benchmark</div>
+      <div class="id-value" style="font-size:13px;">kytary.cz · alza.cz · „Ve svém segmentu chceme být benchmarkem my"</div>
+    </div>
+    <div class="id-card">
+      <div class="id-label">Expanze</div>
+      <div class="id-value" style="font-size:13px;">SK live · DE doména koupena · Zvažují Rumunsko, Bulharsko</div>
+    </div>
+  </div>
+
+  <div style="background:var(--bg);border-radius:8px;padding:20px 24px;border-left:3px solid var(--blue);">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:12px;">Nákupní scénáře — 3 hlavní typy</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+      <div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">⚡ Urgentní oprava</div>
+        <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">„Potřebuji rychle náhradní díl" — B2C + B2B. Nejčastější scénář. Klíčová: dostupnost skladem + snadné nalezení dílu.</div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">🔄 Pravidelné nákupy</div>
+        <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Servisy, B2B zákazníci — opakované objednávky. Klíčové: efektivní vyhledávání, B2B sekce (zatím chybí).</div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">🚛 Nákup přívěsu</div>
+        <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Plánovaný nákup — déle rozhodovací proces. Klíčové: porovnání, technické parametry, poradna.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="div">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+    <div style="background:#fff8e6;border:1px solid #f5d88a;border-radius:8px;padding:16px 20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#7a5a00;margin-bottom:10px;">⚠ Komunikační mezery (z client info)</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+        <li style="font-size:12px;color:#7a5a00;padding-left:16px;position:relative;"><span style="position:absolute;left:0;">→</span>B2B komunikace na webu prakticky neexistuje</li>
+        <li style="font-size:12px;color:#7a5a00;padding-left:16px;position:relative;"><span style="position:absolute;left:0;">→</span>Zákazníci neznají kompatibilitu — volají/píší</li>
+        <li style="font-size:12px;color:#7a5a00;padding-left:16px;position:relative;"><span style="position:absolute;left:0;">→</span>Produkty Lextrailer se špatně prodávají (neví se proč)</li>
+        <li style="font-size:12px;color:#7a5a00;padding-left:16px;position:relative;"><span style="position:absolute;left:0;">→</span>Zákazníci s vlastním VAPP brandem — sortiment malý, ale priority</li>
+      </ul>
+    </div>
+    <div style="background:#f0faf0;border:1px solid #b8ddb8;border-radius:8px;padding:16px 20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#2a6b2a;margin-bottom:10px;">✓ Silné stránky pro komunikaci</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+        <li style="font-size:12px;color:#2a6b2a;padding-left:16px;position:relative;"><span style="position:absolute;left:0;">✓</span>Kvalita služeb jako priorita nad cenou</li>
+        <li style="font-size:12px;color:#2a6b2a;padding-left:16px;position:relative;"><span style="position:absolute;left:0;">✓</span>Skladová dostupnost — silná differenciace</li>
+        <li style="font-size:12px;color:#2a6b2a;padding-left:16px;position:relative;"><span style="position:absolute;left:0;">✓</span>Odborná podpora (poradna, live chat)</li>
+        <li style="font-size:12px;color:#2a6b2a;padding-left:16px;position:relative;"><span style="position:absolute;left:0;">✓</span>Šířka nabídky + servis na jednom místě</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CSS DESIGN TOKENS -->
+<section>
+  <div class="sec-label">10 — CSS Design Tokeny</div>
+  <div class="sec-title">CSS custom properties (vapp.cz)</div>
+  <div class="sec-sub">Kompletní reference proměnných z DevTools vapp.cz. Zdroj: BSSHOP platform. Použít při implementaci komponent nebo psaní inline stylů.</div>
+
+  <table class="tokens-table">
+    <thead><tr><th>Proměnná</th><th>Hodnota</th><th>Použití</th></tr></thead>
+    <tbody>
+      <!-- BARVY: HLAVNÍ PALETA -->
+      <tr class="tok-group"><td colspan="3">Barvy — hlavní paleta</td></tr>
+      <tr>
+        <td class="tok-name">--main-color</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:#1652b4"></span>#1652b4</td>
+        <td class="tok-desc">Primární akcentní barva — CTA tlačítka, aktivní navigace, tagline, checkboxy, odkazy</td>
+      </tr>
+      <tr>
+        <td class="tok-name">--primary-color</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:#616161"></span>#616161</td>
+        <td class="tok-desc">Ikony, sekundární tlačítka, šedý text</td>
+      </tr>
+      <tr>
+        <td class="tok-name">--secondary-color</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:#d4d4d4"></span>#d4d4d4</td>
+        <td class="tok-desc">Oddělovače, neaktivní prvky, placeholdery</td>
+      </tr>
+      <tr>
+        <td class="tok-name">--neutral-color</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:#f6f7f7;border-color:#ddd"></span>#f6f7f7</td>
+        <td class="tok-desc">Pozadí stránky, panely, patička</td>
+      </tr>
+      <!-- BARVY: TEXT -->
+      <tr class="tok-group"><td colspan="3">Barvy — text</td></tr>
+      <tr>
+        <td class="tok-name">—</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:#2b3033"></span>#2b3033</td>
+        <td class="tok-desc">Primární text (text-solid) — nadpisy, ceny, názvy produktů</td>
+      </tr>
+      <tr>
+        <td class="tok-name">—</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:rgba(43,48,51,0.9)"></span>rgba(43,48,51,0.9)</td>
+        <td class="tok-desc">Běžný body text (90% opacity)</td>
+      </tr>
+      <tr>
+        <td class="tok-name">—</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:rgba(43,48,51,0.55)"></span>rgba(43,48,51,0.55)</td>
+        <td class="tok-desc">Popisky, metadata, sekundární text (55% opacity)</td>
+      </tr>
+      <!-- BARVY: STAVOVÉ -->
+      <tr class="tok-group"><td colspan="3">Barvy — stavové</td></tr>
+      <tr>
+        <td class="tok-name">—</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:#00a523"></span>#00a523</td>
+        <td class="tok-desc">Skladem, pozitivní stav (green)</td>
+      </tr>
+      <tr>
+        <td class="tok-name">—</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:#ffa500"></span>#ffa500</td>
+        <td class="tok-desc">Na objednávku, upozornění (orange)</td>
+      </tr>
+      <tr>
+        <td class="tok-name">—</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:#eb3b5a"></span>#eb3b5a</td>
+        <td class="tok-desc">Výprodej, chyba, alert (alert-red) — ≠ logo red</td>
+      </tr>
+      <tr>
+        <td class="tok-name">—</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:#ffe710;border-color:#ccc"></span>#ffe710</td>
+        <td class="tok-desc">Žlutá — v CSS existuje, pro košík se NEPOUŽÍVÁ (košík = #1652b4)</td>
+      </tr>
+      <!-- E-COMMERCE: KOŠÍK -->
+      <tr class="tok-group"><td colspan="3">E-commerce — košík a objednávka</td></tr>
+      <tr>
+        <td class="tok-name">--inbasket-button-color</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:#1652b4"></span>#1652b4</td>
+        <td class="tok-desc"><strong>Tlačítko "Do košíku"</strong> — modrá, bez gradientu. Klíčové pro nové prototypy.</td>
+      </tr>
+      <tr>
+        <td class="tok-name">--inbasket-button-gradient</td>
+        <td class="tok-val" style="font-family:'Courier New',monospace;font-size:11px;">none</td>
+        <td class="tok-desc">Košík nemá gradient — plochý modrý button</td>
+      </tr>
+      <!-- TYPOGRAFIE -->
+      <tr class="tok-group"><td colspan="3">Typografie</td></tr>
+      <tr>
+        <td class="tok-name">--fontFamily</td>
+        <td class="tok-val" style="font-family:'Courier New',monospace;font-size:11px;">'Exo 2', Helvetica, Arial, sans-serif</td>
+        <td class="tok-desc">Globální font stack celého webu</td>
+      </tr>
+      <tr>
+        <td class="tok-name">--fontSize</td>
+        <td class="tok-val" style="font-family:'Courier New',monospace;font-size:11px;">14px</td>
+        <td class="tok-desc">Základní velikost textu (platforma BSSHOP). Navigace: 13px, perex: 14–15px.</td>
+      </tr>
+      <!-- TVAR / BORDER-RADIUS -->
+      <tr class="tok-group"><td colspan="3">Tvar — border-radius</td></tr>
+      <tr>
+        <td class="tok-name">--border-radius</td>
+        <td class="tok-val" style="font-family:'Courier New',monospace;font-size:11px;">3px</td>
+        <td class="tok-desc">Základní zaoblení pro všechny UI prvky — konzistentně plochý design</td>
+      </tr>
+      <tr>
+        <td class="tok-name">--button-border-radius</td>
+        <td class="tok-val" style="font-family:'Courier New',monospace;font-size:11px;">3px</td>
+        <td class="tok-desc">Tlačítka — mírné zaoblení, ne kulaté</td>
+      </tr>
+      <tr>
+        <td class="tok-name">--input-border-radius</td>
+        <td class="tok-val" style="font-family:'Courier New',monospace;font-size:11px;">3px</td>
+        <td class="tok-desc">Inputy, search pole, formuláře</td>
+      </tr>
+      <tr>
+        <td class="tok-name">--popup-border-radius</td>
+        <td class="tok-val" style="font-family:'Courier New',monospace;font-size:11px;">9px (= 3px × 3)</td>
+        <td class="tok-desc">Modály, dropdown panely, notifikace — výjimka od základního 3px</td>
+      </tr>
+      <!-- ODDĚLOVAČ -->
+      <tr class="tok-group"><td colspan="3">Povrchy a oddělovače</td></tr>
+      <tr>
+        <td class="tok-name">—</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:#eaebeb;border-color:#ccc"></span>#eaebeb</td>
+        <td class="tok-desc">Oddělovací čáry (separator) — slabší než secondary-color</td>
+      </tr>
+      <tr>
+        <td class="tok-name">—</td>
+        <td class="tok-val"><span class="tok-swatch" style="background:#124290"></span>#124290</td>
+        <td class="tok-desc">Hover stav modré — tmavší varianta --main-color (blue-dark)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr class="div">
+
+  <div style="font-size:13px;font-weight:700;margin-bottom:14px;">Vizuální demo border-radius</div>
+  <div class="radius-demo">
+    <div class="radius-box">
+      <div class="radius-shape" style="border-radius:3px"></div>
+      <div class="radius-label">3px<br>button, input, card</div>
+    </div>
+    <div class="radius-box">
+      <div class="radius-shape" style="border-radius:9px"></div>
+      <div class="radius-label">9px<br>popup, modal</div>
+    </div>
+    <div class="radius-box">
+      <div class="radius-shape" style="border-radius:6px;background:var(--gray-light)"></div>
+      <div class="radius-label">6px<br>brandbook info karty<br><span style="color:var(--alert-red)">≠ vapp.cz</span></div>
+    </div>
+    <div class="radius-box">
+      <div class="radius-shape" style="border-radius:0;background:var(--gray-light)"></div>
+      <div class="radius-label">0px<br>nepoužívat</div>
+    </div>
+  </div>
+
+  <div style="background:#fffbe6;border:1px solid #f0d070;border-radius:6px;padding:11px 16px;font-size:12px;color:#7a5a00;margin-top:16px;">
+    <strong>Pravidlo implementace:</strong> Při návrhu nových komponent vždy použij <code>border-radius: 3px</code> jako základ. Pro modály a dropdowny <code>9px</code>. Nikdy větší než 9px — design VAPP je záměrně flat, technický, bez "kulatého" pocitu moderních e-shopů.
+  </div>
+</section>
+
+<!-- PRODUKTOVÁ KARTA -->
+<section>
+  <div class="sec-label">11 — UI Komponenty</div>
+  <div class="sec-title">Produktová karta</div>
+  <div class="sec-sub">Základní e-commerce komponenta — tři stavy: skladem, na objednávku, výprodej. Vše odvozeno z CSS custom properties.</div>
+
+  <div class="product-grid">
+
+    <!-- Karta 1: Skladem -->
+    <div class="product-card">
+      <div class="pc-img">
+        <div class="pc-badge-wrap">
+          <span class="badge blue" style="font-size:10px;padding:2px 8px;">Novinka</span>
+        </div>
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="8" y="16" width="48" height="32" rx="2" stroke="#616161" stroke-width="2"/><circle cx="24" cy="48" r="5" stroke="#616161" stroke-width="2"/><circle cx="40" cy="48" r="5" stroke="#616161" stroke-width="2"/><path d="M8 32h48" stroke="#616161" stroke-width="1.5" stroke-dasharray="4 2"/></svg>
+        <div style="position:absolute;bottom:8px;right:8px;font-size:10px;color:var(--gray-light);">foto produktu</div>
+      </div>
+      <div class="pc-body">
+        <div class="pc-brand">AL-KO</div>
+        <div class="pc-name">Nápravový agregát 750 kg, brzdový</div>
+        <div class="pc-price">4 290 Kč</div>
+        <div class="pc-price-vat">bez DPH 3 545 Kč</div>
+        <div class="pc-avail avail-green">Skladem</div>
+        <div class="pc-btn">🛒 Do košíku</div>
+      </div>
+    </div>
+
+    <!-- Karta 2: Na objednávku -->
+    <div class="product-card">
+      <div class="pc-img">
+        <div class="pc-badge-wrap"></div>
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect x="16" y="8" width="32" height="48" rx="2" stroke="#616161" stroke-width="2"/><line x1="22" y1="20" x2="42" y2="20" stroke="#616161" stroke-width="1.5"/><line x1="22" y1="28" x2="42" y2="28" stroke="#616161" stroke-width="1.5"/><line x1="22" y1="36" x2="36" y2="36" stroke="#616161" stroke-width="1.5"/></svg>
+        <div style="position:absolute;bottom:8px;right:8px;font-size:10px;color:var(--gray-light);">foto produktu</div>
+      </div>
+      <div class="pc-body">
+        <div class="pc-brand">KNOTT</div>
+        <div class="pc-name">Brzdový buben 200×50 mm s ložisky</div>
+        <div class="pc-price">890 Kč</div>
+        <div class="pc-price-vat">bez DPH 736 Kč</div>
+        <div class="pc-avail avail-orange">Na objednávku</div>
+        <div class="pc-btn" style="background:var(--gray);border-radius:3px;">🛒 Do košíku</div>
+      </div>
+    </div>
+
+    <!-- Karta 3: Výprodej -->
+    <div class="product-card">
+      <div class="pc-img" style="background:#fff8f8;">
+        <div class="pc-badge-wrap">
+          <span class="badge red" style="font-size:10px;padding:2px 8px;">Výprodej −25%</span>
+        </div>
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="20" stroke="#616161" stroke-width="2"/><circle cx="32" cy="32" r="12" stroke="#616161" stroke-width="1.5"/><circle cx="32" cy="32" r="4" fill="#616161"/></svg>
+        <div style="position:absolute;bottom:8px;right:8px;font-size:10px;color:var(--gray-light);">foto produktu</div>
+      </div>
+      <div class="pc-body">
+        <div class="pc-brand">VAPP</div>
+        <div class="pc-name">Blatník plastový 195/50 R13 pravý</div>
+        <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;">
+          <span class="pc-price-sale">449 Kč</span>
+          <span class="pc-price-orig">599 Kč</span>
+        </div>
+        <div class="pc-price-vat">bez DPH 371 Kč</div>
+        <div class="pc-avail avail-green">Poslední 3 kusy</div>
+        <div class="pc-btn">🛒 Do košíku</div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="div">
+  <div style="font-size:13px;color:var(--text-muted);line-height:1.7;">
+    <strong style="color:var(--text-solid)">Pravidla produktové karty:</strong> Bílé pozadí karty (#fff) na šedém pozadí stránky (#f6f7f7). Border-radius <code>3px</code> — konzistentní s celým designem. Tlačítko "Do košíku" vždy <strong style="color:var(--blue)">modrá #1652b4</strong> bez gradientu (<code>--inbasket-button-color</code>). Cena: 20px Bold. Název: 13–14px SemiBold, min 2 řádky pro zarovnání karet. Badge: <code>border-radius: 3px</code>.
+  </div>
+
+  <hr class="div">
+  <div style="font-size:13px;font-weight:700;margin-bottom:14px;">Ikonový řádek dostupnosti</div>
+  <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center;">
+    <div class="pc-avail avail-green" style="margin:0;">Skladem</div>
+    <div class="pc-avail avail-orange" style="margin:0;">Na objednávku</div>
+    <div style="display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--alert-red);">● Výprodej</div>
+    <div style="display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--gray-light);">● Nedostupné</div>
+  </div>
+</section>
+
+<!-- FOOTER BRAND BOOK -->
+<div style="background:var(--white);padding:20px 56px;border-top:1px solid var(--separator);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text-muted);">
+  <div>© 2026 VAPP s.r.o. · Interní dokument Pickerly</div>
+  <div>Zdroj: DevTools vapp.cz · Screenshot · Exo 2 · Červenec 2026</div>
+</div>
+
+</div>
+</body>
+</html>
