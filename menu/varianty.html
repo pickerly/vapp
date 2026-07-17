@@ -92,8 +92,10 @@ body{font-family:'Exo 2',Helvetica,Arial,sans-serif;font-size:16px;background:#f
 .blk.sale .thumb{background:#fdf0f0;border-color:#f0c8c8}
 .blk.sale .thumb .ph{stroke:#e31e24}
 
-/* V5 — bez podkategorií, jen název */
-#p-v5-grid .sub,#v5-grid .sub{display:none}
+/* V5 Přívěsy — skupiny jako řádky pod sebou */
+.blk-groups{display:flex;flex-direction:column;gap:22px}
+.blk-row{display:flex;gap:28px;align-items:flex-start}
+.blk-row .blk-body .sub{display:none}
 
 /* ===== V3 + V5: DLAŽDICE (jako na webu) ===== */
 .tile-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
@@ -209,7 +211,7 @@ body{font-family:'Exo 2',Helvetica,Arial,sans-serif;font-size:16px;background:#f
       <div class="mm-footer"><div class="mm-all">Všechny přívěsy →</div></div>
     </div></div>
     <div class="mm mm-var" id="mm-p-v5"><div class="mm-inner">
-      <div class="v4-grid" id="p-v5-grid"></div>
+      <div class="blk-groups" id="p-v5-grid"></div>
       <div class="mm-footer"><div class="mm-all">Všechny přívěsy →</div></div>
     </div></div>
     <div class="mm mm-var" id="mm-p-v1"><div class="mm-inner">
@@ -514,6 +516,19 @@ function renderBlocks(cats,order,elId){
   });
   document.getElementById(elId).innerHTML=h;
 }
+function renderBlockGroups(cats,groups,elId){
+  var h='';
+  groups.forEach(function(group){
+    h+='<div class="blk-row">';
+    group.forEach(function(i){
+      var c=cats[i];
+      h+='<div class="blk'+(c.feat?' feat':'')+(c.sale?' sale':'')+'">'+thumbHtml(c,54)
+        +'<div class="blk-body"><h4>'+c.n+(c.sale?' %':'')+'</h4></div></div>';
+    });
+    h+='</div>';
+  });
+  document.getElementById(elId).innerHTML=h;
+}
 function renderTiles(cats,order,elId){
   var h='';
   order.forEach(function(i){
@@ -544,6 +559,7 @@ var TRAILERS=[
 ];
 var T_WEB=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];          /* pořadí jako na webu */
 var T_GROUPED=[6,9,10,0,1,2,5,3,4,7,8,11,12,13,14,15];        /* Přívěsy → Valníky → Přepravníky → Značky */
+var T_GROUPS=[[6,9,10],[0,1,2],[5,3,4,7,8],[11,12,13,14],[15]]; /* skupiny jako řádky */
 var T_PRIORITY=[0,1,2,6,5,3,4,7,8,9,10,11,12,13,14,15];      /* valníky+sklopné napřed */
 
 renderBlocks(CATS,PRIORITY,'v4-grid');
@@ -553,7 +569,7 @@ renderBlocks(CATS,PRIORITY,'v5-grid');
 renderBlocks(TRAILERS,T_PRIORITY,'p-v4-grid');
 renderTiles(TRAILERS,T_PRIORITY,'p-v3-grid');
 renderTiles(TRAILERS,T_GROUPED,'p-v2-grid');
-renderBlocks(TRAILERS,T_GROUPED,'p-v5-grid');
+renderBlockGroups(TRAILERS,T_GROUPS,'p-v5-grid');
 
 /* ===== přepínání ===== */
 var curVar=4, curMenu='n';
