@@ -92,10 +92,9 @@ body{font-family:'Exo 2',Helvetica,Arial,sans-serif;font-size:16px;background:#f
 .blk.sale .thumb{background:#fdf0f0;border-color:#f0c8c8}
 .blk.sale .thumb .ph{stroke:#e31e24}
 
-/* V5 Přívěsy — skupiny jako řádky pod sebou */
-.blk-groups{display:flex;flex-direction:column;gap:22px}
-.blk-row{display:flex;gap:28px;align-items:flex-start}
-.blk-row .blk-body .sub{display:none}
+/* V5 Přívěsy — skupiny jako sloupce vedle sebe */
+.blk-groups{display:flex;gap:32px;align-items:flex-start}
+.blk-col{display:flex;flex-direction:column;gap:14px}
 
 /* ===== V3 + V5: DLAŽDICE (jako na webu) ===== */
 .tile-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
@@ -519,7 +518,7 @@ function renderBlocks(cats,order,elId){
 function renderBlockGroups(cats,groups,elId){
   var h='';
   groups.forEach(function(group){
-    h+='<div class="blk-row">';
+    h+='<div class="blk-col">';
     group.forEach(function(i){
       var c=cats[i];
       h+='<div class="blk'+(c.feat?' feat':'')+(c.sale?' sale':'')+'">'+thumbHtml(c,54)
@@ -540,22 +539,22 @@ function renderTiles(cats,order,elId){
 }
 /* Přívěsy — 16 kategorií jako na webu; imgs = kandidáti na CDN */
 var TRAILERS=[
- {n:"Jednoosé valníky",imgs:["jednoose_valniky","jednoose-valniky"],feat:true,sub:["do 750 kg","do 1300 kg","1500–2000 kg"]},
- {n:"Dvouosé valníky",imgs:["dvouose_valniky","dvouose-valniky"],sub:["do 2000 kg","do 3500 kg","Tandemové"]},
- {n:"Tříosé valníky",imgs:["triose_valniky","triose-valniky"],sub:["Tandemové","Třínápravové","Těžká třída"]},
- {n:"Přepravníky motocyklů",imgs:["prepravniky_motocyklu","prepravniky-motocyklu"],sub:["Jednostopé","Dvoustopé","Quady a čtyřkolky"]},
- {n:"Přepravníky strojů",imgs:["prepravniky_stroju","prepravniky-stroju"],sub:["Mininakladače","Traktory","Stavební stroje"]},
- {n:"Přepravníky automobilů",imgs:["prepravniky_automobilu","prepravniky-automobilu"],sub:["Jednomístné","Dvou a vícemístné"]},
- {n:"Sklopné přívěsy",imgs:["sklopne_privesy","sklopne-privesy"],sub:["do 1000 kg","do 2000 kg","do 3500 kg"]},
- {n:"Přepravníky lodí a vodních skútrů",imgs:["prepravniky_lodi","prepravniky-lodi-a-vodnich-skutru"],sub:["Do 4 m","4–6 m","Nad 6 m"]},
- {n:"Přepravníky zvířat",imgs:["prepravniky_zvirat","prepravniky-zvirat"],sub:["Pro koně","Skot a ovce","Domácí zvířata"]},
- {n:"Skříňové přívěsy",imgs:["skrinove_privesy","skrinove-privesy"],sub:["Uzavřené skříně","S okny","Speciální"]},
- {n:"Chladírenské přívěsy",imgs:["chladirenske_privesy","chladirenske-privesy"],sub:["Chlazené (+5 až +15 °C)","Mražené (−5 až −20 °C)"]},
- {n:"Agados",imgs:["agados","kategorie_ikony/agados.jpg"],sub:["Valníky Agados","Sklopné Agados","Příslušenství"]},
- {n:"STEMA",imgs:["stema","kategorie_ikony/stema.jpg"],sub:["Valníky STEMA","Sklopné STEMA","Skříňové STEMA"]},
- {n:"UNSINN",imgs:["unsinn","kategorie_ikony/unsinn.jpg"],sub:["Plošinové UNSINN","Skříňové UNSINN"]},
- {n:"VAPP",imgs:["vapp","kategorie_ikony/vapp.jpg"],sub:["Valníky VAPP","Sklopné VAPP","Chladírenské VAPP"]},
- {n:"Výprodej",imgs:["vyprodej","vyprodej_privesy"],sale:true,sub:["Přívěsy ve slevě","Výstavní exempláře"]}
+ {n:"Jednoosé valníky",imgs:["jednoose_valniky","jednoose-valniky"],feat:true,sub:[]},
+ {n:"Dvouosé valníky",imgs:["dvouose_valniky","dvouose-valniky"],sub:[]},
+ {n:"Tříosé valníky",imgs:["triose_valniky","triose-valniky"],sub:[]},
+ {n:"Přepravníky motocyklů",imgs:["prepravniky_motocyklu","prepravniky-motocyklu"],sub:[]},
+ {n:"Přepravníky strojů",imgs:["prepravniky_stroju","prepravniky-stroju"],sub:[]},
+ {n:"Přepravníky automobilů",imgs:["prepravniky_automobilu","prepravniky-automobilu"],sub:[]},
+ {n:"Sklopné přívěsy",imgs:["sklopne_privesy","sklopne-privesy"],sub:[]},
+ {n:"Přepravníky lodí a vodních skútrů",imgs:["prepravniky_lodi","prepravniky-lodi-a-vodnich-skutru"],sub:[]},
+ {n:"Přepravníky zvířat",imgs:["prepravniky_zvirat","prepravniky-zvirat"],sub:[]},
+ {n:"Skříňové přívěsy",imgs:["skrinove_privesy","skrinove-privesy"],sub:[]},
+ {n:"Chladírenské přívěsy",imgs:["chladirenske_privesy","chladirenske-privesy"],sub:[]},
+ {n:"Agados",imgs:["agados","kategorie_ikony/agados.jpg"],sub:[]},
+ {n:"STEMA",imgs:["stema","kategorie_ikony/stema.jpg"],sub:[]},
+ {n:"UNSINN",imgs:["unsinn","kategorie_ikony/unsinn.jpg"],sub:[]},
+ {n:"VAPP",imgs:["vapp","kategorie_ikony/vapp.jpg"],sub:[]},
+ {n:"Výprodej",imgs:["vyprodej","vyprodej_privesy"],sale:true,sub:[]}
 ];
 var T_WEB=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];          /* pořadí jako na webu */
 var T_GROUPED=[6,9,10,0,1,2,5,3,4,7,8,11,12,13,14,15];        /* Přívěsy → Valníky → Přepravníky → Značky */
