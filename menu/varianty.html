@@ -156,6 +156,12 @@ body{font-family:'Exo 2',Helvetica,Arial,sans-serif;font-size:16px;background:#f
 .mob-v2-sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:#1652b4;padding:20px 0 12px;border-bottom:2px solid #1652b4;margin-bottom:4px}
 .mob-v2-group{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#9aa3ae;padding:14px 0 6px;margin-top:4px}
 .mob-v2-link{display:block;padding:10px 4px;font-size:15px;color:#2b3033;cursor:pointer;border-radius:5px}
+.mob-v2-acc-trigger{display:flex;align-items:center;justify-content:space-between;padding:17px 16px;font-size:16px;font-weight:600;color:#1e2428;border-bottom:1px solid #f0f2f5;cursor:pointer;transition:background .1s}
+.mob-v2-acc-trigger:active,.mob-v2-acc-trigger.open{background:#f0f4fb;color:#1652b4}
+.mob-v2-arr{width:18px;height:18px;fill:none;stroke:#9aa3ae;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .22s;flex-shrink:0}
+.mob-v2-acc-trigger.open .mob-v2-arr{transform:rotate(180deg);stroke:#1652b4}
+.mob-v2-acc-body{display:none;background:#f8f9fb;border-bottom:1px solid #dde0e3}
+.mob-v2-acc-body.open{display:block}
 .mob-v2-divider{height:8px;background:#f0f2f5;margin:16px 0}
 .mob-v2-simple{display:block;padding:17px 16px;font-size:15px;font-weight:600;color:#2b3033;border-bottom:1px solid #f0f2f5;cursor:pointer}
 .mob-v2-contact{padding:16px;display:flex;flex-direction:column;gap:10px;border-top:1px solid #dde0e3}
@@ -533,60 +539,66 @@ body{font-family:'Exo 2',Helvetica,Arial,sans-serif;font-size:16px;background:#f
     <button class="mob-v2-close" onclick="closeMobV2()">&#10005;</button>
   </div>
   <div class="mob-v2-body">
-    <div class="mob-v2-section">
-      <div class="mob-v2-sec-title">Náhradní díly</div>
-      <div class="mob-v2-group">Elektro a osvětlení</div>
-      <div class="mob-v2-link">Elektro, svítilny, odrazky</div>
-      <div class="mob-v2-group">Podvozek a brzdy</div>
-      <div class="mob-v2-link">Nápravy kompletní</div>
-      <div class="mob-v2-link">Díly náprav</div>
-      <div class="mob-v2-link">Nájezdové brzdy a díly</div>
-      <div class="mob-v2-link">Pneu, kola, disky</div>
-      <div class="mob-v2-group">Spojení s vozidlem</div>
-      <div class="mob-v2-link">Spojovací zařízení a zámky</div>
-      <div class="mob-v2-link">Opěrná kolečka, nohy, držáky</div>
-      <div class="mob-v2-link">Hydraulika přívěsů</div>
-      <div class="mob-v2-group">Karoserie</div>
-      <div class="mob-v2-link">Blatníky a zástěrky</div>
-      <div class="mob-v2-link">Bočnice, uzávěry, panty</div>
-      <div class="mob-v2-link">Konstrukční díly</div>
-      <div class="mob-v2-link">Plachty a příslušenství</div>
-      <div class="mob-v2-link">Plynové vzpěry</div>
-      <div class="mob-v2-group">Manipulace a nakládání</div>
-      <div class="mob-v2-link">Nájezdy</div>
-      <div class="mob-v2-link">Zabezpečení nákladu</div>
-      <div class="mob-v2-link">Navijáky a příslušenství</div>
-      <div class="mob-v2-link">Klíny a držáky</div>
-      <div class="mob-v2-group">Ostatní</div>
-      <div class="mob-v2-link">Doplňky k přívěsům</div>
-      <div class="mob-v2-link">Pomůcky pro údržbu</div>
-      <div class="mob-v2-link" style="color:#e31e24;font-weight:600">Akce a slevy %</div>
+    <div class="mob-v2-acc-trigger" id="mob-v2-trigger-nd" onclick="toggleV2Sub('nd')">
+      Náhradní díly <svg class="mob-v2-arr" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
-    <div class="mob-v2-divider"></div>
-    <div class="mob-v2-section">
-      <div class="mob-v2-sec-title">Přívěsy</div>
-      <div class="mob-v2-group">Přívěsy</div>
-      <div class="mob-v2-link">Sklopné přívěsy</div>
-      <div class="mob-v2-link">Skříňové přívěsy</div>
-      <div class="mob-v2-link">Chladírenské přívěsy</div>
-      <div class="mob-v2-group">Valníky</div>
-      <div class="mob-v2-link">Jednoosé valníky</div>
-      <div class="mob-v2-link">Dvouosé valníky</div>
-      <div class="mob-v2-link">Tříosé valníky</div>
-      <div class="mob-v2-group">Přepravníky</div>
-      <div class="mob-v2-link">Přepravníky automobilů</div>
-      <div class="mob-v2-link">Přepravníky motocyklů</div>
-      <div class="mob-v2-link">Přepravníky strojů</div>
-      <div class="mob-v2-link">Přepravníky lodí a skútrů</div>
-      <div class="mob-v2-link">Přepravníky zvířat</div>
-      <div class="mob-v2-group">Značky</div>
-      <div class="mob-v2-link">Agados</div>
-      <div class="mob-v2-link">STEMA</div>
-      <div class="mob-v2-link">UNSINN</div>
-      <div class="mob-v2-link">VAPP</div>
-      <div class="mob-v2-link" style="color:#e31e24;font-weight:600">Výprodej %</div>
+    <div class="mob-v2-acc-body" id="mob-v2-sub-nd">
+      <div class="mob-v2-section">
+        <div class="mob-v2-group">Elektro a osvětlení</div>
+        <div class="mob-v2-link">Elektro, svítilny, odrazky</div>
+        <div class="mob-v2-group">Podvozek a brzdy</div>
+        <div class="mob-v2-link">Nápravy kompletní</div>
+        <div class="mob-v2-link">Díly náprav</div>
+        <div class="mob-v2-link">Nájezdové brzdy a díly</div>
+        <div class="mob-v2-link">Pneu, kola, disky</div>
+        <div class="mob-v2-group">Spojení s vozidlem</div>
+        <div class="mob-v2-link">Spojovací zařízení a zámky</div>
+        <div class="mob-v2-link">Opěrná kolečka, nohy, držáky</div>
+        <div class="mob-v2-link">Hydraulika přívěsů</div>
+        <div class="mob-v2-group">Karoserie</div>
+        <div class="mob-v2-link">Blatníky a zástěrky</div>
+        <div class="mob-v2-link">Bočnice, uzávěry, panty</div>
+        <div class="mob-v2-link">Konstrukční díly</div>
+        <div class="mob-v2-link">Plachty a příslušenství</div>
+        <div class="mob-v2-link">Plynové vzpěry</div>
+        <div class="mob-v2-group">Manipulace a nakládání</div>
+        <div class="mob-v2-link">Nájezdy</div>
+        <div class="mob-v2-link">Zabezpečení nákladu</div>
+        <div class="mob-v2-link">Navijáky a příslušenství</div>
+        <div class="mob-v2-link">Klíny a držáky</div>
+        <div class="mob-v2-group">Ostatní</div>
+        <div class="mob-v2-link">Doplňky k přívěsům</div>
+        <div class="mob-v2-link">Pomůcky pro údržbu</div>
+        <div class="mob-v2-link" style="color:#e31e24;font-weight:600">Akce a slevy %</div>
+      </div>
     </div>
-    <div class="mob-v2-divider"></div>
+    <div class="mob-v2-acc-trigger" id="mob-v2-trigger-p" onclick="toggleV2Sub('p')">
+      Přívěsy <svg class="mob-v2-arr" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="mob-v2-acc-body" id="mob-v2-sub-p">
+      <div class="mob-v2-section">
+        <div class="mob-v2-group">Přívěsy</div>
+        <div class="mob-v2-link">Sklopné přívěsy</div>
+        <div class="mob-v2-link">Skříňové přívěsy</div>
+        <div class="mob-v2-link">Chladírenské přívěsy</div>
+        <div class="mob-v2-group">Valníky</div>
+        <div class="mob-v2-link">Jednoosé valníky</div>
+        <div class="mob-v2-link">Dvouosé valníky</div>
+        <div class="mob-v2-link">Tříosé valníky</div>
+        <div class="mob-v2-group">Přepravníky</div>
+        <div class="mob-v2-link">Přepravníky automobilů</div>
+        <div class="mob-v2-link">Přepravníky motocyklů</div>
+        <div class="mob-v2-link">Přepravníky strojů</div>
+        <div class="mob-v2-link">Přepravníky lodí a skútrů</div>
+        <div class="mob-v2-link">Přepravníky zvířat</div>
+        <div class="mob-v2-group">Značky</div>
+        <div class="mob-v2-link">Agados</div>
+        <div class="mob-v2-link">STEMA</div>
+        <div class="mob-v2-link">UNSINN</div>
+        <div class="mob-v2-link">VAPP</div>
+        <div class="mob-v2-link" style="color:#e31e24;font-weight:600">Výprodej %</div>
+      </div>
+    </div>
     <div class="mob-v2-simple">Půjčovna</div>
     <div class="mob-v2-simple">Servis</div>
     <div class="mob-v2-simple">Poradna</div>
@@ -849,6 +861,17 @@ function closeMobV2(){
   document.getElementById('mob-v2-overlay').classList.remove('open');
   document.getElementById('mob-v2-drawer').classList.remove('open');
   document.body.style.overflow='';
+}
+
+function toggleV2Sub(which){
+  var body=document.getElementById('mob-v2-sub-'+which);
+  var trigger=document.getElementById('mob-v2-trigger-'+which);
+  var isOpen=body.classList.contains('open');
+  ['nd','p'].forEach(function(k){
+    document.getElementById('mob-v2-sub-'+k).classList.remove('open');
+    document.getElementById('mob-v2-trigger-'+k).classList.remove('open');
+  });
+  if(!isOpen){body.classList.add('open');trigger.classList.add('open');}
 }
 /* V3 */
 var mob3rendered=false;
