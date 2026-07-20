@@ -144,13 +144,13 @@ body{font-family:'Exo 2',Helvetica,Arial,sans-serif;font-size:16px;background:#f
 }
 
 /* ===== MOBILNÍ VERZE 2 — slide zprava, čistý seznam ===== */
-.mob-v2-overlay,.mob-v3-overlay,.mob-v4-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300}
-.mob-v2-overlay.open,.mob-v3-overlay.open,.mob-v4-overlay.open{display:block}
+.mob-v2-overlay,.mob-v3-overlay,.mob-v4-overlay,.mob-v5-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300}
+.mob-v2-overlay.open,.mob-v3-overlay.open,.mob-v4-overlay.open,.mob-v5-overlay.open{display:block}
 .mob-v2-drawer{position:fixed;top:0;right:-100%;width:100%;height:100%;background:#fff;z-index:301;transition:right .28s ease;overflow-y:auto;display:flex;flex-direction:column}
 .mob-v2-drawer.open{right:0}
 .mob-v2-head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid #dde0e3;position:sticky;top:0;background:#fff;z-index:1}
 .mob-v2-logo{font-size:22px;font-weight:700;color:#e31e24;letter-spacing:-1px}
-.mob-v2-close,.mob-v3-close,.mob-v4-close{width:34px;height:34px;border:none;background:#f0f2f5;border-radius:7px;font-size:18px;cursor:pointer;color:#4a5260;display:flex;align-items:center;justify-content:center}
+.mob-v2-close,.mob-v3-close,.mob-v4-close,.mob-v5-close{width:34px;height:34px;border:none;background:#f0f2f5;border-radius:7px;font-size:18px;cursor:pointer;color:#4a5260;display:flex;align-items:center;justify-content:center}
 .mob-v2-body{flex:1;padding-bottom:32px}
 .mob-v2-section{padding:0 16px}
 .mob-v2-sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:#1652b4;padding:20px 0 12px;border-bottom:2px solid #1652b4;margin-bottom:4px}
@@ -199,7 +199,27 @@ body{font-family:'Exo 2',Helvetica,Arial,sans-serif;font-size:16px;background:#f
 .mob-v4-contact{padding:16px;display:flex;flex-direction:column;gap:10px;border-top:1px solid #dde0e3;margin-top:8px}
 .mob-v4-contact a{display:flex;align-items:center;gap:9px;font-size:14px;color:#2b3033;text-decoration:none;font-weight:600}
 .mob-v4-contact svg{width:16px;height:16px;fill:none;stroke:#1652b4;stroke-width:1.8;stroke-linecap:round;flex-shrink:0}
-@media(min-width:769px){.mob-v2-overlay,.mob-v2-drawer,.mob-v3-overlay,.mob-v3-drawer,.mob-v4-overlay,.mob-v4-wrap{display:none!important}}
+
+/* ===== MOBILNÍ VERZE 5 — accordion + textový výpis ===== */
+.mob-v5-wrap{position:fixed;top:0;right:-100%;width:100%;height:100%;z-index:301;transition:right .28s ease;overflow-y:auto;background:#fff}
+.mob-v5-wrap.open{right:0}
+.mob-v5-head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid #dde0e3;position:sticky;top:0;background:#fff;z-index:1}
+.mob-v5-logo{font-size:22px;font-weight:700;color:#e31e24;letter-spacing:-1px}
+.mob-v5-nav-item{display:flex;align-items:center;justify-content:space-between;padding:17px 16px;font-size:16px;font-weight:600;color:#1e2428;border-bottom:1px solid #f0f2f5;cursor:pointer;transition:background .1s}
+.mob-v5-nav-item:active,.mob-v5-nav-item.open{background:#f0f4fb;color:#1652b4}
+.mob-v5-arr{width:18px;height:18px;fill:none;stroke:#9aa3ae;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .22s;flex-shrink:0}
+.mob-v5-nav-item.open .mob-v5-arr{transform:rotate(180deg);stroke:#1652b4}
+.mob-v5-sub-wrap{display:none;background:#f8f9fb;border-bottom:1px solid #dde0e3;padding:6px 0}
+.mob-v5-sub-wrap.open{display:block}
+.mob-v5-link{display:block;padding:11px 16px 11px 28px;font-size:15px;color:#2b3033;border-bottom:1px solid #f0f2f5;cursor:pointer}
+.mob-v5-link:active{background:#edf1f8}
+.mob-v5-link.sale{color:#e31e24;font-weight:600}
+.mob-v5-link.feat{color:#1652b4;font-weight:600}
+.mob-v5-simple{display:block;padding:16px;font-size:15px;font-weight:500;color:#4a5260;border-bottom:1px solid #f0f2f5;cursor:pointer}
+.mob-v5-contact{padding:16px;display:flex;flex-direction:column;gap:10px;border-top:1px solid #dde0e3;margin-top:8px}
+.mob-v5-contact a{display:flex;align-items:center;gap:9px;font-size:14px;color:#2b3033;text-decoration:none;font-weight:600}
+.mob-v5-contact svg{width:16px;height:16px;fill:none;stroke:#1652b4;stroke-width:1.8;stroke-linecap:round;flex-shrink:0}
+@media(min-width:769px){.mob-v2-overlay,.mob-v2-drawer,.mob-v3-overlay,.mob-v3-drawer,.mob-v4-overlay,.mob-v4-wrap,.mob-v5-overlay,.mob-v5-wrap{display:none!important}}
 @media(min-width:769px){.mobile-only{display:none}}
 </style>
 </head>
@@ -629,6 +649,31 @@ body{font-family:'Exo 2',Helvetica,Arial,sans-serif;font-size:16px;background:#f
 </div>
 
 
+<!-- ===== MOBILNÍ V5: Accordion + textový výpis ===== -->
+<div class="mob-v5-overlay" id="mob-v5-overlay" onclick="closeMobV5()"></div>
+<div class="mob-v5-wrap" id="mob-v5-wrap">
+  <div class="mob-v5-head">
+    <div class="mob-v5-logo">VAPP<sup style="font-size:10px;font-weight:400">&#174;</sup></div>
+    <button class="mob-v5-close" onclick="closeMobV5()">&#10005;</button>
+  </div>
+  <div class="mob-v5-nav-item" id="mob-v5-trigger-nd" onclick="toggleV5Sub('nd')">
+    Náhradní díly <svg class="mob-v5-arr" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mob-v5-sub-wrap" id="mob-v5-sub-nd"></div>
+  <div class="mob-v5-nav-item" id="mob-v5-trigger-p" onclick="toggleV5Sub('p')">
+    Přívěsy <svg class="mob-v5-arr" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="mob-v5-sub-wrap" id="mob-v5-sub-p"></div>
+  <div class="mob-v5-simple">Půjčovna</div>
+  <div class="mob-v5-simple">Servis</div>
+  <div class="mob-v5-simple">Poradna</div>
+  <div class="mob-v5-simple">Kontakt</div>
+  <div class="mob-v5-contact">
+    <a href="tel:603924555"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 2 .7 2.9a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.5c.9.3 1.9.6 2.9.7a2 2 0 011.7 2z"/></svg>603 924 555</a>
+    <a href="mailto:info@vapp.cz"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>info@vapp.cz</a>
+  </div>
+</div>
+
 <script>
 /* =====================================================================
    DATA — všech 21 kategorií Náhradních dílů (reálné názvy z vapp.cz).
@@ -791,6 +836,7 @@ function openMobMenu(){
   if(curVar===2){openMobV2();}
   else if(curVar===3){openMobV3();}
   else if(curVar===4){openMobV4();}
+  else if(curVar===5){openMobV5();}
   else{openDrawer();}
 }
 /* V2 */
@@ -866,6 +912,43 @@ function toggleV4Sub(which){
     wrap.classList.add('open');
     trigger.classList.add('open');
   }
+}
+
+/* V5 */
+var mob5rendered=false;
+function openMobV5(){
+  if(!mob5rendered){
+    var ndH='',pH='';
+    PRIORITY.forEach(function(i){
+      var c=CATS[i];
+      ndH+='<div class="mob-v5-link'+(c.sale?' sale':'')+(c.feat?' feat':'')+'">'+c.n+(c.sale?' %':'')+'</div>';
+    });
+    T_PRIORITY.forEach(function(i){
+      var c=TRAILERS[i];
+      pH+='<div class="mob-v5-link'+(c.sale?' sale':'')+(c.feat?' feat':'')+'">'+c.n+(c.sale?' %':'')+'</div>';
+    });
+    document.getElementById('mob-v5-sub-nd').innerHTML=ndH;
+    document.getElementById('mob-v5-sub-p').innerHTML=pH;
+    mob5rendered=true;
+  }
+  document.getElementById('mob-v5-overlay').classList.add('open');
+  document.getElementById('mob-v5-wrap').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeMobV5(){
+  document.getElementById('mob-v5-overlay').classList.remove('open');
+  document.getElementById('mob-v5-wrap').classList.remove('open');
+  document.body.style.overflow='';
+}
+function toggleV5Sub(which){
+  var wrap=document.getElementById('mob-v5-sub-'+which);
+  var trigger=document.getElementById('mob-v5-trigger-'+which);
+  var isOpen=wrap.classList.contains('open');
+  ['nd','p'].forEach(function(k){
+    document.getElementById('mob-v5-sub-'+k).classList.remove('open');
+    document.getElementById('mob-v5-trigger-'+k).classList.remove('open');
+  });
+  if(!isOpen){wrap.classList.add('open');trigger.classList.add('open');}
 }
 </script>
 </body>
