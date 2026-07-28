@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analýza duplicít – Kolesá, pneu, disky | VAPP.sk</title>
+<style>
+  :root {
+    --main-color: #1652b4;
+    --primary-color: #616161;
+    --secondary-color: #d4d4d4;
+    --neutral-color: #f6f7f7;
+    --text-solid: #2b3033;
+    --text-muted: rgba(43,48,51,0.55);
+    --green: #00a523;
+    --orange: #ffa500;
+    --alert-red: #eb3b5a;
+    --sep: #eaebeb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Exo 2', Helvetica, Arial, sans-serif; font-size: 14px; background: var(--neutral-color); color: var(--text-solid); }
+
+  .header { background: #fff; border-bottom: 1px solid var(--sep); padding: 20px 40px; display: flex; align-items: center; gap: 16px; }
+  .header-logo { color: #e31e24; font-size: 24px; font-weight: 700; letter-spacing: -1px; }
+  .header-tagline { color: var(--main-color); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .header-title { margin-left: auto; font-size: 13px; color: var(--text-muted); }
+
+  .wrap { max-width: 1080px; margin: 32px auto; padding: 0 24px; }
+
+  h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 32px; }
+
+  .section { background: #fff; border: 1px solid var(--sep); border-radius: 3px; padding: 24px; margin-bottom: 20px; }
+  h2 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); margin-bottom: 16px; }
+  h3 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+  .kpi { background: #fff; border: 1px solid var(--sep); border-radius: 3px; padding: 18px 20px; }
+  .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.4px; margin-bottom: 6px; }
+  .kpi-val { font-size: 28px; font-weight: 700; color: var(--text-solid); line-height: 1; }
+  .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .kpi.blue { border-top: 3px solid var(--main-color); }
+  .kpi.gray { border-top: 3px solid var(--secondary-color); }
+  .kpi.green { border-top: 3px solid var(--green); }
+  .kpi.red { border-top: 3px solid var(--alert-red); }
+
+  .path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .path-box { border: 1px solid var(--sep); border-radius: 3px; padding: 20px; }
+  .path-box.path1 { border-top: 3px solid var(--main-color); }
+  .path-box.path2 { border-top: 3px solid var(--secondary-color); }
+  .path-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .path-label.p1 { color: var(--main-color); }
+  .path-label.p2 { color: var(--primary-color); }
+  .path-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5; }
+  .path-example { font-size: 12px; background: var(--neutral-color); border-radius: 3px; padding: 8px 10px; color: var(--text-solid); font-family: monospace; margin-bottom: 14px; line-height: 1.7; }
+
+  .bar-wrap { margin: 4px 0 2px; }
+  .bar-track { background: var(--neutral-color); border-radius: 2px; height: 8px; overflow: hidden; }
+  .bar-fill { height: 8px; border-radius: 2px; transition: width 0.3s; }
+  .bar-fill.b1 { background: var(--main-color); }
+  .bar-fill.b2 { background: var(--secondary-color); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-muted); padding: 8px 12px; text-align: left; border-bottom: 2px solid var(--sep); }
+  tbody tr:hover { background: #fafafa; }
+  tbody td { padding: 9px 12px; border-bottom: 1px solid var(--sep); }
+  tbody td:first-child { font-weight: 600; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  .mini-bar { display: flex; align-items: center; gap: 8px; }
+  .mini-track { flex: 1; height: 6px; background: var(--neutral-color); border-radius: 2px; overflow: hidden; }
+  .mini-fill-b { height: 6px; background: var(--main-color); border-radius: 2px; }
+  .mini-fill-g { height: 6px; background: var(--secondary-color); border-radius: 2px; }
+  .pct { font-size: 12px; font-weight: 700; min-width: 36px; text-align: right; }
+  .pct.b { color: var(--main-color); }
+  .pct.g { color: var(--primary-color); }
+
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; border-radius: 3px; padding: 2px 7px; }
+  .badge-win { background: #e8f7ec; color: var(--green); border: 1px solid #b8ddb8; }
+  .badge-close { background: #fff3e0; color: var(--orange); border: 1px solid #ffcc80; }
+
+  .rec-box { border-left: 3px solid var(--main-color); padding: 14px 18px; background: #f0f4fd; border-radius: 0 3px 3px 0; margin-bottom: 12px; }
+  .rec-box.warn { border-color: var(--orange); background: #fff9f0; }
+  .rec-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .rec-text { font-size: 13px; color: var(--text-solid); line-height: 1.6; }
+
+  .meta { font-size: 11px; color: var(--text-muted); margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--sep); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo">VAPP</div>
+    <div class="header-tagline">Prívesy a príslušenstvo</div>
+  </div>
+  <div class="header-title">SEO Analýza · vapp.sk · Jún–Júl 2026</div>
+</div>
+
+<div class="wrap">
+
+  <h1>Duplicitné title &amp; H1 — Kolesá, pneu, disky</h1>
+  <p class="subtitle">Analýza navigačného správania používateľov za posledné 3 mesiace (28. 4. – 28. 7. 2026) · GA4 + Google Search Console</p>
+
+  <div class="section">
+    <h2>Kontext problému</h2>
+    <p style="font-size:13px; line-height:1.7; color:var(--text-solid); margin-bottom:14px;">
+      Produkt <em>disky / kompletné kolesá / pneu</em> je dostupný dvoma navigačnými cestami, čo vytvára pre každú podkategóriu dve samostatné URL s identickým title a H1. Google indexuje obidve — rozdeľuje rankingový signál a znižuje efektivitu SEO oboch stránok.
+    </p>
+    <div class="path-grid">
+      <div class="path-box path1">
+        <div class="path-label p1">Cesta 1 — komponent → veľkosť</div>
+        <div class="path-desc">Používateľ najprv vyberie typ (disky / kompletné / pneu), potom veľkosť.</div>
+        <div class="path-example">
+          /disky-kolies/ → /disky-kolies-13-<strong>c1028</strong>/<br>
+          /kompletne-kolesa/ → /kompletne-kolesa-13-<strong>c1035</strong>/<br>
+          /pneu-13-<strong>c1042</strong>/
+        </div>
+      </div>
+      <div class="path-box path2">
+        <div class="path-label p2">Cesta 2 — veľkosť → komponent (virtuálna)</div>
+        <div class="path-desc">Používateľ najprv vyberie veľkosť, potom typ. Podkategórie sú virtuálne = duplicitné URL.</div>
+        <div class="path-example">
+          /pneu-kola-disky-13/ → /disky-kolies-13-<strong>c1058</strong>/<br>
+          /pneu-kola-disky-13/ → /kompletne-kolesa-13-<strong>c1059</strong>/<br>
+          /pneu-kola-disky-13/ → /pneu-<strong>c1060</strong>/
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi blue">
+      <div class="kpi-label">Cesta 1 — pageviews</div>
+      <div class="kpi-val">823</div>
+      <div class="kpi-sub">62 % celkového trafficu</div>
+    </div>
+    <div class="kpi gray">
+      <div class="kpi-label">Cesta 2 — pageviews</div>
+      <div class="kpi-val">496</div>
+      <div class="kpi-sub">38 % celkového trafficu</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Spolu URL v duplicite</div>
+      <div class="kpi-val">34</div>
+      <div class="kpi-sub">17 párov stránok</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Organické kliky (spolu)</div>
+      <div class="kpi-val">11</div>
+      <div class="kpi-sub">za 3 mesiace — minimálne</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>GA4 — Porovnanie trafficu podľa kategórie</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Kategória</th>
+          <th>Cesta 1 (komponent)</th>
+          <th>Cesta 2 (veľkosť)</th>
+          <th>Spolu</th>
+          <th>Pomer C1 / C2</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pneu 13"</td>
+          <td>292</td><td>154</td><td>446</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:65%"></div></div><span class="pct b">65 %</span></div></td>
+          <td><span class="badge badge-win">Cesta 1</span></td>
+        </tr>
+        <tr>
+          <td>Kompletné kolesá 13"</td>
+          <td>158</td><td>86</td><td>244</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:65%"></div></div><span class="pct b">65 %</span></div></td>
+          <td><span class="badge badge-win">Cesta 1</span></td>
+        </tr>
+        <tr>
+          <td>Disky kolies 13"</td>
+          <td>71</td><td>60</td><td>131</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:54%"></div></div><span class="pct b">54 %</span></div></td>
+          <td><span class="badge badge-close">Vyrovnané</span></td>
+        </tr>
+        <tr>
+          <td>Pneu 14"</td>
+          <td>46</td><td>39</td><td>85</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:54%"></div></div><span class="pct b">54 %</span></div></td>
+          <td><span class="badge badge-close">Vyrovnané</span></td>
+        </tr>
+        <tr>
+          <td>Pneu 8"</td>
+          <td>40</td><td>26</td><td>66</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:61%"></div></div><span class="pct b">61 %</span></div></td>
+          <td><span class="badge badge-win">Cesta 1</span></td>
+        </tr>
+        <tr>
+          <td>Kompletné kolesá 14"</td>
+          <td>42</td><td>19</td><td>61</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:69%"></div></div><span class="pct b">69 %</span></div></td>
+          <td><span class="badge badge-win">Cesta 1</span></td>
+        </tr>
+        <tr>
+          <td>Kompletné kolesá 10"</td>
+          <td>34</td><td>16</td><td>50</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:68%"></div></div><span class="pct b">68 %</span></div></td>
+          <td><span class="badge badge-win">Cesta 1</span></td>
+        </tr>
+        <tr>
+          <td>Kompletné kolesá 8"</td>
+          <td>30</td><td>21</td><td>51</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:59%"></div></div><span class="pct b">59 %</span></div></td>
+          <td><span class="badge badge-close">Mierne C1</span></td>
+        </tr>
+        <tr>
+          <td>Disky kolies 8"</td>
+          <td>26</td><td>12</td><td>38</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:68%"></div></div><span class="pct b">68 %</span></div></td>
+          <td><span class="badge badge-win">Cesta 1</span></td>
+        </tr>
+        <tr>
+          <td>Pneu 12"</td>
+          <td>19</td><td>7</td><td>26</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:73%"></div></div><span class="pct b">73 %</span></div></td>
+          <td><span class="badge badge-win">Cesta 1</span></td>
+        </tr>
+        <tr>
+          <td>Disky kolies 14"</td>
+          <td>15</td><td>20</td><td>35</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-g" style="width:57%"></div></div><span class="pct g">43 % / 57 %</span></div></td>
+          <td><span class="badge badge-close">Cesta 2</span></td>
+        </tr>
+        <tr>
+          <td>Disky kolies 10"</td>
+          <td>14</td><td>14</td><td>28</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:50%"></div></div><span class="pct b">50 %</span></div></td>
+          <td><span class="badge badge-close">Rovnaké</span></td>
+        </tr>
+        <tr>
+          <td>Pneu 10"</td>
+          <td>12</td><td>7</td><td>19</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:63%"></div></div><span class="pct b">63 %</span></div></td>
+          <td><span class="badge badge-win">Cesta 1</span></td>
+        </tr>
+        <tr>
+          <td>Disky kolies 12"</td>
+          <td>8</td><td>2</td><td>10</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:80%"></div></div><span class="pct b">80 %</span></div></td>
+          <td><span class="badge badge-win">Cesta 1</span></td>
+        </tr>
+        <tr style="font-weight:700; background:#f6f7f7;">
+          <td>SPOLU</td>
+          <td>823</td><td>496</td><td>1 319</td>
+          <td><div class="mini-bar"><div class="mini-track"><div class="mini-fill-b" style="width:62%"></div></div><span class="pct b">62 %</span></div></td>
+          <td><span class="badge badge-win">Cesta 1</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Google Search Console — Organická viditeľnosť</h2>
+    <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px; line-height:1.6;">
+      Celkový organický traffic je na oboch cestách minimálny — 11 klikov za 3 mesiace. Stránky ešte nedosiahli relevantné organické pozície. Zaujímavý výnimka je <code>/disky-kolies-13-c1058/</code> (Cesta 2), ktorá má 113 impresií na pozícii 7,5 — Google ju zindexoval a hodnotí lepšie ako jej dvojičku z Cesty 1.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>URL</th>
+          <th>Cesta</th>
+          <th>Kliky</th>
+          <th>Impresie</th>
+          <th>Pozícia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>/disky-kolies-13-c1058/</td>
+          <td><span class="badge" style="background:#f6f7f7; color:var(--primary-color); border:1px solid var(--sep);">Cesta 2</span></td>
+          <td><strong>5</strong></td><td>113</td><td>7,5</td>
+        </tr>
+        <tr>
+          <td>/pneu-13-c1042/</td>
+          <td><span class="badge" style="background:#e8effe; color:var(--main-color); border:1px solid #b3c6ef;">Cesta 1</span></td>
+          <td><strong>2</strong></td><td>34</td><td>13,4</td>
+        </tr>
+        <tr>
+          <td>/kompletne-kolesa-10-c1048/</td>
+          <td><span class="badge" style="background:#f6f7f7; color:var(--primary-color); border:1px solid var(--sep);">Cesta 2</span></td>
+          <td><strong>1</strong></td><td>31</td><td>5,5</td>
+        </tr>
+        <tr>
+          <td>/kompletne-kolesa-8-c1038/</td>
+          <td><span class="badge" style="background:#e8effe; color:var(--main-color); border:1px solid #b3c6ef;">Cesta 1</span></td>
+          <td><strong>1</strong></td><td>19</td><td>9,2</td>
+        </tr>
+        <tr>
+          <td>/disky-kolies-8-c1031/</td>
+          <td><span class="badge" style="background:#e8effe; color:var(--main-color); border:1px solid #b3c6ef;">Cesta 1</span></td>
+          <td>0</td><td>23</td><td>7,3</td>
+        </tr>
+        <tr>
+          <td>/kompletne-kolesa-13-c1059/</td>
+          <td><span class="badge" style="background:#f6f7f7; color:var(--primary-color); border:1px solid var(--sep);">Cesta 2</span></td>
+          <td><strong>1</strong></td><td>4</td><td>8,2</td>
+        </tr>
+        <tr>
+          <td>/pneu-8-c1045/</td>
+          <td><span class="badge" style="background:#e8effe; color:var(--main-color); border:1px solid #b3c6ef;">Cesta 1</span></td>
+          <td><strong>1</strong></td><td>7</td><td>8,0</td>
+        </tr>
+        <tr style="font-weight:700; background:#f6f7f7;">
+          <td>Cesta 1 spolu</td><td>—</td><td>4</td><td>144</td><td>—</td>
+        </tr>
+        <tr style="font-weight:700; background:#f6f7f7;">
+          <td>Cesta 2 spolu</td><td>—</td><td>7</td><td>166</td><td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Závery a odporúčanie</h2>
+
+    <h3 style="margin-bottom:12px;">Čo hovoria dáta</h3>
+
+    <div class="rec-box" style="margin-bottom:12px;">
+      <div class="rec-title">1. Cesta 1 (komponent → veľkosť) dominuje v navigácii — 62 % traffic</div>
+      <div class="rec-text">Väčšina používateľov ide cestou <em>„Chcem pneu → akú veľkosť?"</em> Platí to najmä pre Pneu a Kompletné kolesá (pomer 65/35 až 70/30). Pre Disky je pomer vyrovnanejší, v niektorých veľkostiach dokonca mierne lepšia Cesta 2.</div>
+    </div>
+
+    <div class="rec-box" style="margin-bottom:12px;">
+      <div class="rec-title">2. Organická viditeľnosť je zatiaľ minimálna — 11 klikov celkom</div>
+      <div class="rec-text">SEO efekt duplicít je merateľný, ale kvantitatívne zatiaľ malý. Google indexuje obidve verzie, signál sa rozdeľuje. Zaujímavé je, že <code>/disky-kolies-13-c1058/</code> (Cesta 2) rankuje na pozícii 7,5 s 113 impresovaniami — lepšie ako jej dvojička z Cesty 1. Ak zostanú obe stránky, žiadna z nich sa neprehupne na pozíciu 1–3.</div>
+    </div>
+
+    <div class="rec-box warn" style="margin-bottom:24px;">
+      <div class="rec-title">3. Virtuálna kategória (Cesta 2) nie je zbytočná — slúži inému zákazníckemu segmentu</div>
+      <div class="rec-text">38 % traffic nie je zanedbateľné. Zákazníci, ktorí poznajú veľkosť kolesa skôr ako typ produktu (typicky pri výmene), idú prirodzene cestou 2. Jednoduché zmazanie virtuálnych kategórií bez náhrady môže zhoršiť UX pre tento segment.</div>
+    </div>
+
+    <h3 style="margin-bottom:12px;">Odporúčané riešenie</h3>
+
+    <div class="rec-box">
+      <div class="rec-title">✓ Zachovať navigačný vstup podľa veľkosti, zrušiť duplicitné podstránky</div>
+      <div class="rec-text">
+        Stránka ako <em>„Pneu, kolesá, disky 13""</em> (<code>/pneu-kola-disky-13/</code>) môže zostať ako rozcestník — zobrazí 3 dlaždice (Pneu / Disky / Kompletné kolesá) s odkazmi na Cestu 1 URL. Takto používateľ navigujúci podľa veľkosti neskončí na slepej ceste, ale nedôjde k vzniku duplicitnej podstránky.<br><br>
+        Virtuálne podstránky (Cesta 2) by sa presmerovali 301 → príslušné URL Cesty 1. Organický signál z Cesty 2 sa skonsoliduje na Cestu 1.
+      </div>
+    </div>
+
+    <div style="margin-top: 20px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; font-size:13px;">
+      <div style="padding:14px; border:1px solid var(--sep); border-radius:3px;">
+        <div style="font-weight:700; margin-bottom:6px;">Variant A — odporúčaný</div>
+        <div style="color:var(--text-muted); line-height:1.6;">Rozcestník podľa veľkosti zostane, virtuálne podstránky sa presmerujú 301 → Cesta 1. Bez straty UX, čistá SEO konsolidácia.</div>
+      </div>
+      <div style="padding:14px; border:1px solid var(--sep); border-radius:3px;">
+        <div style="font-weight:700; margin-bottom:6px;">Variant B</div>
+        <div style="color:var(--text-muted); line-height:1.6;">Zmazanie virtuálnych kategórií bez náhrady. Rýchle, ale 38 % používateľov stratí preferovanú cestu. Vhodné ak analýza konverzií ukáže, že Cesta 2 nekonvertuje.</div>
+      </div>
+      <div style="padding:14px; border:1px solid var(--sep); border-radius:3px;">
+        <div style="font-weight:700; margin-bottom:6px;">Variant C</div>
+        <div style="color:var(--text-muted); line-height:1.6;">Canonical tag: Cesta 2 → Cesta 1. Rieši SEO bez zmeny URL štruktúry. Technicky jednoduché na BSSHOP — ak ho platforma podporuje.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="meta">
+    Dáta: GA4 SK · GSC vapp.sk · obdobie 28. 4. – 28. 7. 2026 · Generované: Júl 2026
+  </div>
+
+</div>
+</body>
+</html>
