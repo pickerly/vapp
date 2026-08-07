@@ -201,6 +201,8 @@ button{font-family:var(--font);cursor:pointer}
 .detail-link{color:var(--main);font-weight:600;font-size:14px;white-space:nowrap}
 .card{cursor:pointer}
 .card:hover .detail-link{color:var(--main-hover)}
+.to-detail{height:42px;padding:0 18px;border:1px solid var(--main-hover);background:var(--main);border-radius:var(--radius);color:#fff;font-weight:600;font-size:14px;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}
+.to-detail:hover{background:var(--main-hover)}
 .section-cta{padding:16px 16px 0}
 
 /* ---------- Servis / Půjčovna ---------- */
@@ -402,7 +404,7 @@ button{font-family:var(--font);cursor:pointer}
           <div class="name">Sklápěč VAPP B1 8.10 · 750 kg</div>
           <div class="price-row">
             <span class="price">24 900 Kč</span>
-            <a href="#" class="detail-link">Detail →</a>
+            <button class="to-detail">Detail</button>
           </div>
         </div>
       </article>
@@ -413,7 +415,7 @@ button{font-family:var(--font);cursor:pointer}
           <div class="name">Valník AGADOS Handy 7 · 750 kg</div>
           <div class="price-row">
             <span class="price">18 490 Kč</span>
-            <a href="#" class="detail-link">Detail →</a>
+            <button class="to-detail">Detail</button>
           </div>
         </div>
       </article>
@@ -424,7 +426,7 @@ button{font-family:var(--font);cursor:pointer}
           <div class="name">Dvouosý přívěs VAPP F3 20.25 · 2000 kg</div>
           <div class="price-row">
             <span class="price">42 900 Kč</span>
-            <a href="#" class="detail-link">Detail →</a>
+            <button class="to-detail">Detail</button>
           </div>
         </div>
       </article>
@@ -435,7 +437,7 @@ button{font-family:var(--font);cursor:pointer}
           <div class="name">Motopřepravník VAPP M1 · 750 kg</div>
           <div class="price-row">
             <span class="price">21 300 Kč</span>
-            <a href="#" class="detail-link">Detail →</a>
+            <button class="to-detail">Detail</button>
           </div>
         </div>
       </article>
@@ -462,7 +464,7 @@ button{font-family:var(--font);cursor:pointer}
           <div class="name">Nájezdová brzda KNOTT KF 20 · 2000 kg</div>
           <div class="price-row">
             <span class="price">4 590 Kč</span>
-            <a href="#" class="detail-link">Detail →</a>
+            <button class="to-cart" aria-label="Do košíku" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12.4a1.5 1.5 0 0 0 1.5 1.2h8.5a1.5 1.5 0 0 0 1.5-1.2L22 7H6"/></svg></button>
           </div>
         </div>
       </article>
@@ -473,7 +475,7 @@ button{font-family:var(--font);cursor:pointer}
           <div class="name">Náboj kola AL-KO · rozteč 5×112</div>
           <div class="price-row">
             <span class="price">1 290 Kč</span>
-            <a href="#" class="detail-link">Detail →</a>
+            <button class="to-cart" aria-label="Do košíku" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12.4a1.5 1.5 0 0 0 1.5 1.2h8.5a1.5 1.5 0 0 0 1.5-1.2L22 7H6"/></svg></button>
           </div>
         </div>
       </article>
@@ -484,7 +486,7 @@ button{font-family:var(--font);cursor:pointer}
           <div class="name">Kolo kompletní 195/50 R13C · 100/4</div>
           <div class="price-row">
             <span class="price">1 850 Kč</span>
-            <a href="#" class="detail-link">Detail →</a>
+            <button class="to-cart" aria-label="Do košíku" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12.4a1.5 1.5 0 0 0 1.5 1.2h8.5a1.5 1.5 0 0 0 1.5-1.2L22 7H6"/></svg></button>
           </div>
         </div>
       </article>
@@ -495,7 +497,7 @@ button{font-family:var(--font);cursor:pointer}
           <div class="name">LED sdružená lampa · levá</div>
           <div class="price-row">
             <span class="price">690 Kč</span>
-            <a href="#" class="detail-link">Detail →</a>
+            <button class="to-cart" aria-label="Do košíku" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 12.4a1.5 1.5 0 0 0 1.5 1.2h8.5a1.5 1.5 0 0 0 1.5-1.2L22 7H6"/></svg></button>
           </div>
         </div>
       </article>
