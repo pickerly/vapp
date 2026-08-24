@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO vývoj – vapp.cz + vapp.sk | Kvě–Srp 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --main-color: #1652b4; --primary-color: #616161; --secondary-color: #d4d4d4;
+    --neutral-color: #f6f7f7; --text-solid: #2b3033; --text-muted: rgba(43,48,51,0.55);
+    --border: #eaebeb; --green: #00a523; --orange: #ffa500; --red: #eb3b5a;
+    --border-radius: 3px; --font: 'Exo 2', Helvetica, Arial, sans-serif;
+  }
+  body { font-family: var(--font); font-size: 14px; color: var(--text-solid); background: var(--neutral-color); line-height: 1.65; }
+  .header { background: #fff; border-bottom: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .logo-text { font-size: 28px; font-weight: 700; color: #e31e24; letter-spacing: -0.5px; }
+  .tagline { font-size: 11px; font-weight: 600; color: var(--main-color); text-transform: uppercase; letter-spacing: 0.5px; }
+  .header-meta { font-size: 12px; color: var(--text-muted); text-align: right; }
+  .header-meta strong { display: block; font-size: 14px; font-weight: 600; color: var(--text-solid); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+  .kpi-card { background: #fff; border: 1px solid var(--border); border-radius: var(--border-radius); padding: 16px 18px; position: relative; }
+  .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; }
+  .kpi-value { font-size: 26px; font-weight: 700; color: var(--text-solid); line-height: 1; }
+  .kpi-change { font-size: 12px; font-weight: 600; margin-top: 4px; }
+  .kpi-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .up { color: var(--green); } .down { color: var(--red); } .neutral { color: var(--primary-color); }
+  .accent-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: var(--border-radius) var(--border-radius) 0 0; }
+  .accent-cz { background: var(--main-color); } .accent-sk { background: var(--primary-color); }
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .chart-panel { background: #fff; border: 1px solid var(--border); border-radius: var(--border-radius); padding: 20px 24px; }
+  .chart-title { font-size: 13px; font-weight: 700; color: var(--text-solid); margin-bottom: 4px; }
+  .chart-subtitle { font-size: 11px; color: var(--text-muted); margin-bottom: 16px; }
+  .chart-wrap { position: relative; height: 220px; } .chart-wrap.tall { height: 280px; }
+  .monthly-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .monthly-table th { text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); padding: 8px 12px; border-bottom: 2px solid var(--border); }
+  .monthly-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .monthly-table tr:last-child td { border-bottom: none; }
+  .monthly-table tr:hover td { background: var(--neutral-color); }
+  .num { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .month-label { font-weight: 600; color: var(--text-solid); }
+  .note { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: var(--border-radius); }
+  .badge-up { background: #e8f7ec; color: var(--green); border: 1px solid #b8ddb8; }
+  .badge-down { background: #fde8ec; color: var(--red); border: 1px solid #f5b8c0; }
+  .badge-neutral { background: #f6f7f7; color: var(--primary-color); border: 1px solid var(--secondary-color); }
+  .site-header { display: flex; align-items: center; gap: 12px; margin: 32px 0 20px; }
+  .site-badge { font-size: 13px; font-weight: 700; color: #fff; padding: 4px 12px; border-radius: var(--border-radius); }
+  .site-badge.cz { background: var(--main-color); } .site-badge.sk { background: var(--primary-color); }
+  .site-name { font-size: 18px; font-weight: 700; color: var(--text-solid); }
+  .site-period { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+  .queries-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .queries-table th { text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); padding: 8px 12px; border-bottom: 2px solid var(--border); }
+  .queries-table th.right { text-align: right; }
+  .queries-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  .queries-table td.right { text-align: right; font-variant-numeric: tabular-nums; }
+  .queries-table tr:last-child td { border-bottom: none; }
+  .queries-table tr:hover td { background: var(--neutral-color); }
+  .insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .insight-card { background: #fff; border: 1px solid var(--border); border-left: 3px solid var(--main-color); border-radius: var(--border-radius); padding: 16px 18px; }
+  .insight-card.warning { border-left-color: var(--orange); }
+  .insight-card.positive { border-left-color: var(--green); }
+  .insight-card.info { border-left-color: var(--primary-color); }
+  .insight-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .insight-text { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .report-footer { background: var(--neutral-color); border-top: 1px solid var(--border); padding: 16px 40px; font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">
+    <div><div class="logo-text">VAPP</div><div class="tagline">Přívěsy a příslušenství</div></div>
+    <div style="width:1px;height:36px;background:var(--border);margin:0 8px;"></div>
+    <div>
+      <div style="font-size:16px;font-weight:700;">SEO – vývoj výsledků</div>
+      <div style="font-size:12px;color:var(--text-muted);">Google Search Console · vapp.cz + vapp.sk</div>
+    </div>
+  </div>
+  <div class="header-meta"><strong>19. 5. – 16. 8. 2026</strong>90 dní dat · zdroj: GSC</div>
+</div>
+<div class="container">
+  <div class="section-title">Přehled — denní průměr kliků (90 dní)</div>
+  <div class="chart-panel" style="margin-bottom:28px;">
+    <div class="chart-title">Kliknutí za den — vapp.cz vs vapp.sk</div>
+    <div class="chart-subtitle">7denní klouzavý průměr · primární osa = CZ, sekundární osa = SK</div>
+    <div class="chart-wrap tall"><canvas id="dailyChart"></canvas></div>
+  </div>
+  <div class="site-header">
+    <span class="site-badge cz">CZ</span>
+    <span class="site-name">vapp.cz</span>
+    <span class="site-period">19. 5. – 16. 8. 2026 · 90 dní</span>
+  </div>
+  <div class="section-title">Klíčové metriky</div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="accent-bar accent-cz"></div><div class="kpi-label">Celkem kliknutí</div><div class="kpi-value">23 553</div><div class="kpi-change up">↑ +29 % oproti květnu</div><div class="kpi-sub">Průměr: 262/den</div></div>
+    <div class="kpi-card"><div class="accent-bar accent-cz"></div><div class="kpi-label">Celkem impresí</div><div class="kpi-value">744 869</div><div class="kpi-change neutral">≈ stabilní</div><div class="kpi-sub">Průměr: 8 276/den</div></div>
+    <div class="kpi-card"><div class="accent-bar accent-cz"></div><div class="kpi-label">Průměrná CTR</div><div class="kpi-value">3,16 %</div><div class="kpi-change up">↑ z 2,6 % → 3,4 %</div><div class="kpi-sub">Výrazný posun v červenci</div></div>
+    <div class="kpi-card"><div class="accent-bar accent-cz"></div><div class="kpi-label">Průměrná pozice</div><div class="kpi-value">6,5</div><div class="kpi-change up">↑ mírné zlepšení v červenci</div><div class="kpi-sub">Nejlepší: 5,8 (20. 7.)</div></div>
+  </div>
+  <div class="section-title">Měsíční vývoj — vapp.cz</div>
+  <div class="chart-panel" style="margin-bottom:28px;">
+    <table class="monthly-table">
+      <thead><tr><th>Období</th><th>Dní</th><th>Kliknutí</th><th>Prům. kliků/den</th><th>Imprese</th><th>Prům. impresí/den</th><th>CTR</th><th>Pozice</th><th>Trend kliků</th></tr></thead>
+      <tbody>
+        <tr><td><span class="month-label">Kvě 19–31</span> <span class="note">(zkrácený)</span></td><td>13</td><td class="num">2 789</td><td class="num">214,5</td><td class="num">107 514</td><td class="num">8 270</td><td class="num">2,58 %</td><td class="num">6,5</td><td>—</td></tr>
+        <tr><td><span class="month-label">Červen</span></td><td>30</td><td class="num">8 211</td><td class="num">273,7</td><td class="num">258 239</td><td class="num">8 608</td><td class="num">3,09 %</td><td class="num">6,6</td><td><span class="badge badge-up">↑ +28 %</span></td></tr>
+        <tr><td><span class="month-label">Červenec</span></td><td>31</td><td class="num">8 571</td><td class="num">276,5</td><td class="num">253 171</td><td class="num">8 167</td><td class="num">3,37 %</td><td class="num">6,4</td><td><span class="badge badge-up">↑ +1 %</span></td></tr>
+        <tr><td><span class="month-label">Srp 1–16</span> <span class="note">(zkrácený)</span></td><td>16</td><td class="num">3 982</td><td class="num">248,9</td><td class="num">125 945</td><td class="num">7 872</td><td class="num">3,12 %</td><td class="num">6,5</td><td><span class="badge badge-neutral">léto ↓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="chart-grid">
+    <div class="chart-panel"><div class="chart-title">Průměr kliků/den — CZ</div><div class="chart-subtitle">Srovnání po měsících</div><div class="chart-wrap"><canvas id="czClicksChart"></canvas></div></div>
+    <div class="chart-panel"><div class="chart-title">CTR — CZ</div><div class="chart-subtitle">Průměrná míra prokliku po měsících</div><div class="chart-wrap"><canvas id="czCtrChart"></canvas></div></div>
+  </div>
+  <div class="section-title">Top 20 dotazů — vapp.cz (celé období)</div>
+  <div class="chart-panel" style="margin-bottom:28px;">
+    <table class="queries-table">
+      <thead><tr><th>#</th><th>Dotaz</th><th class="right">Kliknutí</th><th class="right">Imprese</th><th class="right">CTR</th><th class="right">Pozice</th><th>Typ</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>vapp</td><td class="right">2 432</td><td class="right">4 499</td><td class="right">54,1 %</td><td class="right">1,5</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr><td>2</td><td>vapp popovičky</td><td class="right">369</td><td class="right">722</td><td class="right">51,1 %</td><td class="right">1,3</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr><td>3</td><td>vapp přívěsy</td><td class="right">288</td><td class="right">632</td><td class="right">45,6 %</td><td class="right">1,5</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr><td>4</td><td>wapp</td><td class="right">215</td><td class="right">656</td><td class="right">32,8 %</td><td class="right">2,1</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr><td>5</td><td>vapp s.r.o</td><td class="right">171</td><td class="right">291</td><td class="right">58,8 %</td><td class="right">1,0</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr><td>6</td><td>vapp voziky</td><td class="right">169</td><td class="right">313</td><td class="right">54,0 %</td><td class="right">1,0</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr><td>7</td><td>vapp.cz</td><td class="right">60</td><td class="right">96</td><td class="right">62,5 %</td><td class="right">1,0</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr style="background:#fefdf0;"><td>8</td><td><strong>agados</strong> <span style="font-size:11px;color:var(--orange);">⚠ konkurent</span></td><td class="right">59</td><td class="right">10 363</td><td class="right" style="color:var(--red);">0,57 %</td><td class="right">3,3</td><td><span class="badge" style="background:#fff3e0;color:var(--orange);border:1px solid #ffcc80;">competitor</span></td></tr>
+        <tr><td>9</td><td>wapp cz</td><td class="right">58</td><td class="right">109</td><td class="right">53,2 %</td><td class="right">1,3</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr style="background:#f0f6ff;"><td>10</td><td><strong>plynové vzpěry</strong></td><td class="right">53</td><td class="right">1 392</td><td class="right">3,81 %</td><td class="right">2,7</td><td><span class="badge badge-up">organic</span></td></tr>
+        <tr style="background:#f0f6ff;"><td>11</td><td><strong>půjčovna přívěsů</strong></td><td class="right">38</td><td class="right">1 594</td><td class="right">2,38 %</td><td class="right">7,1</td><td><span class="badge badge-up">organic</span></td></tr>
+        <tr style="background:#f0f6ff;"><td>12</td><td><strong>plynová vzpěra</strong></td><td class="right">37</td><td class="right">1 071</td><td class="right">3,45 %</td><td class="right">3,0</td><td><span class="badge badge-up">organic</span></td></tr>
+        <tr><td>13</td><td>přívěsy vapp</td><td class="right">35</td><td class="right">97</td><td class="right">36,1 %</td><td class="right">1,0</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr style="background:#f0f6ff;"><td>14</td><td><strong>překližka na vozík</strong></td><td class="right">33</td><td class="right">221</td><td class="right">14,9 %</td><td class="right">1,2</td><td><span class="badge badge-up">organic</span></td></tr>
+        <tr><td>15</td><td>vapp s.r.o.</td><td class="right">30</td><td class="right">64</td><td class="right">46,9 %</td><td class="right">1,1</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr><td>16</td><td>vapp privesy</td><td class="right">29</td><td class="right">93</td><td class="right">31,2 %</td><td class="right">1,1</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr><td>17</td><td>vaap</td><td class="right">28</td><td class="right">52</td><td class="right">53,9 %</td><td class="right">1,3</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr><td>18</td><td>vapp – přívěsy, příslušenství...</td><td class="right">28</td><td class="right">51</td><td class="right">54,9 %</td><td class="right">1,1</td><td><span class="badge badge-neutral">brand</span></td></tr>
+        <tr style="background:#f0f6ff;"><td>19</td><td><strong>zapojení 13 pólové zásuvky</strong></td><td class="right">27</td><td class="right">614</td><td class="right">4,4 %</td><td class="right">1,0</td><td><span class="badge badge-up">organic</span></td></tr>
+        <tr style="background:#f0f6ff;"><td>20</td><td><strong>deska na vozík</strong></td><td class="right">26</td><td class="right">274</td><td class="right">9,5 %</td><td class="right">1,2</td><td><span class="badge badge-up">organic</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="site-header">
+    <span class="site-badge sk">SK</span>
+    <span class="site-name">vapp.sk</span>
+    <span class="site-period">19. 5. – 16. 8. 2026 · 90 dní</span>
+  </div>
+  <div class="section-title">Klíčové metriky</div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="accent-bar accent-sk"></div><div class="kpi-label">Celkem kliknutí</div><div class="kpi-value">1 151</div><div class="kpi-change up">↑ +26 % srp vs. kvě</div><div class="kpi-sub">Průměr: 12,8/den</div></div>
+    <div class="kpi-card"><div class="accent-bar accent-sk"></div><div class="kpi-label">Celkem impresí</div><div class="kpi-value">30 108</div><div class="kpi-change up">↑ +35 % impresí/den</div><div class="kpi-sub">288 → 390 imp/den</div></div>
+    <div class="kpi-card"><div class="accent-bar accent-sk"></div><div class="kpi-label">Průměrná CTR</div><div class="kpi-value">3,82 %</div><div class="kpi-change neutral">≈ stabilní</div><div class="kpi-sub">Výrazně výš než CZ</div></div>
+    <div class="kpi-card"><div class="accent-bar accent-sk"></div><div class="kpi-label">Průměrná pozice</div><div class="kpi-value">9,0</div><div class="kpi-change neutral">≈ stabilní</div><div class="kpi-sub">Stránka 1, spodek</div></div>
+  </div>
+  <div class="section-title">Měsíční vývoj — vapp.sk</div>
+  <div class="chart-panel" style="margin-bottom:28px;">
+    <table class="monthly-table">
+      <thead><tr><th>Období</th><th>Dní</th><th>Kliknutí</th><th>Prům. kliků/den</th><th>Imprese</th><th>Prům. impresí/den</th><th>CTR</th><th>Pozice</th><th>Trend impresí</th></tr></thead>
+      <tbody>
+        <tr><td><span class="month-label">Kvě 19–31</span> <span class="note">(zkrácený)</span></td><td>13</td><td class="num">158</td><td class="num">12,2</td><td class="num">3 745</td><td class="num">288</td><td class="num">4,13 %</td><td class="num">8,8</td><td>—</td></tr>
+        <tr><td><span class="month-label">Červen</span></td><td>30</td><td class="num">331</td><td class="num">11,0</td><td class="num">8 869</td><td class="num">296</td><td class="num">3,93 %</td><td class="num">9,1</td><td><span class="badge badge-neutral">+3 %</span></td></tr>
+        <tr><td><span class="month-label">Červenec</span></td><td>31</td><td class="num">415</td><td class="num">13,4</td><td class="num">11 259</td><td class="num">363</td><td class="num">3,68 %</td><td class="num">9,0</td><td><span class="badge badge-up">↑ +23 %</span></td></tr>
+        <tr><td><span class="month-label">Srp 1–16</span> <span class="note">(zkrácený)</span></td><td>16</td><td class="num">247</td><td class="num">15,4</td><td class="num">6 235</td><td class="num">390</td><td class="num">3,96 %</td><td class="num">8,8</td><td><span class="badge badge-up">↑ +7 %</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="chart-grid">
+    <div class="chart-panel"><div class="chart-title">Průměr impresí/den — SK</div><div class="chart-subtitle">Zobrazení roste — obsah začíná být indexován</div><div class="chart-wrap"><canvas id="skImpChart"></canvas></div></div>
+    <div class="chart-panel"><div class="chart-title">Průměr kliků/den — SK</div><div class="chart-subtitle">Kliknutí rostou s impresemi</div><div class="chart-wrap"><canvas id="skClicksChart"></canvas></div></div>
+  </div>
+  <div class="section-title">Klíčové závěry</div>
+  <div class="insights-grid">
+    <div class="insight-card positive"><div class="insight-title">✓ CZ: CTR vzrostla o +31 %</div><div class="insight-text">Míra prokliku šla z 2,58 % (květen) na 3,37 % (červenec). Při stejném počtu impresí to znamená více kliků — pravděpodobně vliv nových textů na meta popisky a relevanci výsledků.</div></div>
+    <div class="insight-card positive"><div class="insight-title">✓ SK: Imprese rostou +35 %</div><div class="insight-text">Na SK roste počet zobrazení ze 288 na 390 za den (+35 %). Google indexuje nový obsah a web se zobrazuje pro více dotazů. Výsledek v clicks zatím přijde se zpožděním.</div></div>
+    <div class="insight-card warning"><div class="insight-title">⚠ Agados: 10 363 impresí, CTR jen 0,57 %</div><div class="insight-text">Na dotaz „agados" se vapp.cz zobrazuje na pozici 3,3 s 10 363 impresemi — ale kliknutí jen 59. Příležitost: optimalizovat snippet nebo vytvořit srovnávací obsah.</div></div>
+    <div class="insight-card info"><div class="insight-title">ℹ Brandové dotazy dominují CZ</div><div class="insight-text">Z top 20 dotazů je cca 13 brandových. Organický non-brand traffic tvoří minoritu. Textace kategoriových stránek by měla postupně tento poměr měnit.</div></div>
+    <div class="insight-card positive"><div class="insight-title">✓ Srpnový dip je sezónní</div><div class="insight-text">Pokles kliků/den v srpnu na CZ je typický pro léto. CTR zůstává vysoká (3,12 %), jde o pokles poptávky, ne o SEO problém.</div></div>
+    <div class="insight-card positive"><div class="insight-title">✓ SK: Kliknutí rostou i přes léto</div><div class="insight-text">Zatímco CZ v srpnu mírně klesá, SK roste (15,4 vs. 12,2 kliků/den v květnu). Nové texty mají na SK relativně větší dopad.</div></div>
+  </div>
+</div>
+<div class="report-footer">
+  <span>VAPP s.r.o. · SEO analýza · 24. 8. 2026</span>
+  <span>Zdroj dat: Google Search Console · 19. 5. – 16. 8. 2026</span>
+</div>
+<script>
+const months = ['Kvě 19–31', 'Červen', 'Červenec', 'Srp 1–16'];
+const czClicksPerDay = [214.5, 273.7, 276.5, 248.9];
+const czCtr = [2.58, 3.09, 3.37, 3.12];
+const skImpPerDay = [288, 296, 363, 390];
+const skClicksPerDay = [12.2, 11.0, 13.4, 15.4];
+const czDailyClicks = [266,264,270,179,148,181,262,232,225,234,176,139,213,270,351,355,351,262,145,272,407,387,363,349,265,188,284,378,283,343,237,239,138,210,314,320,269,251,171,129,190,250,240,264,257,227,137,182,325,355,342,324,255,161,252,336,324,303,295,215,193,295,358,315,356,302,263,188,251,322,328,310,322,214,152,262,314,249,296,258,219,158,239,355,321,291,301,216,132,219];
+const skDailyClicks = [13,21,11,10,8,15,23,15,12,11,10,4,5,24,14,17,11,10,8,11,17,13,20,16,8,7,7,12,11,13,12,12,12,10,14,10,11,10,9,6,6,8,12,13,10,7,12,7,11,24,14,6,5,9,14,19,21,15,10,9,9,15,11,18,19,18,17,8,15,14,24,17,9,15,13,15,16,19,22,12,13,7,9,24,28,16,9,14,13,17];
+function movingAvg(arr, w) {
+  return arr.map((_, i) => { const s = Math.max(0, i - Math.floor(w/2)), e = Math.min(arr.length, s + w), sl = arr.slice(s, e); return sl.reduce((a,b) => a+b, 0) / sl.length; });
+}
+function genDates() {
+  const d = []; for (const [m,s,e] of [[5,19,31],[6,1,30],[7,1,31],[8,1,16]]) for (let i=s;i<=e;i++) d.push(`${i}.${m}.`); return d;
+}
+const dateLabels = genDates();
+const bf = { family: "'Exo 2', sans-serif", size: 12 };
+Chart.defaults.font = bf; Chart.defaults.color = 'rgba(43,48,51,0.55)';
+new Chart(document.getElementById('dailyChart'), { type: 'line', data: { labels: dateLabels, datasets: [{ label: 'vapp.cz (7d avg)', data: movingAvg(czDailyClicks,7), borderColor: '#1652b4', backgroundColor: 'rgba(22,82,180,0.08)', borderWidth: 2, pointRadius: 0, fill: true, tension: 0.4, yAxisID: 'yCZ' }, { label: 'vapp.sk (7d avg)', data: movingAvg(skDailyClicks,7), borderColor: '#616161', backgroundColor: 'rgba(97,97,97,0.06)', borderWidth: 2, pointRadius: 0, fill: true, tension: 0.4, yAxisID: 'ySK' }] }, options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'top', labels: { font: bf, usePointStyle: true } }, tooltip: { backgroundColor: '#fff', titleColor: '#2b3033', bodyColor: '#616161', borderColor: '#eaebeb', borderWidth: 1 } }, scales: { x: { grid: { color: '#eaebeb' }, ticks: { maxTicksLimit: 12, callback: function(_,i) { const l=dateLabels[i]; return l&&(l.startsWith('1.')||l.startsWith('19.'))?l:''; } } }, yCZ: { type: 'linear', position: 'left', title: { display: true, text: 'Kliky/den – CZ', font: { size: 11 } }, grid: { color: '#eaebeb' }, min: 0 }, ySK: { type: 'linear', position: 'right', title: { display: true, text: 'Kliky/den – SK', font: { size: 11 } }, grid: { drawOnChartArea: false }, min: 0 } } } });
+new Chart(document.getElementById('czClicksChart'), { type: 'bar', data: { labels: months, datasets: [{ data: czClicksPerDay, backgroundColor: ['rgba(22,82,180,0.5)','rgba(22,82,180,0.7)','rgba(22,82,180,0.9)','rgba(22,82,180,0.6)'], borderColor: '#1652b4', borderWidth: 1, borderRadius: 3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { min: 180, max: 300, grid: { color: '#eaebeb' } } } } });
+new Chart(document.getElementById('czCtrChart'), { type: 'bar', data: { labels: months, datasets: [{ data: czCtr, backgroundColor: ['rgba(22,82,180,0.5)','rgba(22,82,180,0.7)','rgba(22,82,180,0.9)','rgba(22,82,180,0.6)'], borderColor: '#1652b4', borderWidth: 1, borderRadius: 3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { min: 2.0, max: 3.8, grid: { color: '#eaebeb' }, ticks: { callback: v => v.toFixed(1)+' %' } } } } });
+new Chart(document.getElementById('skImpChart'), { type: 'bar', data: { labels: months, datasets: [{ data: skImpPerDay, backgroundColor: ['rgba(97,97,97,0.4)','rgba(97,97,97,0.55)','rgba(97,97,97,0.7)','rgba(97,97,97,0.85)'], borderColor: '#616161', borderWidth: 1, borderRadius: 3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { min: 250, max: 430, grid: { color: '#eaebeb' } } } } });
+new Chart(document.getElementById('skClicksChart'), { type: 'bar', data: { labels: months, datasets: [{ data: skClicksPerDay, backgroundColor: ['rgba(97,97,97,0.4)','rgba(97,97,97,0.55)','rgba(97,97,97,0.7)','rgba(97,97,97,0.85)'], borderColor: '#616161', borderWidth: 1, borderRadius: 3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { min: 8, max: 18, grid: { color: '#eaebeb' }, ticks: { callback: v => v.toFixed(1) } } } } });
+</script>
+</body>
+</html>
