@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAPP — Menu wireframe (6 vs 8 kategorií)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --main:#1652b4; --main-hover:#124290; --logo-red:#e31e24;
+  --neutral:#f6f7f7; --sep:#eaebeb; --text:#2b3033;
+  --body:rgba(43,48,51,.9); --muted:rgba(43,48,51,.55);
+  --radius:3px; --font:'Exo 2',Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:var(--font);background:#e6e8eb;color:var(--body);
+  display:flex;flex-direction:column;align-items:center;gap:16px;padding:24px 12px;min-height:100vh}
+.intro{max-width:430px;text-align:center}
+.intro h1{font-size:18px;color:var(--text);margin:0 0 4px}
+.intro p{font-size:13px;color:var(--muted);margin:0}
+
+/* segmented toggle */
+.toggle{display:inline-flex;background:#fff;border:1px solid var(--sep);border-radius:var(--radius);padding:4px;gap:4px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.toggle button{font-family:var(--font);font-weight:600;font-size:14px;border:none;background:none;color:var(--text);
+  padding:10px 18px;border-radius:var(--radius);cursor:pointer}
+.toggle button.active{background:var(--main);color:#fff}
+
+/* phone frame */
+.phone{width:390px;max-width:100%;background:#fff;border-radius:18px;overflow:hidden;
+  box-shadow:0 12px 40px rgba(0,0,0,.16);display:flex;flex-direction:column;max-height:82vh}
+.ph-head{height:60px;flex:0 0 60px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;border-bottom:1px solid var(--sep)}
+.logo{font-weight:800;font-style:italic;font-size:24px;color:var(--logo-red)}
+.ph-head .x{width:40px;height:40px;border:none;background:none;color:var(--muted);font-size:22px;cursor:pointer;border-radius:var(--radius)}
+.ph-head .x:hover{background:var(--neutral)}
+.ver-tag{font-size:11px;font-weight:700;color:var(--main);background:#e8effe;border:1px solid #b3c6ef;
+  border-radius:var(--radius);padding:3px 8px}
+.menu{overflow-y:auto;flex:1}
+
+/* accordion levels */
+.acc{border-bottom:1px solid var(--sep)}
+.acc-btn{width:100%;background:none;border:none;text-align:left;cursor:pointer;font-family:var(--font);
+  color:var(--text);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.acc-btn .chev{transition:transform .2s;color:var(--muted);flex:0 0 auto}
+.acc.open>.acc-btn .chev{transform:rotate(180deg)}
+.acc-panel{display:none}
+.acc.open>.acc-panel{display:block}
+
+/* L1 */
+.lvl1>.acc-btn{padding:16px;font-size:16px;font-weight:700}
+.lvl1>.acc-btn .chev{width:22px;height:22px}
+/* L2 */
+.lvl2{border-bottom:1px solid var(--sep);background:var(--neutral)}
+.lvl2:last-child{border-bottom:none}
+.lvl2>.acc-btn{padding:12px 16px 12px 24px;font-size:14px;font-weight:600}
+.lvl2>.acc-btn .chev{width:18px;height:18px}
+.tag{font-size:10px;font-weight:700;color:var(--main);background:#e8effe;border:1px solid #b3c6ef;border-radius:var(--radius);padding:1px 6px;margin-left:8px}
+/* L3 links */
+.lvl3{display:block;padding:10px 16px 10px 40px;font-size:13px;color:var(--body);text-decoration:none;background:#fff;border-top:1px solid var(--sep)}
+.lvl3:hover{color:var(--main)}
+.lvl3.brand{color:var(--logo-red);font-weight:600}
+/* direct items (Servis/Půjčovna) */
+.direct{display:block;padding:12px 16px 12px 24px;font-size:14px;color:var(--body);text-decoration:none;background:var(--neutral);border-bottom:1px solid var(--sep)}
+.direct:hover{color:var(--main)}
+/* plain L1 link (Poradna) */
+.lvl1-link{display:block;padding:16px;font-size:16px;font-weight:700;color:var(--text);text-decoration:none;border-bottom:1px solid var(--sep)}
+.lvl1-link:hover{color:var(--main)}
+
+.note{max-width:430px;font-size:11px;color:var(--muted);text-align:center;line-height:1.5}
+.chevSVG{pointer-events:none}
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1>VAPP — Menu wireframe pro HP</h1>
+  <p>Mobilní menu s navrženými sdružovacími kategoriemi. Přepni verzi Náhradních dílů: 6 nebo 8.</p>
+</div>
+
+<div class="toggle" id="toggle">
+  <button data-v="6">6 kategorií</button>
+  <button data-v="8" class="active">8 kategorií</button>
+</div>
+
+<div class="phone">
+  <div class="ph-head">
+    <span class="logo">VAPP</span>
+    <span class="ver-tag" id="verTag">Náhradní díly: 8</span>
+    <button class="x" aria-label="Zavřít">&times;</button>
+  </div>
+  <nav class="menu" id="menu"></nav>
+</div>
+
+<div class="note">
+  Přívěsy grupovány dle dřívějšího návrhu (Valníky · Sklápěče a skříňové · Přepravníky · Podle značky · Výprodej).
+  Odznak „kategorie" = velká stávající kategorie povýšená na samostatný hub (zobrazuje své podkategorie).
+</div>
+
+<script>
+var CHEV='<svg class="chevSVG chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>';
+
+var privesy=[
+  {g:'Valníky', items:['Jednoosé valníky','Dvouosé valníky','Tříosé valníky']},
+  {g:'Sklápěče a skříňové', items:['Sklopné přívěsy','Skříňové přívěsy','Chladírenské přívěsy']},
+  {g:'Přepravníky', items:['Přepravníky automobilů','Přepravníky motocyklů','Přepravníky strojů','Přepravníky lodí a skútrů','Přepravníky zvířat']},
+  {g:'Podle značky', items:['Agados','STEMA','UNSINN','VAPP'], brand:true},
+  {g:'Akce', items:['Výprodej']}
+];
+
+var elektro=['Baterie, nabíječky a příslušenství','Blinkry','Brzdové svítilny','Couvačky a mlhovky','Držáky svítilen a odrazek','Kabely a kabeláže','Majáky a výstražné svítilny','Montážní materiál','Obrysové svítilny','Odrazky a odrazové desky','Osvětlení registrační značky','Pracovní světlomety','Sdružené zadní svítilny','Skla svítilen náhradní','Vnitřní osvětlení','Zásuvky, zástrčky, konektory','Žárovky, náhradní LED moduly'];
+var pneu=['Disky kol','Kompletní kola','Pneu','Pneu, kola, disky 8"','Pneu, kola, disky 10"','Pneu, kola, disky 13"','Pneu, kola, disky 14"','Pneu, kola, disky 15" a více','Příslušenství kol a pneumatik'];
+
+var nd8=[
+  {g:'Nápravy a díly náprav', items:['Nápravy kompletní','Díly náprav']},
+  {g:'Brzdy a hydraulika', items:['Nájezdové brzdy a díly','Hydraulika přívěsů']},
+  {g:'Pneu, kola, disky', items:pneu, tag:true},
+  {g:'Tažné zařízení a opěry', items:['Spojovací zařízení a zámky','Opěrná kolečka, nohy, držáky']},
+  {g:'Elektro, svítilny, odrazky', items:elektro, tag:true},
+  {g:'Karoserie a nástavba', items:['Blatníky a zástěrky','Bočnice, uzávěry, panty','Konstrukční díly','Plachty a příslušenství']},
+  {g:'Nakládání a zajištění nákladu', items:['Nájezdy','Navijáky a příslušenství','Zabezpečení nákladu','Klíny a držáky']},
+  {g:'Doplňky a údržba', items:['Boxy na nářadí a držáky boxů','Doplňky k přívěsům','Plynové vzpěry a příslušenství','Pomůcky pro údržbu']}
+];
+var nd6=[
+  {g:'Podvozek – nápravy, brzdy, kola', items:['Nápravy kompletní','Díly náprav','Nájezdové brzdy a díly','Hydraulika přívěsů','Pneu, kola, disky']},
+  {g:'Tažné zařízení a opěry', items:['Spojovací zařízení a zámky','Opěrná kolečka, nohy, držáky']},
+  {g:'Elektro, svítilny, odrazky', items:elektro, tag:true},
+  {g:'Karoserie a nástavba', items:['Blatníky a zástěrky','Bočnice, uzávěry, panty','Konstrukční díly','Plachty a příslušenství']},
+  {g:'Nakládání a zajištění nákladu', items:['Nájezdy','Navijáky a příslušenství','Zabezpečení nákladu','Klíny a držáky']},
+  {g:'Doplňky a údržba', items:['Boxy na nářadí a držáky boxů','Doplňky k přívěsům','Plynové vzpěry a příslušenství','Pomůcky pro údržbu']}
+];
+
+var servis=[{g:null, items:['Rezervace servisu','Garanční prohlídky','Pneuservis','AL-KO servis','BPW servis','KNOTT servis']}];
+var pujcovna=[{g:null, items:['Nabídka přívěsů','Ceník','Rezervace']}];
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function l3(items,brand){return items.map(function(i){return '<a class="lvl3'+(brand?' brand':'')+'" href="#">'+esc(i)+'</a>';}).join('');}
+function group(gr){
+  if(gr.g===null){ return gr.items.map(function(i){return '<a class="direct" href="#">'+esc(i)+'</a>';}).join(''); }
+  var tag=gr.tag?'<span class="tag">kategorie</span>':'';
+  return '<div class="acc lvl2"><button class="acc-btn">'+esc(gr.g)+tag+CHEV+'</button><div class="acc-panel">'+l3(gr.items,gr.brand)+'</div></div>';
+}
+function l1(label,groups,open){
+  return '<div class="acc lvl1'+(open?' open':'')+'"><button class="acc-btn">'+esc(label)+CHEV+'</button><div class="acc-panel">'+groups.map(group).join('')+'</div></div>';
+}
+
+var version=8;
+function render(){
+  var nd = version===8?nd8:nd6;
+  var html='';
+  html+=l1('Přívěsy', privesy, true);
+  html+=l1('Náhradní díly', nd, true);
+  html+=l1('Servis', servis, false);
+  html+=l1('Půjčovna', pujcovna, false);
+  html+='<a class="lvl1-link" href="#">Poradna</a>';
+  document.getElementById('menu').innerHTML=html;
+  document.getElementById('verTag').textContent='Náhradní díly: '+version;
+}
+
+/* accordion toggle via delegation */
+document.getElementById('menu').addEventListener('click',function(e){
+  var btn=e.target.closest('.acc-btn'); if(!btn) return;
+  btn.parentElement.classList.toggle('open');
+});
+/* version toggle */
+document.getElementById('toggle').addEventListener('click',function(e){
+  var b=e.target.closest('button[data-v]'); if(!b) return;
+  version=parseInt(b.getAttribute('data-v'),10);
+  Array.prototype.forEach.call(this.children,function(x){x.classList.toggle('active', x===b);});
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
